@@ -139,7 +139,7 @@ class UserRepository {
 
   /// Retrieve and get the password for the current authenticated user.
   /// WARNING This isn't a good practice but currently the password has to be sent in clear.
-  Future<String?> getPassword() async {
+  Future<String> getPassword() async {
     if (_monETSUser == null) {
       _analyticsService.logEvent(
           tag, "Trying to acquire password but not authenticated");
@@ -152,7 +152,9 @@ class UserRepository {
 
     final String? password = await _secureStorage.read(key: passwordSecureKey);
 
-    return password;
+    // Here, we know the variable is set because it was either already there (_monETSUser)
+    // or it was acquired because no ApiException has been launched (safe to use !)
+    return password!;
   }
 
   /// Get the list of programs on which the student was active.
@@ -192,10 +194,10 @@ class UserRepository {
 
     try {
       // getPassword will try to authenticate the user if not authenticated.
-      final String? password = await getPassword();
+      final String password = await getPassword();
 
       final List<Program> fetchedProgram = await _signetsApi.getPrograms(
-          username: monETSUser!.universalCode, password: password ?? "");
+          username: monETSUser!.universalCode, password: password);
       _logger
           .d("$tag - getPrograms: ${fetchedProgram.length} programs fetched.");
       for (final Program program in fetchedProgram) {
@@ -250,10 +252,10 @@ class UserRepository {
 
     try {
       // getPassword will try to authenticate the user if not authenticated.
-      final String? password = await getPassword();
+      final String password = await getPassword();
 
       final fetchedInfo = await _signetsApi.getStudentInfo(
-          username: monETSUser!.universalCode, password: password ?? "");
+          username: monETSUser!.universalCode, password: password);
       _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 
       if (_info != fetchedInfo) {
