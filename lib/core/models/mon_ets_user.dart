@@ -1,6 +1,3 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
-
 /// User received from MonETS after a authentication
 class MonETSUser {
   final String? domain;

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
 /// Data-class that represent an evaluation which happened during a course

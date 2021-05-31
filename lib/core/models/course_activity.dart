@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
 /// Data-class that represent an activity of a course

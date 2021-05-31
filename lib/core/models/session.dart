@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
 /// Data-class that represent a session of courses.
@@ -64,7 +63,8 @@ class Session {
       name: node.getElement("auLong")!.innerText,
       startDate: DateTime.parse(node.getElement("dateDebut")!.innerText),
       endDate: DateTime.parse(node.getElement("dateFin")!.innerText),
-      endDateCourses: DateTime.parse(node.getElement("dateFinCours")!.innerText),
+      endDateCourses:
+          DateTime.parse(node.getElement("dateFinCours")!.innerText),
       startDateRegistration:
           DateTime.parse(node.getElement("dateDebutChemiNot")!.innerText),
       deadlineRegistration:

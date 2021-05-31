@@ -1,6 +1,3 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
-
 class QuickLink {
   final String image;
   final String name;

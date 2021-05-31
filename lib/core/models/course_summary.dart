@@ -1,6 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:notredame/core/models/evaluation.dart';
 import 'package:xml/xml.dart';
 
