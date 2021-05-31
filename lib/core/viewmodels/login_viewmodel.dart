@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -13,10 +12,10 @@ import 'package:notredame/core/constants/router_paths.dart';
 
 class LoginViewModel extends BaseViewModel {
   /// Used to authenticate the user
-  final UserRepository? _userRepository = locator<UserRepository>();
+  final UserRepository _userRepository = locator<UserRepository>();
 
   /// Used to redirect on the dashboard.
-  final NavigationService? _navigationService = locator<NavigationService>();
+  final NavigationService _navigationService = locator<NavigationService>();
 
   /// Regex matcher to validate the Universal code pattern
   final RegExp _universalCodeMatcher = RegExp(r'[a-zA-Z]{2}\d{5}');
@@ -24,20 +23,20 @@ class LoginViewModel extends BaseViewModel {
   /// l10n class used to return the right error message
   final AppIntl? _appIntl;
 
-  String? _universalCode = "";
-  String? get universalCode => _universalCode;
+  String _universalCode = "";
+  String get universalCode => _universalCode;
 
   String _password = "";
   String get password => _password;
 
   /// Used to enable/disable the "log in" button
-  bool get canSubmit => _universalCode!.isNotEmpty && _password.isNotEmpty;
+  bool get canSubmit => _universalCode.isNotEmpty && _password.isNotEmpty;
 
   LoginViewModel({required AppIntl? intl}) : _appIntl = intl;
 
   /// Validate the format of the universal code
   String? validateUniversalCode(String? value) {
-    if (value!.isEmpty) {
+    if (value == null || value.isEmpty) {
       _universalCode = "";
       return _appIntl!.login_error_field_required;
     } else if (!_universalCodeMatcher.hasMatch(value)) {
@@ -65,11 +64,11 @@ class LoginViewModel extends BaseViewModel {
     }
 
     setBusy(true);
-    final response = await _userRepository!
-        .authenticate(username: _universalCode, password: _password);
+    final response = await _userRepository.authenticate(
+        username: _universalCode, password: _password);
 
     if (response) {
-      _navigationService!.pushNamed(RouterPaths.dashboard);
+      _navigationService.pushNamed(RouterPaths.dashboard);
       return '';
     }
 

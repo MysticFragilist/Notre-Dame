@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:stacked/stacked.dart';
 
@@ -16,46 +15,46 @@ class NotFoundViewModel extends BaseViewModel {
   static const String tag = "NotFoundViewModel";
 
   /// Used to redirect on the dashboard.
-  final NavigationService? _navigationService = locator<NavigationService>();
+  final NavigationService _navigationService = locator<NavigationService>();
 
   /// Used to log the event that pushed it from
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// Used to access the rive animations
-  final RiveAnimationService? _riveAnimationService =
+  final RiveAnimationService _riveAnimationService =
       locator<RiveAnimationService>();
 
   final String _riveAnimationFileName = 'dot_jumping';
 
-  final String? notFoundPageName;
+  late final String notFoundPageName;
 
   Artboard? _artboard;
   Artboard? get artboard => _artboard;
 
-  NotFoundViewModel({required String? pageName}) : notFoundPageName = pageName {
-    _analyticsService!.logEvent(
+  NotFoundViewModel({required String pageName}) : notFoundPageName = pageName {
+    _analyticsService.logEvent(
         tag, "An unknown page ($pageName) has been access from the app.");
   }
 
   void navigateToDashboard() {
-    _navigationService!.pushNamed(RouterPaths.dashboard);
+    _navigationService.pushNamed(RouterPaths.dashboard);
   }
 
   Future<void> loadRiveAnimation() async {
     try {
-      _artboard = await _riveAnimationService!.loadRiveFile(
+      _artboard = await _riveAnimationService.loadRiveFile(
           riveFileName: _riveAnimationFileName);
     } catch (e) {
-      _analyticsService!.logError(tag,
+      _analyticsService.logError(tag,
           "An Error has occured during rive animation $_riveAnimationFileName loading.");
     }
   }
 
   void startRiveAnimation() {
     try {
-      _riveAnimationService!.addControllerToAnimation(artboard: _artboard!);
+      _riveAnimationService.addControllerToAnimation(artboard: _artboard!);
     } catch (e) {
-      _analyticsService!.logError(
+      _analyticsService.logError(
           tag, "An Error has occured during rive animation start.");
     }
   }

@@ -1,8 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
@@ -26,42 +24,40 @@ import 'package:notredame/locator.dart';
 
 class MoreViewModel extends FutureViewModel {
   /// Cache manager
-  final CacheManager? _cacheManager = locator<CacheManager>();
+  final CacheManager _cacheManager = locator<CacheManager>();
 
   /// Settings manager
-  final SettingsManager? settingsManager = locator<SettingsManager>();
+  final SettingsManager settingsManager = locator<SettingsManager>();
 
   /// Course repository
-  final CourseRepository? _courseRepository = locator<CourseRepository>();
+  final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Preferences service
-  final PreferencesService? _preferencesService = locator<PreferencesService>();
+  final PreferencesService _preferencesService = locator<PreferencesService>();
 
   /// User repository needed to log out
-  final UserRepository? _userRepository = locator<UserRepository>();
+  final UserRepository _userRepository = locator<UserRepository>();
 
   /// Used to redirect on the dashboard.
-  final NavigationService? navigationService = locator<NavigationService>();
+  final NavigationService navigationService = locator<NavigationService>();
 
   /// Used to access Github functionalities
-  final GithubApi? _githubApi = locator<GithubApi>();
+  final GithubApi _githubApi = locator<GithubApi>();
 
   String? _appVersion;
 
-  final AppIntl? _appIntl;
+  late final AppIntl _appIntl;
 
   /// Get the application version
   String? get appVersion => _appVersion;
 
-  MoreViewModel({required AppIntl? intl}) : _appIntl = intl;
+  MoreViewModel({required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
     setBusy(true);
 
-    await PackageInfo.fromPlatform()
-        .then((value) => _appVersion = value.version)
-        .onError(((dynamic error, stackTrace) => null) as FutureOr<String> Function(_, StackTrace));
+    _appVersion = (await PackageInfo.fromPlatform()).version;
 
     setBusy(false);
     return true;
@@ -70,31 +66,31 @@ class MoreViewModel extends FutureViewModel {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    Fluttertoast.showToast(msg: _appIntl!.error);
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   /// Used to logout user, delete cache, and return to login
   Future<void> logout() async {
     setBusy(true);
     // Dismiss alertDialog
-    navigationService!.pop();
-    navigationService!.pushNamedAndRemoveUntil(RouterPaths.login);
-    Fluttertoast.showToast(msg: _appIntl!.login_msg_logout_success);
+    navigationService.pop();
+    navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
+    Fluttertoast.showToast(msg: _appIntl.login_msg_logout_success);
     try {
-      await _cacheManager!.empty();
+      await _cacheManager.empty();
     } on Exception catch (e) {
       onError(e);
     }
 
-    await _preferencesService!.clear();
+    await _preferencesService.clear();
 
-    await _userRepository!.logOut();
-    settingsManager!.resetLanguageAndThemeMode();
+    await _userRepository.logOut();
+    settingsManager.resetLanguageAndThemeMode();
 
     // clear all previous cached value in courseRepository
-    _courseRepository!.sessions?.clear();
-    _courseRepository!.courses?.clear();
-    _courseRepository!.coursesActivities?.clear();
+    _courseRepository.sessions?.clear();
+    _courseRepository.courses?.clear();
+    _courseRepository.coursesActivities?.clear();
 
     setBusy(false);
   }
@@ -103,21 +99,21 @@ class MoreViewModel extends FutureViewModel {
   Future<void> sendFeedback(
       String feedbackText, Uint8List feedbackScreenshot) async {
     //Generate info to pass to github
-    final File file = await _githubApi!.localFile;
+    final File file = await _githubApi.localFile;
     await file.writeAsBytes(image.encodePng(
         image.copyResize(image.decodeImage(feedbackScreenshot)!, width: 307)));
 
     final String fileName = file.path.split('/').last;
 
     // Upload the file and create the issue
-    _githubApi!.uploadFileToGithub(filePath: fileName, file: file);
+    _githubApi.uploadFileToGithub(filePath: fileName, file: file);
 
-    _githubApi!.createGithubIssue(
+    _githubApi.createGithubIssue(
         feedbackText: feedbackText, fileName: fileName);
 
     file.deleteSync();
     Fluttertoast.showToast(
-      msg: _appIntl!.thank_you_for_the_feedback,
+      msg: _appIntl.thank_you_for_the_feedback,
       gravity: ToastGravity.CENTER,
     );
   }
