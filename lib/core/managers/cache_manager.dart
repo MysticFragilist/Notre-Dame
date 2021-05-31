@@ -24,7 +24,7 @@ class CacheManager {
         repo: lib.CacheObjectProvider(databaseName: key)),
   );
 
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// Get from the cache the value associated with [key].
   /// Throw a [CacheException] if the [key] doesn't exist.
@@ -32,7 +32,7 @@ class CacheManager {
     final lib.FileInfo? fileInfo = await _cacheManager.getFileFromCache(key);
 
     if (fileInfo == null) {
-      _analyticsService!.logEvent(
+      _analyticsService.logEvent(
           tag, "Trying to access $key from the cache but file doesn't exists");
       throw CacheException(
           prefix: tag, message: "$key doesn't exist in the cache");
@@ -47,7 +47,7 @@ class CacheManager {
       await _cacheManager.putFile(
           key, UriData.fromString(value, encoding: utf8).contentAsBytes());
     } on Exception catch (e) {
-      _analyticsService!.logError(
+      _analyticsService.logError(
           tag, "Exception raised during cache update of $key: ${e.toString()}");
       rethrow;
     }
@@ -58,7 +58,7 @@ class CacheManager {
     try {
       await _cacheManager.removeFile(key);
     } on Exception catch (e) {
-      _analyticsService!.logError(
+      _analyticsService.logError(
           tag, "Exception raised during cache delete of $key: ${e.toString()}");
     }
   }
@@ -68,7 +68,7 @@ class CacheManager {
     try {
       await _cacheManager.emptyCache();
     } on Exception catch (e) {
-      _analyticsService!.logError(
+      _analyticsService.logError(
           tag, "Exception raised during emptying cache: $e");
       rethrow;
     }

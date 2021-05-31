@@ -1,7 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:github/github.dart';
 import 'package:package_info/package_info.dart';
@@ -22,9 +21,10 @@ class GithubApi {
   static const String _repositorySlug = "ApplETS/Notre-Dame";
   static const String _repositoryReportSlug = "ApplETS/Notre-Dame-Bug-report";
 
+  // This will be instantiate at ctor end
   late GitHub _github;
 
-  final InternalInfoService? _internalInfoService =
+  final InternalInfoService _internalInfoService =
       locator<InternalInfoService>();
 
   GithubApi() {
@@ -64,7 +64,7 @@ class GithubApi {
                 "```$feedbackText```\n\n"
                 "**Screenshot** \n"
                 "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
-                "${await _internalInfoService!.getDeviceInfoForErrorReporting()}",
+                "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
             labels: ['bug', 'platform: ${Platform.operatingSystem}']));
   }
 
