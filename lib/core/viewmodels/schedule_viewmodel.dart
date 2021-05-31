@@ -25,13 +25,13 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events
-  final CourseRepository? _courseRepository = locator<CourseRepository>();
+  final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Manage de settings
-  final SettingsManager? _settingsManager = locator<SettingsManager>();
+  final SettingsManager _settingsManager = locator<SettingsManager>();
 
   /// Localization class of the application.
-  final AppIntl? _appIntl;
+  late final AppIntl _appIntl;
 
   /// Settings of the user for the schedule
   final Map<PreferencesFlag, dynamic> settings = {};
@@ -40,7 +40,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   final Map<DateTime, List<CourseActivity>> _coursesActivities = {};
 
   /// Day currently selected
-  DateTime selectedDate;
+  late DateTime selectedDate;
 
   /// Day currently focused on
   ValueNotifier<DateTime> focusedDate;
@@ -50,12 +50,12 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   CalendarFormat? calendarFormat = CalendarFormat.week;
 
   /// Get current locale
-  Locale? get locale => _settingsManager!.locale;
+  Locale? get locale => _settingsManager.locale;
 
   /// Verify if user has an active internet connection
-  final NetworkingService? _networkingService = locator<NetworkingService>();
+  final NetworkingService _networkingService = locator<NetworkingService>();
 
-  ScheduleViewModel({required AppIntl? intl, DateTime? initialSelectedDate})
+  ScheduleViewModel({required AppIntl intl, DateTime? initialSelectedDate})
       : _appIntl = intl,
         selectedDate = initialSelectedDate ?? DateTime.now(),
         focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());
@@ -70,9 +70,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   @override
   Future<List<CourseActivity>> futureToRun() =>
-      _courseRepository!.getCoursesActivities(fromCacheOnly: true).then((value) {
+      _courseRepository.getCoursesActivities(fromCacheOnly: true).then((value) {
         setBusyForObject(isLoadingEvents, true);
-        _courseRepository!
+        _courseRepository
             .getCoursesActivities()
             // ignore: return_type_invalid_for_catch_error
             .catchError(onError)
@@ -83,7 +83,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           }
         }).whenComplete(() {
           setBusyForObject(isLoadingEvents, false);
-          Utils.showNoConnectionToast(_networkingService!, _appIntl);
+          Utils.showNoConnectionToast(_networkingService, _appIntl);
         });
         return value!;
       });
@@ -91,13 +91,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    Fluttertoast.showToast(msg: _appIntl!.error);
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   Future loadSettings() async {
     setBusy(true);
     settings.clear();
-    settings.addAll(await _settingsManager!.getScheduleSettings());
+    settings.addAll(await _settingsManager.getScheduleSettings());
     calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
         as CalendarFormat?;
     setBusy(false);
@@ -107,7 +107,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   Map<DateTime, List<CourseActivity>> get coursesActivities {
     if (_coursesActivities.isEmpty) {
       // Build the map
-      for (final CourseActivity course in _courseRepository!.coursesActivities!) {
+      for (final CourseActivity course
+          in _courseRepository.coursesActivities!) {
         final DateTime dateOnly = course.startDateTime!.subtract(Duration(
             hours: course.startDateTime!.hour,
             minutes: course.startDateTime!.minute));
@@ -148,14 +149,14 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   Future setCalendarFormat(CalendarFormat format) async {
     calendarFormat = format;
     settings[PreferencesFlag.scheduleSettingsCalendarFormat] = calendarFormat;
-    _settingsManager!.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
+    _settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
         EnumToString.convertToString(calendarFormat));
   }
 
   Future<void> refresh() async {
     try {
       setBusyForObject(isLoadingEvents, true);
-      await _courseRepository!.getCoursesActivities();
+      await _courseRepository.getCoursesActivities();
       setBusyForObject(isLoadingEvents, false);
       notifyListeners();
     } on Exception catch (error) {

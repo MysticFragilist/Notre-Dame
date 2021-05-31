@@ -16,31 +16,31 @@ import 'package:notredame/core/constants/router_paths.dart';
 
 class StartUpViewModel extends BaseViewModel {
   /// Manage the settings
-  final SettingsManager? _settingsManager = locator<SettingsManager>();
+  final SettingsManager _settingsManager = locator<SettingsManager>();
 
   /// Used to authenticate the user
-  final UserRepository? _userRepository = locator<UserRepository>();
+  final UserRepository _userRepository = locator<UserRepository>();
 
   /// Used to verify if the user has internet connectivity
-  final NetworkingService? _networkingService = locator<NetworkingService>();
+  final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// Used to redirect on the dashboard.
-  final NavigationService? _navigationService = locator<NavigationService>();
+  final NavigationService _navigationService = locator<NavigationService>();
 
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
     if (await handleConnectivityIssues()) return;
-    final bool isLogin = await _userRepository!.silentAuthenticate();
+    final bool isLogin = await _userRepository.silentAuthenticate();
 
     if (isLogin) {
-      _navigationService!.pushNamed(RouterPaths.dashboard);
+      _navigationService.pushNamed(RouterPaths.dashboard);
     } else {
-      if (await _settingsManager!.getString(PreferencesFlag.languageChoice) ==
+      if (await _settingsManager.getString(PreferencesFlag.languageChoice) ==
           null) {
-        _navigationService!.pushNamed(RouterPaths.chooseLanguage);
-        _settingsManager!.setString(PreferencesFlag.languageChoice, 'true');
+        _navigationService.pushNamed(RouterPaths.chooseLanguage);
+        _settingsManager.setString(PreferencesFlag.languageChoice, 'true');
       } else {
-        _navigationService!.pushNamed(RouterPaths.login);
+        _navigationService.pushNamed(RouterPaths.login);
       }
     }
   }
@@ -50,10 +50,10 @@ class StartUpViewModel extends BaseViewModel {
   /// Otherwise if the user was previously logged in, let him access the app
   /// with the cached data
   Future<bool> handleConnectivityIssues() async {
-    final hasConnectivityIssues = !await _networkingService!.hasConnectivity();
-    final wasLoggedIn = await _userRepository!.wasPreviouslyLoggedIn();
+    final hasConnectivityIssues = !await _networkingService.hasConnectivity();
+    final wasLoggedIn = await _userRepository.wasPreviouslyLoggedIn();
     if (hasConnectivityIssues && wasLoggedIn) {
-      _navigationService!.pushNamed(RouterPaths.dashboard);
+      _navigationService.pushNamed(RouterPaths.dashboard);
       return true;
     }
     return false;
