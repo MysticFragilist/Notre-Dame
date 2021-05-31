@@ -161,7 +161,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               AppIntl.of(context)!.grades_grade,
               AppIntl.of(context)!.grades_grade_with_percentage(
                 evaluation.mark ?? 0.0,
-                evaluation.correctedEvaluationOutOf ?? 0.0,
+                evaluation.correctedEvaluationOutOf,
                 Utils.getGradeInPercentage(evaluation.mark,
                     evaluation.correctedEvaluationOutOfFormatted),
               ),
@@ -170,7 +170,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               AppIntl.of(context)!.grades_average,
               AppIntl.of(context)!.grades_grade_with_percentage(
                 evaluation.passMark ?? 0.0,
-                evaluation.correctedEvaluationOutOf ?? 0.0,
+                evaluation.correctedEvaluationOutOf,
                 Utils.getGradeInPercentage(evaluation.passMark,
                     evaluation.correctedEvaluationOutOfFormatted),
               ),
@@ -207,7 +207,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(title, style: const TextStyle(fontSize: 14)),
-          Text(grade ?? '', style: const TextStyle(fontSize: 14)),
+          Text(grade, style: const TextStyle(fontSize: 14)),
         ],
       ),
     );
