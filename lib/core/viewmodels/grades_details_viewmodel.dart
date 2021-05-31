@@ -1,5 +1,4 @@
 // FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,15 +14,15 @@ import 'package:notredame/locator.dart';
 
 class GradesDetailsViewModel extends FutureViewModel<Course?> {
   /// Used to get the courses of the student
-  final CourseRepository? _courseRepository = locator<CourseRepository>();
+  final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Localization class of the application.
-  final AppIntl? _appIntl;
+  late final AppIntl _appIntl;
 
   /// Used to get the current course selected of the student
   Course? course;
 
-  GradesDetailsViewModel({this.course, required AppIntl? intl})
+  GradesDetailsViewModel({this.course, required AppIntl intl})
       : _appIntl = intl;
 
   @override
@@ -31,15 +30,15 @@ class GradesDetailsViewModel extends FutureViewModel<Course?> {
     setBusyForObject(course, true);
 
     // ignore: return_type_invalid_for_catch_error
-    await _courseRepository!
+    await _courseRepository
         .getCourseSummary(course!)
         // ignore: return_type_invalid_for_catch_error
         .catchError(onError)
-        ?.then((value) {
+        .then((value) {
       if (value != null) {
         course = value;
       }
-    })?.whenComplete(() {
+    }).whenComplete(() {
       setBusyForObject(course, false);
     });
 
@@ -51,13 +50,13 @@ class GradesDetailsViewModel extends FutureViewModel<Course?> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    Fluttertoast.showToast(msg: _appIntl!.error);
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   Future<bool> refresh() async {
     try {
       setBusyForObject(course, true);
-      await _courseRepository!.getCourseSummary(course!)?.then((value) {
+      await _courseRepository.getCourseSummary(course!).then((value) {
         if (value != null) {
           course = value;
         }
