@@ -1,6 +1,3 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
-
 /// Exception for the different Rest API we can call
 class HttpException implements Exception {
   final String _message;

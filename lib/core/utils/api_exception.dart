@@ -1,6 +1,3 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
-
 /// Exception that can be thrown by the [SignetsApi]
 class ApiException implements Exception {
   final String message;

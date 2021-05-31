@@ -1,6 +1,3 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
-
 /// Exception that can be thrown by the [CacheManager]
 class CacheException implements Exception {
   final String _message;
