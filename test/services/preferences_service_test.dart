@@ -7,9 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 void main() {
-  SharedPreferences sharedPreferences;
+  late SharedPreferences sharedPreferences;
 
-  PreferencesService service;
+  late PreferencesService service;
 
   SharedPreferences.setMockInitialValues({});
   TestWidgetsFlutterBinding.ensureInitialized();

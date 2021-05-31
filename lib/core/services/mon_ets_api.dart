@@ -14,7 +14,7 @@ class MonETSApi {
   static const String tag = "MonETSApi";
   static const String tagError = "$tag - Error";
 
-  final Client _client;
+  final Client? _client;
 
   MonETSApi(this._client);
 
@@ -22,8 +22,8 @@ class MonETSApi {
   ///
   /// Throws an [HttpException] if the MonETSApi return anything else than a 200 code
   Future<MonETSUser> authenticate(
-      {@required String username, @required String password}) async {
-    final response = await _client.post(Uri.parse(Urls.authenticationMonETS),
+      {required String? username, required String? password}) async {
+    final response = await _client!.post(Uri.parse(Urls.authenticationMonETS),
         body: {"Username": username, "Password": password});
 
     // Log the http error and throw a exception

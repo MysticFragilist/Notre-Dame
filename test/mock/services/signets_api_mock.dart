@@ -20,7 +20,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
   static void stubGetCoursesActivities(SignetsApiMock mock, String session,
       List<CourseActivity> coursesActivitiesToReturn) {
     when(mock.getCoursesActivities(
-            username: anyNamed("username"),
+            username: anyNamed("username")!,
             password: anyNamed("password"),
             session: session))
         .thenAnswer((_) async => coursesActivitiesToReturn);
@@ -32,7 +32,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
       {ApiException exceptionToThrow =
           const ApiException(prefix: CourseRepository.tag, message: "")}) {
     when(mock.getCoursesActivities(
-            username: anyNamed("username"),
+            username: anyNamed("username")!,
             password: anyNamed("password"),
             session: session))
         .thenThrow(exceptionToThrow);
@@ -70,10 +70,10 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Stub the answer of the [getInfo] when the [username] is used.
   static void stubGetInfo(
-      SignetsApiMock mock, String username, ProfileStudent infoToReturn) {
+      SignetsApiMock mock, String username, ProfileStudent? infoToReturn) {
     when(mock.getStudentInfo(
             username: username, password: anyNamed("password")))
-        .thenAnswer((_) async => infoToReturn);
+        .thenAnswer(((_) async => infoToReturn!) as Future<ProfileStudent> Function(Invocation));
   }
 
   /// Throw [exceptionToThrow] when [getInfo] with the [username] is used.
@@ -102,16 +102,16 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Stub the answer of the [getCourseSummary] when the [username] and [course] is used.
   static void stubGetCourseSummary(
-      SignetsApiMock mock, String username, Course course,
-      {CourseSummary summaryToReturn}) {
+      SignetsApiMock mock, String username, Course? course,
+      {CourseSummary? summaryToReturn}) {
     when(mock.getCourseSummary(
             username: username, course: course, password: anyNamed("password")))
-        .thenAnswer((_) async => summaryToReturn);
+        .thenAnswer(((_) async => summaryToReturn!) as Future<CourseSummary> Function(Invocation));
   }
 
   /// Throw [exceptionToThrow] when [getCourseSummary] with the [username] and [course] is used.
   static void stubGetCourseSummaryException(
-      SignetsApiMock mock, String username, Course course,
+      SignetsApiMock mock, String username, Course? course,
       {ApiException exceptionToThrow =
           const ApiException(prefix: SignetsApi.tag, message: "")}) {
     when(mock.getCourseSummary(

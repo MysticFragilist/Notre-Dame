@@ -19,9 +19,9 @@ import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/services/networking_service_mock.dart';
 
 void main() {
-  CourseRepository courseRepository;
+  late CourseRepository courseRepository;
   NetworkingServiceMock networkingService;
-  AppIntl intl;
+  late AppIntl intl;
 
   final Course courseSummer = Course(
       acronym: 'GEN101',

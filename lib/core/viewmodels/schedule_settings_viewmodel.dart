@@ -15,16 +15,16 @@ import 'package:notredame/locator.dart';
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
   /// Manage the settings
-  final SettingsManager _settingsManager = locator<SettingsManager>();
+  final SettingsManager? _settingsManager = locator<SettingsManager>();
 
   /// Current calendar format
-  CalendarFormat _calendarFormat;
+  CalendarFormat? _calendarFormat;
 
-  CalendarFormat get calendarFormat => _calendarFormat;
+  CalendarFormat? get calendarFormat => _calendarFormat;
 
-  set calendarFormat(CalendarFormat format) {
+  set calendarFormat(CalendarFormat? format) {
     setBusy(true);
-    _settingsManager.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
+    _settingsManager!.setString(PreferencesFlag.scheduleSettingsCalendarFormat,
         EnumToString.convertToString(format));
     _calendarFormat = format;
     setBusy(false);
@@ -38,13 +38,13 @@ class ScheduleSettingsViewModel
   ];
 
   /// Current starting day of week
-  StartingDayOfWeek _startingDayOfWeek;
+  StartingDayOfWeek? _startingDayOfWeek;
 
-  StartingDayOfWeek get startingDayOfWeek => _startingDayOfWeek;
+  StartingDayOfWeek? get startingDayOfWeek => _startingDayOfWeek;
 
-  set startingDayOfWeek(StartingDayOfWeek day) {
+  set startingDayOfWeek(StartingDayOfWeek? day) {
     setBusy(true);
-    _settingsManager.setString(PreferencesFlag.scheduleSettingsStartWeekday,
+    _settingsManager!.setString(PreferencesFlag.scheduleSettingsStartWeekday,
         EnumToString.convertToString(day));
     _startingDayOfWeek = day;
     setBusy(false);
@@ -57,13 +57,13 @@ class ScheduleSettingsViewModel
     StartingDayOfWeek.monday,
   ];
 
-  bool _showTodayBtn = true;
+  bool? _showTodayBtn = true;
 
-  bool get showTodayBtn => _showTodayBtn;
+  bool get showTodayBtn => _showTodayBtn!;
 
   set showTodayBtn(bool newValue) {
     setBusy(true);
-    _settingsManager.setBool(
+    _settingsManager!.setBool(
         PreferencesFlag.scheduleSettingsShowTodayBtn, newValue);
     _showTodayBtn = newValue;
     setBusy(false);
@@ -71,14 +71,14 @@ class ScheduleSettingsViewModel
 
   @override
   Future<Map<PreferencesFlag, dynamic>> futureToRun() async {
-    final settings = await _settingsManager.getScheduleSettings();
+    final settings = await _settingsManager!.getScheduleSettings();
 
     _calendarFormat = settings[PreferencesFlag.scheduleSettingsCalendarFormat]
-        as CalendarFormat;
+        as CalendarFormat?;
     _startingDayOfWeek = settings[PreferencesFlag.scheduleSettingsStartWeekday]
-        as StartingDayOfWeek;
+        as StartingDayOfWeek?;
     _showTodayBtn =
-        settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool;
+        settings[PreferencesFlag.scheduleSettingsShowTodayBtn] as bool?;
 
     return settings;
   }

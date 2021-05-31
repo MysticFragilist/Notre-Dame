@@ -23,18 +23,18 @@ List<Discovery> discoveryComponents(BuildContext context) => [
           child: Column(
             children: [
               _buildHeader(
-                  AppIntl.of(context).discovery_navbar_dashboard_page_title,
+                  AppIntl.of(context)!.discovery_navbar_dashboard_page_title,
                   context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     Text(
-                        AppIntl.of(context)
+                        AppIntl.of(context)!
                             .discovery_navbar_dashboard_page_details,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
-                    if (AppIntl.of(context).localeName == "fr")
+                    if (AppIntl.of(context)!.localeName == "fr")
                       Image.asset(
                           'assets/animations/discovery/fr/dashboard_swipe.gif')
                     else
@@ -57,18 +57,18 @@ List<Discovery> discoveryComponents(BuildContext context) => [
           child: Column(
             children: [
               _buildHeader(
-                  AppIntl.of(context).discovery_navbar_schedule_page_title,
+                  AppIntl.of(context)!.discovery_navbar_schedule_page_title,
                   context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     Text(
-                        AppIntl.of(context)
+                        AppIntl.of(context)!
                             .discovery_navbar_schedule_page_details,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
-                    if (AppIntl.of(context).localeName == "fr")
+                    if (AppIntl.of(context)!.localeName == "fr")
                       Image.asset(
                           'assets/animations/discovery/fr/schedule_settings.gif')
                     else
@@ -91,18 +91,18 @@ List<Discovery> discoveryComponents(BuildContext context) => [
           child: Column(
             children: [
               _buildHeader(
-                  AppIntl.of(context).discovery_navbar_student_page_title,
+                  AppIntl.of(context)!.discovery_navbar_student_page_title,
                   context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     Text(
-                        AppIntl.of(context)
+                        AppIntl.of(context)!
                             .discovery_navbar_student_page_details,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
-                    if (AppIntl.of(context).localeName == "fr")
+                    if (AppIntl.of(context)!.localeName == "fr")
                       Image.asset(
                           'assets/animations/discovery/fr/grade_details.gif')
                     else
@@ -125,15 +125,15 @@ List<Discovery> discoveryComponents(BuildContext context) => [
           child: Column(
             children: [
               _buildHeader(
-                  AppIntl.of(context).discovery_navbar_ets_page_title, context),
+                  AppIntl.of(context)!.discovery_navbar_ets_page_title, context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Text(AppIntl.of(context).discovery_navbar_ets_page_details,
+                    Text(AppIntl.of(context)!.discovery_navbar_ets_page_details,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
-                    if (AppIntl.of(context).localeName == "fr")
+                    if (AppIntl.of(context)!.localeName == "fr")
                       Image.asset('assets/animations/discovery/fr/ets_link.gif')
                     else
                       Image.asset(
@@ -154,16 +154,16 @@ List<Discovery> discoveryComponents(BuildContext context) => [
               maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: Column(
             children: [
-              _buildHeader(AppIntl.of(context).discovery_navbar_more_page_title,
+              _buildHeader(AppIntl.of(context)!.discovery_navbar_more_page_title,
                   context),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Text(AppIntl.of(context).discovery_navbar_more_page_details,
+                    Text(AppIntl.of(context)!.discovery_navbar_more_page_details,
                         textAlign: TextAlign.justify),
                     const Text('\n'),
-                    if (AppIntl.of(context).localeName == "fr")
+                    if (AppIntl.of(context)!.localeName == "fr")
                       Image.asset('assets/animations/discovery/fr/more.jpg')
                     else
                       Image.asset('assets/animations/discovery/en/more.jpg'),
@@ -185,11 +185,11 @@ Padding _buildHeader(String title, BuildContext context) {
         Text(title,
             style: Theme.of(context)
                 .textTheme
-                .headline6
+                .headline6!
                 .copyWith(color: Colors.white)),
         TextButton(
           onPressed: () => FeatureDiscovery.dismissAll(context),
-          child: Text(AppIntl.of(context).skip_discovery,
+          child: Text(AppIntl.of(context)!.skip_discovery,
               style: const TextStyle(color: AppTheme.etsLightRed)),
         ),
       ],

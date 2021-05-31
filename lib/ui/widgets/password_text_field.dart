@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PasswordFormField extends StatefulWidget {
-  final FormFieldValidator<String> validator;
-  final VoidCallback onEditionComplete;
+  final FormFieldValidator<String>? validator;
+  final VoidCallback? onEditionComplete;
 
-  const PasswordFormField({Key key, this.validator, this.onEditionComplete})
+  const PasswordFormField({Key? key, this.validator, this.onEditionComplete})
       : super(key: key);
 
   @override
@@ -36,7 +36,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                     color: errorTextColor, width: borderRadiusOnFocus)),
-            labelText: AppIntl.of(context).login_prompt_password,
+            labelText: AppIntl.of(context)!.login_prompt_password,
             labelStyle: const TextStyle(color: Colors.white54),
             errorStyle: TextStyle(color: errorTextColor),
             suffixIcon: IconButton(

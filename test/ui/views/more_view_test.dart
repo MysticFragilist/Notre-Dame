@@ -18,8 +18,8 @@ import 'package:notredame/ui/views/more_view.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
-  NavigationService navigation;
+  late AppIntl intl;
+  late NavigationService navigation;
   group('MoreView - ', () {
     setUp(() async {
       intl = await setupAppIntl();

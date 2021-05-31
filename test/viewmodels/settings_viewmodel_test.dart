@@ -17,10 +17,10 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
-SettingsViewModel viewModel;
+late SettingsViewModel viewModel;
 
 void main() {
-  SettingsManager settingsManager;
+  SettingsManager? settingsManager;
 
   group("SettingsViewModel - ", () {
     setUp(() async {
@@ -49,7 +49,7 @@ void main() {
         expect(viewModel.currentLocale, 'English');
         expect(viewModel.selectedTheme, ThemeMode.system);
 
-        verify(settingsManager.getString(any)).called(2);
+        verify(settingsManager!.getString(any!)).called(2);
         verifyNoMoreInteractions(settingsManager);
       });
     });
@@ -62,12 +62,12 @@ void main() {
         // Call the setter.
         viewModel.selectedTheme = ThemeMode.system;
 
-        await untilCalled(settingsManager.setThemeMode(ThemeMode.system));
+        await untilCalled(settingsManager!.setThemeMode(ThemeMode.system));
 
         expect(viewModel.selectedTheme, ThemeMode.system);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setThemeMode(ThemeMode.system)).called(1);
+        verify(settingsManager!.setThemeMode(ThemeMode.system)).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -78,12 +78,12 @@ void main() {
         // Call the setter.
         viewModel.selectedTheme = ThemeMode.dark;
 
-        await untilCalled(settingsManager.setThemeMode(ThemeMode.dark));
+        await untilCalled(settingsManager!.setThemeMode(ThemeMode.dark));
 
         expect(viewModel.selectedTheme, ThemeMode.dark);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setThemeMode(ThemeMode.dark)).called(1);
+        verify(settingsManager!.setThemeMode(ThemeMode.dark)).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -94,12 +94,12 @@ void main() {
         // Call the setter.
         viewModel.selectedTheme = ThemeMode.light;
 
-        await untilCalled(settingsManager.setThemeMode(ThemeMode.light));
+        await untilCalled(settingsManager!.setThemeMode(ThemeMode.light));
 
         expect(viewModel.selectedTheme, ThemeMode.light);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setThemeMode(ThemeMode.light)).called(1);
+        verify(settingsManager!.setThemeMode(ThemeMode.light)).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
     });

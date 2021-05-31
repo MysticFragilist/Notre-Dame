@@ -20,8 +20,8 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
-  NavigationService _navigationService;
+  late AppIntl intl;
+  late NavigationService _navigationService;
 
   final Course courseWithGrade = Course(
       acronym: 'GEN101',
@@ -75,8 +75,8 @@ void main() {
             .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
 
-        expect(find.text(courseWithGrade.acronym), findsOneWidget);
-        expect(find.text(courseWithGrade.grade), findsOneWidget);
+        expect(find.text(courseWithGrade.acronym!), findsOneWidget);
+        expect(find.text(courseWithGrade.grade!), findsOneWidget);
       });
 
       testWidgets("Grade not available and summary is loaded.",
@@ -85,10 +85,10 @@ void main() {
             .pumpWidget(localizedWidget(child: GradeButton(courseWithSummary)));
         await tester.pumpAndSettle();
 
-        expect(find.text(courseWithGrade.acronym), findsOneWidget);
+        expect(find.text(courseWithGrade.acronym!), findsOneWidget);
         expect(
             find.text(intl.grades_grade_in_percentage(
-                courseWithSummary.summary.currentMarkInPercent.round())),
+                courseWithSummary.summary!.currentMarkInPercent!.round())),
             findsOneWidget,
             reason:
                 'There is no grade available and the course summary exists so the '
@@ -101,7 +101,7 @@ void main() {
             localizedWidget(child: GradeButton(gradesNotAvailable)));
         await tester.pumpAndSettle();
 
-        expect(find.text(courseWithGrade.acronym), findsOneWidget);
+        expect(find.text(courseWithGrade.acronym!), findsOneWidget);
         expect(find.text(intl.grades_not_available), findsOneWidget,
             reason:
                 'There is no grade available and the course summary doesnt exists '
@@ -116,7 +116,7 @@ void main() {
             .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.text(courseWithGrade.acronym));
+        await tester.tap(find.text(courseWithGrade.acronym!));
 
         verify(_navigationService.pushNamed(RouterPaths.gradeDetails,
             arguments: courseWithGrade));

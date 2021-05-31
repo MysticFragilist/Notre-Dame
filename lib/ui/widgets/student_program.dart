@@ -16,16 +16,16 @@ class StudentProgram extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> dataTitles = [
-      AppIntl.of(context).profile_code_program,
-      AppIntl.of(context).profile_average_program,
-      AppIntl.of(context).profile_number_accumulated_credits_program,
-      AppIntl.of(context).profile_number_registered_credits_program,
-      AppIntl.of(context).profile_number_completed_courses_program,
-      AppIntl.of(context).profile_number_failed_courses_program,
-      AppIntl.of(context).profile_number_equivalent_courses_program,
-      AppIntl.of(context).profile_status_program
+      AppIntl.of(context)!.profile_code_program,
+      AppIntl.of(context)!.profile_average_program,
+      AppIntl.of(context)!.profile_number_accumulated_credits_program,
+      AppIntl.of(context)!.profile_number_registered_credits_program,
+      AppIntl.of(context)!.profile_number_completed_courses_program,
+      AppIntl.of(context)!.profile_number_failed_courses_program,
+      AppIntl.of(context)!.profile_number_equivalent_courses_program,
+      AppIntl.of(context)!.profile_status_program
     ];
-    final List<String> dataFetched = [
+    final List<String?> dataFetched = [
       _program.code,
       _program.average,
       _program.accumulatedCredits,
@@ -44,7 +44,7 @@ class StudentProgram extends StatelessWidget {
         ),
         ListTile(
           title: Text(
-            _program.name,
+            _program.name!,
             style: const TextStyle(color: AppTheme.etsLightRed),
           ),
         ),
@@ -55,7 +55,7 @@ class StudentProgram extends StatelessWidget {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(dataTitles[index]),
-                trailing: Text(dataFetched[index]),
+                trailing: Text(dataFetched[index]!),
               );
             },
             itemCount: dataTitles.length)

@@ -19,14 +19,14 @@ class GradeButton extends StatelessWidget {
   final Course course;
 
   /// Used to redirect on the dashboard.
-  final NavigationService _navigationService = locator<NavigationService>();
+  final NavigationService? _navigationService = locator<NavigationService>();
 
   GradeButton(this.course);
 
   @override
   Widget build(BuildContext context) => Card(
         child: InkWell(
-            onTap: () => _navigationService.pushNamed(RouterPaths.gradeDetails,
+            onTap: () => _navigationService!.pushNamed(RouterPaths.gradeDetails,
                 arguments: course),
             child: SizedBox(
               height: 68,
@@ -48,10 +48,10 @@ class GradeButton extends StatelessWidget {
                                 child: FittedBox(
                                   fit: BoxFit.fitWidth,
                                   child: Text(
-                                    course.acronym,
+                                    course.acronym!,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
+                                        .bodyText1!
                                         .copyWith(color: Colors.white),
                                   ),
                                 ),
@@ -62,7 +62,7 @@ class GradeButton extends StatelessWidget {
                   ),
                   Expanded(
                     child: Center(
-                        child: Text(gradeString(AppIntl.of(context)),
+                        child: Text(gradeString(AppIntl.of(context))!,
                             style: TextStyle(
                               fontSize: 22,
                               color: Theme.of(context).brightness ==
@@ -78,16 +78,16 @@ class GradeButton extends StatelessWidget {
 
   /// Build the grade string based on the available information. By default
   /// will return [grades_not_available].
-  String gradeString(AppIntl intl) {
+  String? gradeString(AppIntl? intl) {
     if (course.grade == null &&
         course.summary != null &&
-        course.summary.markOutOf > 0) {
-      return intl.grades_grade_in_percentage(
-          course.summary.currentMarkInPercent.round());
+        course.summary!.markOutOf! > 0) {
+      return intl!.grades_grade_in_percentage(
+          course.summary!.currentMarkInPercent!.round());
     } else if (course.grade != null) {
       return course.grade;
     }
 
-    return intl.grades_not_available;
+    return intl!.grades_not_available;
   }
 }

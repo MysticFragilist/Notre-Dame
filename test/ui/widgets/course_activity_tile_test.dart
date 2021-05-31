@@ -32,10 +32,10 @@ void main() {
               child: CourseActivityTile(course))));
       await tester.pumpAndSettle();
 
-      expect(find.text(course.courseGroup), findsOneWidget);
+      expect(find.text(course.courseGroup!), findsOneWidget);
       expect(find.text("${course.courseName}\n${course.activityDescription}"),
           findsOneWidget);
-      expect(find.text(course.activityLocation), findsOneWidget);
+      expect(find.text(course.activityLocation!), findsOneWidget);
 
       expect(find.text("18:00"), findsOneWidget);
       expect(find.text("20:00"), findsOneWidget);

@@ -8,7 +8,7 @@ class HttpException implements Exception {
   final int _code;
 
   HttpException(
-      {@required String prefix, @required int code, @required String message})
+      {required String prefix, required int code, required String message})
       : _message = message,
         _code = code,
         _prefix = prefix;

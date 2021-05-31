@@ -6,13 +6,13 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradeCircularProgress extends StatelessWidget {
-  final String finalGrade;
-  final double studentGrade;
-  final double averageGrade;
+  final String? finalGrade;
+  final double? studentGrade;
+  final double? averageGrade;
   final double ratio;
 
   const GradeCircularProgress(this.ratio,
-      {Key key, this.finalGrade, this.studentGrade, this.averageGrade})
+      {Key? key, this.finalGrade, this.studentGrade, this.averageGrade})
       : super(key: key);
 
   @override
@@ -32,7 +32,7 @@ class GradeCircularProgress extends StatelessWidget {
         percent: getGradeInDecimals(averageGrade ?? 0.0),
         circularStrokeCap: CircularStrokeCap.round,
         center: Text(
-          getGrade(context),
+          getGrade(context)!,
           style: TextStyle(
               color: Theme.of(context).brightness == Brightness.light
                   ? Colors.black
@@ -47,16 +47,16 @@ class GradeCircularProgress extends StatelessWidget {
 
   double getGradeInDecimals(double grade) => grade / 100;
 
-  String getGrade(BuildContext context) {
+  String? getGrade(BuildContext context) {
     if (finalGrade != null) {
       return finalGrade;
     }
 
     if (studentGrade != null) {
-      return AppIntl.of(context)
-          .grades_grade_in_percentage(studentGrade.round());
+      return AppIntl.of(context)!
+          .grades_grade_in_percentage(studentGrade!.round());
     }
 
-    return AppIntl.of(context).grades_not_available;
+    return AppIntl.of(context)!.grades_not_available;
   }
 }

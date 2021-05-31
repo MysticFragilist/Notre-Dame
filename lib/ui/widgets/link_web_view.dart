@@ -9,7 +9,7 @@ import 'package:notredame/core/models/quick_link.dart';
 import 'package:notredame/ui/widgets/base_scaffold.dart';
 
 class LinkWebView extends StatefulWidget {
-  final QuickLink _links;
+  final QuickLink? _links;
 
   const LinkWebView(this._links);
 
@@ -26,12 +26,12 @@ class _LinkWebViewState extends State<LinkWebView> {
       isLoading: isLoading,
       showBottomBar: false,
       appBar: AppBar(
-        title: Text(widget._links.name),
+        title: Text(widget._links!.name),
       ),
       body: Stack(
         children: <Widget>[
           WebView(
-            initialUrl: widget._links.link,
+            initialUrl: widget._links!.link,
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (finish) {
               setState(() {

@@ -32,9 +32,9 @@ import '../../mock/managers/course_repository_mock.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
-  SettingsManager settingsManager;
-  CourseRepository courseRepository;
-  AppIntl intl;
+  late SettingsManager settingsManager;
+  late CourseRepository courseRepository;
+  AppIntl? intl;
   DashboardViewModel viewModel;
 
   // Activities for today
@@ -247,20 +247,20 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find aboutUs card
-        final aboutUsCard = find.widgetWithText(Card, intl.card_applets_title);
+        final aboutUsCard = find.widgetWithText(Card, intl!.card_applets_title);
         expect(aboutUsCard, findsOneWidget);
 
         // Find aboutUs card Text Paragraph
-        final aboutUsParagraph = find.textContaining(intl.card_applets_text);
+        final aboutUsParagraph = find.textContaining(intl!.card_applets_text);
         expect(aboutUsParagraph, findsOneWidget);
 
         // Find aboutUs card Link Buttons
         final aboutUsLinkButtons = find.byType(TextButton);
         expect(aboutUsLinkButtons, findsNWidgets(3));
 
-        expect(find.text(intl.facebook.toUpperCase()), findsOneWidget);
-        expect(find.text(intl.github.toUpperCase()), findsOneWidget);
-        expect(find.text(intl.email.toUpperCase()), findsOneWidget);
+        expect(find.text(intl!.facebook.toUpperCase()), findsOneWidget);
+        expect(find.text(intl!.github.toUpperCase()), findsOneWidget);
+        expect(find.text(intl!.email.toUpperCase()), findsOneWidget);
       });
 
       testWidgets('Has card schedule displayed properly',
@@ -289,7 +289,7 @@ void main() {
           of: find.byType(Dismissible).at(1),
           matching: find.byType(Text),
         ));
-        expect((scheduleTitle as Text).data, intl.title_schedule);
+        expect((scheduleTitle as Text).data, intl!.title_schedule);
 
         // Find three activities in the card
         expect(
@@ -336,7 +336,7 @@ void main() {
 
         // Find Dismissible Cards
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-        expect(find.text(intl.card_applets_title), findsOneWidget);
+        expect(find.text(intl!.card_applets_title), findsOneWidget);
 
         // Swipe Dismissible aboutUs Card horizontally
         await tester.drag(
@@ -345,7 +345,7 @@ void main() {
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
-        expect(find.text(intl.card_applets_title), findsNothing);
+        expect(find.text(intl!.card_applets_title), findsNothing);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
@@ -354,7 +354,7 @@ void main() {
 
         // Check that the card is now present in the view
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-        expect(find.text(intl.card_applets_title), findsOneWidget);
+        expect(find.text(intl!.card_applets_title), findsOneWidget);
       });
 
       testWidgets('AboutUsCard is reorderable and can be restored',
@@ -392,7 +392,7 @@ void main() {
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
 
         // Find aboutUs card
-        expect(find.text(intl.card_applets_title), findsOneWidget);
+        expect(find.text(intl!.card_applets_title), findsOneWidget);
 
         // Check that the aboutUs card is in the first position
         var text = tester.firstWidget(find.descendant(
@@ -400,13 +400,13 @@ void main() {
           matching: find.byType(Text),
         ));
 
-        expect((text as Text).data, intl.card_applets_title);
+        expect((text as Text).data, intl!.card_applets_title);
 
         // Long press then drag and drop card at the end of the list
         await longPressDrag(
             tester,
-            tester.getCenter(find.text(intl.card_applets_title)),
-            tester.getCenter(find.text(intl.progress_bar_title)) +
+            tester.getCenter(find.text(intl!.card_applets_title)),
+            tester.getCenter(find.text(intl!.progress_bar_title)) +
                 const Offset(0.0, 1000));
 
         await tester.pumpAndSettle();
@@ -418,7 +418,7 @@ void main() {
           of: find.byType(Dismissible).last,
           matching: find.byType(Text),
         ));
-        expect((text as Text).data, intl.card_applets_title);
+        expect(text.data, intl!.card_applets_title);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
@@ -433,7 +433,7 @@ void main() {
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
 
         // Check that the first card is now AboutUs
-        expect((text as Text).data, intl.card_applets_title);
+        expect(text.data, intl!.card_applets_title);
       });
 
       testWidgets('ScheduleCard is dismissible and can be restored',
@@ -448,7 +448,7 @@ void main() {
 
         // Find Dismissible Cards
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-        expect(find.widgetWithText(Dismissible, intl.title_schedule),
+        expect(find.widgetWithText(Dismissible, intl!.title_schedule),
             findsOneWidget);
 
         // Swipe Dismissible schedule Card horizontally
@@ -459,7 +459,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
-        expect(find.widgetWithText(Dismissible, intl.title_schedule),
+        expect(find.widgetWithText(Dismissible, intl!.title_schedule),
             findsNothing);
 
         // Tap the restoreCards button
@@ -469,7 +469,7 @@ void main() {
 
         // Check that the card is now present in the view
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-        expect(find.widgetWithText(Dismissible, intl.title_schedule),
+        expect(find.widgetWithText(Dismissible, intl!.title_schedule),
             findsOneWidget);
       });
 
@@ -485,16 +485,16 @@ void main() {
           await tester.pumpAndSettle();
 
           // Find grades card
-          final gradesCard = find.widgetWithText(Card, intl.grades_title);
+          final gradesCard = find.widgetWithText(Card, intl!.grades_title);
           expect(gradesCard, findsOneWidget);
 
           // Find grades card Title
-          final gradesTitle = find.text(intl.grades_title);
+          final gradesTitle = find.text(intl!.grades_title);
           expect(gradesTitle, findsOneWidget);
 
           // Find empty grades card
           final gradesEmptyTitle =
-              find.text(intl.grades_msg_no_grades.split("\n").first);
+              find.text(intl!.grades_msg_no_grades.split("\n").first);
           expect(gradesEmptyTitle, findsOneWidget);
         });
 
@@ -521,11 +521,11 @@ void main() {
           await tester.pumpAndSettle();
 
           // Find grades card
-          final gradesCard = find.widgetWithText(Card, intl.grades_title);
+          final gradesCard = find.widgetWithText(Card, intl!.grades_title);
           expect(gradesCard, findsOneWidget);
 
           // Find grades card Title
-          final gradesTitle = find.text(intl.grades_title);
+          final gradesTitle = find.text(intl!.grades_title);
           expect(gradesTitle, findsOneWidget);
 
           // Find grades buttons in the card
@@ -556,16 +556,16 @@ void main() {
 
           // Find Dismissible Cards
           expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-          expect(find.text(intl.grades_title), findsOneWidget);
+          expect(find.text(intl!.grades_title), findsOneWidget);
 
           // Swipe Dismissible grades Card horizontally
-          await tester.drag(find.widgetWithText(Dismissible, intl.grades_title),
+          await tester.drag(find.widgetWithText(Dismissible, intl!.grades_title),
               const Offset(1000.0, 0.0));
 
           // Check that the card is now absent from the view
           await tester.pumpAndSettle();
           expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
-          expect(find.text(intl.grades_title), findsNothing);
+          expect(find.text(intl!.grades_title), findsNothing);
 
           // Tap the restoreCards button
           await tester.tap(find.byIcon(Icons.restore));
@@ -574,7 +574,7 @@ void main() {
 
           // Check that the card is now present in the view
           expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-          expect(find.text(intl.grades_title), findsOneWidget);
+          expect(find.text(intl!.grades_title), findsOneWidget);
         });
       });
     });
@@ -591,11 +591,11 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find progress card
-        final progressCard = find.widgetWithText(Card, intl.progress_bar_title);
+        final progressCard = find.widgetWithText(Card, intl!.progress_bar_title);
         expect(progressCard, findsOneWidget);
 
         // Find progress card Title
-        final progressTitle = find.text(intl.progress_bar_title);
+        final progressTitle = find.text(intl!.progress_bar_title);
         expect(progressTitle, findsOneWidget);
 
         // Find progress card linearProgressBar
@@ -615,17 +615,17 @@ void main() {
 
         // Find Dismissible Cards
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-        expect(find.text(intl.progress_bar_title), findsOneWidget);
+        expect(find.text(intl!.progress_bar_title), findsOneWidget);
 
         // Swipe Dismissible progress Card horizontally
         await tester.drag(
-            find.widgetWithText(Dismissible, intl.progress_bar_title),
+            find.widgetWithText(Dismissible, intl!.progress_bar_title),
             const Offset(1000.0, 0.0));
 
         // Check that the card is now absent from the view
         await tester.pumpAndSettle();
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards - 1));
-        expect(find.text(intl.progress_bar_title), findsNothing);
+        expect(find.text(intl!.progress_bar_title), findsNothing);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
@@ -634,7 +634,7 @@ void main() {
 
         // Check that the card is now present in the view
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
-        expect(find.text(intl.progress_bar_title), findsOneWidget);
+        expect(find.text(intl!.progress_bar_title), findsOneWidget);
       });
 
       testWidgets('progressBarCard is reorderable and can be restored',
@@ -651,21 +651,21 @@ void main() {
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
 
         // Find progressBar card
-        expect(find.text(intl.progress_bar_title), findsOneWidget);
+        expect(find.text(intl!.progress_bar_title), findsOneWidget);
 
         // Check that the progressBar card is in the first position
         var text = tester.firstWidget(find.descendant(
-          of: find.widgetWithText(Dismissible, intl.progress_bar_title).first,
+          of: find.widgetWithText(Dismissible, intl!.progress_bar_title).first,
           matching: find.byType(Text),
         ));
 
-        expect((text as Text).data, intl.progress_bar_title);
+        expect((text as Text).data, intl!.progress_bar_title);
 
         // Long press then drag and drop card at the end of the list
         await longPressDrag(
             tester,
-            tester.getCenter(find.text(intl.progress_bar_title)),
-            tester.getCenter(find.text(intl.card_applets_title)) +
+            tester.getCenter(find.text(intl!.progress_bar_title)),
+            tester.getCenter(find.text(intl!.card_applets_title)) +
                 const Offset(0.0, 1000));
 
         await tester.pumpAndSettle();
@@ -674,10 +674,10 @@ void main() {
 
         // Check that the card is now in last position
         text = tester.firstWidget(find.descendant(
-          of: find.widgetWithText(Dismissible, intl.progress_bar_title).last,
+          of: find.widgetWithText(Dismissible, intl!.progress_bar_title).last,
           matching: find.byType(Text),
         ));
-        expect((text as Text).data, intl.progress_bar_title);
+        expect(text.data, intl!.progress_bar_title);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
@@ -685,14 +685,14 @@ void main() {
         await tester.pumpAndSettle();
 
         text = tester.firstWidget(find.descendant(
-          of: find.widgetWithText(Dismissible, intl.progress_bar_title).first,
+          of: find.widgetWithText(Dismissible, intl!.progress_bar_title).first,
           matching: find.byType(Text),
         ));
 
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
 
         // Check that the first card is now AboutUs
-        expect((text as Text).data, intl.progress_bar_title);
+        expect(text.data, intl!.progress_bar_title);
       });
     });
 

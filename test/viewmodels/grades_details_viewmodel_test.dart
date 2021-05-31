@@ -23,8 +23,8 @@ import '../helpers.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   AppIntl intl;
-  GradesDetailsViewModel viewModel;
-  CourseRepository courseRepository;
+  late GradesDetailsViewModel viewModel;
+  CourseRepository? courseRepository;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -144,7 +144,7 @@ void main() {
 
         expect(viewModel.course, courseWithoutSummary);
 
-        verify(courseRepository.getCourseSummary(viewModel.course));
+        verify(courseRepository!.getCourseSummary(viewModel.course!));
 
         verifyNoMoreInteractions(courseRepository);
       });

@@ -22,7 +22,7 @@ class BottomBar extends StatelessWidget {
   static const int etsView = 3;
   static const int moreView = 4;
 
-  final NavigationService _navigationService = locator<NavigationService>();
+  final NavigationService? _navigationService = locator<NavigationService>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +30,11 @@ class BottomBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       onTap: (value) => _onTap(value),
       items: _buildItems(context),
-      currentIndex: _defineIndex(ModalRoute.of(context).settings.name),
+      currentIndex: _defineIndex(ModalRoute.of(context)!.settings.name),
     );
   }
 
-  int _defineIndex(String routeName) {
+  int _defineIndex(String? routeName) {
     int currentView = dashboardView;
 
     switch (routeName) {
@@ -64,19 +64,19 @@ class BottomBar extends StatelessWidget {
   void _onTap(int index) {
     switch (index) {
       case dashboardView:
-        _navigationService.pushNamed(RouterPaths.dashboard);
+        _navigationService!.pushNamed(RouterPaths.dashboard);
         break;
       case scheduleView:
-        _navigationService.pushNamed(RouterPaths.schedule);
+        _navigationService!.pushNamed(RouterPaths.schedule);
         break;
       case studentView:
-        _navigationService.pushNamed(RouterPaths.student);
+        _navigationService!.pushNamed(RouterPaths.student);
         break;
       case etsView:
-        _navigationService.pushNamed(RouterPaths.ets);
+        _navigationService!.pushNamed(RouterPaths.ets);
         break;
       case moreView:
-        _navigationService.pushNamed(RouterPaths.more);
+        _navigationService!.pushNamed(RouterPaths.more);
         break;
     }
   }
@@ -86,23 +86,23 @@ class BottomBar extends StatelessWidget {
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.dashboard, Icons.dashboard),
-          label: AppIntl.of(context).title_dashboard),
+          label: AppIntl.of(context)!.title_dashboard),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.schedule, Icons.schedule),
-          label: AppIntl.of(context).title_schedule),
+          label: AppIntl.of(context)!.title_schedule),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.student, Icons.school),
-          label: AppIntl.of(context).title_student),
+          label: AppIntl.of(context)!.title_student),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.ets, Icons.account_balance),
-          label: AppIntl.of(context).title_ets),
+          label: AppIntl.of(context)!.title_ets),
       BottomNavigationBarItem(
           icon: _buildDiscoveryFeatureDescriptionWidget(
               context, RouterPaths.more, Icons.dehaze),
-          label: AppIntl.of(context).title_more),
+          label: AppIntl.of(context)!.title_more),
     ];
   }
 

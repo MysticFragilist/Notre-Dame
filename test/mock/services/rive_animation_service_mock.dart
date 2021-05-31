@@ -14,7 +14,7 @@ class RiveAnimationServiceMock extends Mock implements RiveAnimationService {
   /// to return [artboardToReturn]
   static void stubLoadRiveFile(RiveAnimationServiceMock mock,
       String riveFileName, Artboard artboardToReturn) {
-    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName")))
+    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName")!))
         .thenAnswer((_) async => artboardToReturn);
   }
 
@@ -22,7 +22,7 @@ class RiveAnimationServiceMock extends Mock implements RiveAnimationService {
   static void stubLoadRiveFileException(RiveAnimationServiceMock mock,
       {AnimationException exceptionToThrow =
           const AnimationException(prefix: "loadRiveFile", message: "")}) {
-    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName")))
+    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName")!))
         .thenThrow(exceptionToThrow);
   }
 

@@ -16,8 +16,8 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
-SettingsManager settingsManager;
-ScheduleSettingsViewModel viewModel;
+SettingsManager? settingsManager;
+late ScheduleSettingsViewModel viewModel;
 
 void main() {
   // Needed to support FlutterToast.
@@ -50,7 +50,7 @@ void main() {
         expect(viewModel.showTodayBtn,
             settings[PreferencesFlag.scheduleSettingsShowTodayBtn]);
 
-        verify(settingsManager.getScheduleSettings()).called(1);
+        verify(settingsManager!.getScheduleSettings()).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
     });
@@ -64,14 +64,14 @@ void main() {
         // Call the setter.
         viewModel.calendarFormat = CalendarFormat.twoWeeks;
 
-        await untilCalled(settingsManager.setString(
-            PreferencesFlag.scheduleSettingsCalendarFormat, any));
+        await untilCalled(settingsManager!.setString(
+            PreferencesFlag.scheduleSettingsCalendarFormat, any!));
 
         expect(viewModel.calendarFormat, CalendarFormat.twoWeeks);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setString(
-                PreferencesFlag.scheduleSettingsCalendarFormat, any))
+        verify(settingsManager!.setString(
+                PreferencesFlag.scheduleSettingsCalendarFormat, any!))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -86,14 +86,14 @@ void main() {
         // Call the setter.
         viewModel.startingDayOfWeek = StartingDayOfWeek.friday;
 
-        await untilCalled(settingsManager.setString(
-            PreferencesFlag.scheduleSettingsStartWeekday, any));
+        await untilCalled(settingsManager!.setString(
+            PreferencesFlag.scheduleSettingsStartWeekday, any!));
 
         expect(viewModel.startingDayOfWeek, StartingDayOfWeek.friday);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setString(
-                PreferencesFlag.scheduleSettingsStartWeekday, any))
+        verify(settingsManager!.setString(
+                PreferencesFlag.scheduleSettingsStartWeekday, any!))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -110,14 +110,14 @@ void main() {
         // Call the setter.
         viewModel.showTodayBtn = expected;
 
-        await untilCalled(settingsManager.setBool(
-            PreferencesFlag.scheduleSettingsShowTodayBtn, any));
+        await untilCalled(settingsManager!.setBool(
+            PreferencesFlag.scheduleSettingsShowTodayBtn, any!));
 
         expect(viewModel.showTodayBtn, expected);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager.setBool(
-                PreferencesFlag.scheduleSettingsShowTodayBtn, any))
+        verify(settingsManager!.setBool(
+                PreferencesFlag.scheduleSettingsShowTodayBtn, any!))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });

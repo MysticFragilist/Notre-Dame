@@ -14,50 +14,50 @@ import 'package:notredame/locator.dart';
 
 class SettingsViewModel extends FutureViewModel {
   /// Manage the settings
-  final SettingsManager _settingsManager = locator<SettingsManager>();
+  final SettingsManager? _settingsManager = locator<SettingsManager>();
 
   /// Localization class of the application.
-  final AppIntl _appIntl;
+  final AppIntl? _appIntl;
 
   /// Current locale
-  String _currentLocale;
+  String? _currentLocale;
 
   /// Current theme
-  ThemeMode _selectedTheme;
+  ThemeMode? _selectedTheme;
 
-  ThemeMode get selectedTheme => _selectedTheme;
+  ThemeMode? get selectedTheme => _selectedTheme;
 
   /// Set theme
-  set selectedTheme(ThemeMode value) {
-    _settingsManager.setThemeMode(value);
+  set selectedTheme(ThemeMode? value) {
+    _settingsManager!.setThemeMode(value);
     _selectedTheme = value;
   }
 
   String get currentLocale {
     if (_currentLocale == AppIntl.supportedLocales.first.languageCode) {
-      return _appIntl.settings_english;
+      return _appIntl!.settings_english;
     } else if (_currentLocale == AppIntl.supportedLocales.last.languageCode) {
-      return _appIntl.settings_french;
+      return _appIntl!.settings_french;
     } else {
-      return _appIntl.system_theme;
+      return _appIntl!.system_theme;
     }
   }
 
   /// Set Locale
   set currentLocale(String value) {
-    _settingsManager.setLocale(value);
+    _settingsManager!.setLocale(value);
     _currentLocale = value;
   }
 
-  SettingsViewModel({@required AppIntl intl}) : _appIntl = intl;
+  SettingsViewModel({required AppIntl? intl}) : _appIntl = intl;
 
   @override
   Future futureToRun() async {
     setBusy(true);
-    await _settingsManager.getString(PreferencesFlag.theme).then((value) =>
+    await _settingsManager!.getString(PreferencesFlag.theme).then((value) =>
         _selectedTheme =
             ThemeMode.values.firstWhere((e) => e.toString() == value));
-    await _settingsManager
+    await _settingsManager!
         .getString(PreferencesFlag.locale)
         .then((value) => _currentLocale = value);
     setBusy(false);

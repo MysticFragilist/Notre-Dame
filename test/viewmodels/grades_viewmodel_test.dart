@@ -22,10 +22,10 @@ import '../mock/services/networking_service_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  CourseRepository courseRepository;
+  CourseRepository? courseRepository;
   NetworkingServiceMock networkingService;
   AppIntl intl;
-  GradesViewModel viewModel;
+  late GradesViewModel viewModel;
 
   final Course courseSummer = Course(
       acronym: 'GEN101',
@@ -126,15 +126,15 @@ void main() {
 
         expect(await viewModel.futureToRun(), coursesBySession);
 
-        await untilCalled(courseRepository.courses);
+        await untilCalled(courseRepository!.courses);
 
         expect(viewModel.coursesBySession, coursesBySession);
         expect(viewModel.sessionOrder, sessionOrder);
 
         verifyInOrder([
-          courseRepository.getCourses(fromCacheOnly: true),
-          courseRepository.getCourses(),
-          courseRepository.courses
+          courseRepository!.getCourses(fromCacheOnly: true),
+          courseRepository!.getCourses(),
+          courseRepository!.courses
         ]);
 
         verifyNoMoreInteractions(courseRepository);
@@ -156,14 +156,14 @@ void main() {
             reason:
                 "Even if SignetsAPI call fails, should return the cache contents");
 
-        await untilCalled(courseRepository.getCourses());
+        await untilCalled(courseRepository!.getCourses());
 
         expect(viewModel.coursesBySession, coursesBySession);
         expect(viewModel.sessionOrder, sessionOrder);
 
         verifyInOrder([
-          courseRepository.getCourses(fromCacheOnly: true),
-          courseRepository.getCourses()
+          courseRepository!.getCourses(fromCacheOnly: true),
+          courseRepository!.getCourses()
         ]);
 
         verifyNoMoreInteractions(courseRepository);
@@ -187,7 +187,7 @@ void main() {
         expect(viewModel.sessionOrder, sessionOrder);
 
         verifyInOrder(
-            [courseRepository.getCourses(), courseRepository.courses]);
+            [courseRepository!.getCourses(), courseRepository!.courses]);
 
         verifyNoMoreInteractions(courseRepository);
       });
@@ -225,7 +225,7 @@ void main() {
         expect(viewModel.sessionOrder, sessionOrder);
 
         verifyInOrder(
-            [courseRepository.getCourses(), courseRepository.courses]);
+            [courseRepository!.getCourses(), courseRepository!.courses]);
 
         verifyNoMoreInteractions(courseRepository);
       });

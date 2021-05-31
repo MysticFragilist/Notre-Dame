@@ -52,7 +52,7 @@ class AppRouter {
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) =>
-                GradesDetailsView(course: routeSettings.arguments as Course));
+                GradesDetailsView(course: routeSettings.arguments as Course?));
       case RouterPaths.ets:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
@@ -60,7 +60,7 @@ class AppRouter {
       case RouterPaths.webView:
         return PageRouteBuilder(
             pageBuilder: (_, __, ___) =>
-                LinkWebView(routeSettings.arguments as QuickLink));
+                LinkWebView(routeSettings.arguments as QuickLink?));
       case RouterPaths.security:
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),

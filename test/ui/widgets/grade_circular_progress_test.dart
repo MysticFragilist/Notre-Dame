@@ -10,7 +10,7 @@ import 'package:notredame/ui/widgets/grade_circular_progress.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group("GradeCircularProgress -", () {
     setUp(() async {

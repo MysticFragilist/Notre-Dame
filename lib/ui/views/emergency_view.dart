@@ -25,7 +25,7 @@ class _EmergencyViewState extends State<EmergencyView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<EmergencyViewModel>.reactive(
-        viewModelBuilder: () => EmergencyViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => EmergencyViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
           appBar: AppBar(title: Text(widget.title)),
           floatingActionButtonLocation:
@@ -33,7 +33,7 @@ class _EmergencyViewState extends State<EmergencyView> {
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
               Utils.launchURL(
-                      'tel:${AppIntl.of(context).security_emergency_number}',
+                      'tel:${AppIntl.of(context)!.security_emergency_number}',
                       AppIntl.of(context))
                   .catchError((error) {
                 ScaffoldMessenger.of(context)
@@ -41,7 +41,7 @@ class _EmergencyViewState extends State<EmergencyView> {
               });
             },
             label: Text(
-              AppIntl.of(context).security_reach_security,
+              AppIntl.of(context)!.security_reach_security,
               style: const TextStyle(color: Colors.white, fontSize: 20),
             ),
             icon: const Icon(Icons.phone, size: 30, color: Colors.white),

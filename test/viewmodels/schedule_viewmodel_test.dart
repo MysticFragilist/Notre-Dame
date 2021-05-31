@@ -18,10 +18,10 @@ import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 
-CourseRepository courseRepository;
-SettingsManager settingsManager;
-NetworkingServiceMock networkingService;
-ScheduleViewModel viewModel;
+CourseRepository? courseRepository;
+SettingsManager? settingsManager;
+late NetworkingServiceMock networkingService;
+late ScheduleViewModel viewModel;
 
 void main() {
   // Needed to support FlutterToast.
@@ -87,8 +87,8 @@ void main() {
         expect(await viewModel.futureToRun(), []);
 
         verifyInOrder([
-          courseRepository.getCoursesActivities(fromCacheOnly: true),
-          courseRepository.getCoursesActivities()
+          courseRepository!.getCoursesActivities(fromCacheOnly: true),
+          courseRepository!.getCoursesActivities()
         ]);
 
         verifyNoMoreInteractions(courseRepository);
@@ -109,11 +109,11 @@ void main() {
             reason: "Even if SignetsAPI fails we should receives a list.");
 
         // Await until the call to get the activities from signets is sent
-        await untilCalled(courseRepository.getCoursesActivities());
+        await untilCalled(courseRepository!.getCoursesActivities());
 
         verifyInOrder([
-          courseRepository.getCoursesActivities(fromCacheOnly: true),
-          courseRepository.getCoursesActivities()
+          courseRepository!.getCoursesActivities(fromCacheOnly: true),
+          courseRepository!.getCoursesActivities()
         ]);
 
         verifyNoMoreInteractions(courseRepository);
@@ -134,7 +134,7 @@ void main() {
 
         expect(viewModel.coursesActivities, expected);
 
-        verify(courseRepository.coursesActivities).called(1);
+        verify(courseRepository!.coursesActivities).called(1);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
@@ -151,7 +151,7 @@ void main() {
 
         expect(viewModel.coursesActivitiesFor(DateTime(2020, 1, 2)), expected);
 
-        verify(courseRepository.coursesActivities).called(1);
+        verify(courseRepository!.coursesActivities).called(1);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
@@ -165,7 +165,7 @@ void main() {
         expect(viewModel.coursesActivitiesFor(DateTime(2020, 1, 3)), isEmpty,
             reason: "There is no events for the 3rd Jan on activities");
 
-        verify(courseRepository.coursesActivities).called(1);
+        verify(courseRepository!.coursesActivities).called(1);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
@@ -227,8 +227,8 @@ void main() {
         expect(viewModel.coursesActivities, expected);
 
         verifyInOrder([
-          courseRepository.getCoursesActivities(),
-          courseRepository.coursesActivities
+          courseRepository!.getCoursesActivities(),
+          courseRepository!.coursesActivities
         ]);
 
         verifyNoMoreInteractions(courseRepository);

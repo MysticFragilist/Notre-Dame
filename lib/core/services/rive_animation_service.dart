@@ -8,7 +8,7 @@ import 'package:notredame/core/utils/animation_exception.dart';
 
 /// Manage the rive animation for the application
 class RiveAnimationService {
-  Future<Artboard> loadRiveFile({@required String riveFileName}) async {
+  Future<Artboard> loadRiveFile({required String riveFileName}) async {
     final bytes = await rootBundle.load("assets/animations/$riveFileName.riv");
 
     try {
@@ -25,8 +25,8 @@ class RiveAnimationService {
   }
 
   void addControllerToAnimation(
-      {@required Artboard artboard,
-      RiveAnimationController<dynamic> controller}) {
+      {required Artboard artboard,
+      RiveAnimationController<dynamic>? controller}) {
     try {
       controller ??= SimpleAnimation(artboard.animations[0].name);
       artboard.addController(controller);

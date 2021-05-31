@@ -28,7 +28,7 @@ class AnalyticsService {
         .logEvent(name: prefix, parameters: {'message': mesTruncated});
   }
 
-  Future setUserProperties({@required String userId, String domain}) async {
+  Future setUserProperties({required String? userId, String? domain}) async {
     await _analytics.setUserId(userId);
     await _analytics.setUserProperty(
         name: _userPropertiesDomainKey, value: domain);

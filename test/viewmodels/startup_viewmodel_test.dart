@@ -21,12 +21,12 @@ import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 
 void main() {
-  NavigationService navigationService;
-  UserRepositoryMock userRepositoryMock;
-  SettingsManager settingsManager;
-  NetworkingServiceMock networkingService;
+  late NavigationService navigationService;
+  late UserRepositoryMock userRepositoryMock;
+  late SettingsManager settingsManager;
+  late NetworkingServiceMock networkingService;
 
-  StartUpViewModel viewModel;
+  late StartUpViewModel viewModel;
 
   group('StartupViewModel - ', () {
     setUp(() async {

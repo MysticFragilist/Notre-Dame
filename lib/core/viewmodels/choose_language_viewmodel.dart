@@ -17,28 +17,28 @@ class ChooseLanguageViewModel extends BaseViewModel {
   int languageSelectedIndex = -1;
 
   /// Manage the settings
-  final SettingsManager _settingsManager = locator<SettingsManager>();
+  final SettingsManager? _settingsManager = locator<SettingsManager>();
 
   /// Used to redirect on the dashboard.
-  final NavigationService _navigationService = locator<NavigationService>();
+  final NavigationService? _navigationService = locator<NavigationService>();
 
   /// Localization class of the application.
-  final AppIntl _appIntl;
+  final AppIntl? _appIntl;
 
-  ChooseLanguageViewModel({@required AppIntl intl}) : _appIntl = intl;
+  ChooseLanguageViewModel({required AppIntl? intl}) : _appIntl = intl;
 
   List<String> get languages {
-    return [_appIntl.settings_english, _appIntl.settings_french];
+    return [_appIntl!.settings_english, _appIntl!.settings_french];
   }
 
   void changeLanguage(int index) {
     switch (index) {
       case english:
-        _settingsManager.setLocale('en');
+        _settingsManager!.setLocale('en');
         languageSelectedIndex = english;
         break;
       case french:
-        _settingsManager.setLocale('fr');
+        _settingsManager!.setLocale('fr');
         languageSelectedIndex = french;
         break;
       default:
@@ -47,7 +47,7 @@ class ChooseLanguageViewModel extends BaseViewModel {
         break;
     }
 
-    _navigationService.pop();
-    _navigationService.pushNamed(RouterPaths.login);
+    _navigationService!.pop();
+    _navigationService!.pushNamed(RouterPaths.login);
   }
 }

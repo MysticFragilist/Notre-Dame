@@ -23,7 +23,7 @@ final _program = Program(
     failedCourses: '0');
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group('Student program - ', () {
     setUp(() async {

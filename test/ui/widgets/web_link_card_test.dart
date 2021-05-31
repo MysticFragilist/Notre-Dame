@@ -19,7 +19,7 @@ final _quickLink = QuickLink(
     image: 'assets/images/ic_security_red.png', name: 'test', link: 'testlink');
 
 void main() {
-  AnalyticsService analyticsService;
+  AnalyticsService? analyticsService;
 
   group('WebLinkCard - ', () {
     setUp(() {

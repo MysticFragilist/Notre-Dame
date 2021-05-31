@@ -16,7 +16,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 // HELPERS
 import '../../helpers.dart';
 
-NavigationService _navigationService;
+late NavigationService _navigationService;
 
 void main() {
   group('BottomBar - ', () {

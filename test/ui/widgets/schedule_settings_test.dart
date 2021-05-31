@@ -20,8 +20,8 @@ import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
-  SettingsManager settingsManager;
-  AppIntl intl;
+  late SettingsManager settingsManager;
+  late AppIntl intl;
 
   // Some settings
   final Map<PreferencesFlag, dynamic> settings = {
@@ -226,7 +226,7 @@ void main() {
         await tester.pump();
 
         await untilCalled(settingsManager.setString(
-            PreferencesFlag.scheduleSettingsCalendarFormat, any));
+            PreferencesFlag.scheduleSettingsCalendarFormat, any!));
 
         final formatTile = find.widgetWithText(
             ListTile, intl.schedule_settings_calendar_format_2_weeks);
@@ -257,12 +257,12 @@ void main() {
         // Currently the await tester.tap on a switch in a tile isn't working. Workaround:
         (find.byType(Switch, skipOffstage: false).evaluate().single.widget
                 as Switch)
-            .onChanged(false);
+            .onChanged!(false);
 
         await tester.pumpAndSettle();
 
         await untilCalled(settingsManager.setBool(
-            PreferencesFlag.scheduleSettingsShowTodayBtn, any));
+            PreferencesFlag.scheduleSettingsShowTodayBtn, any!));
 
         expect(
             tester.widget(find.descendant(

@@ -6,9 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class GradeNotAvailable extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
-  const GradeNotAvailable({Key key, this.onPressed}) : super(key: key);
+  const GradeNotAvailable({Key? key, this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class GradeNotAvailable extends StatelessWidget {
         ),
         const SizedBox(height: 25),
         Text(
-          AppIntl.of(context).grades_msg_no_grades.split('\n')[0],
+          AppIntl.of(context)!.grades_msg_no_grades.split('\n')[0],
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
@@ -33,7 +33,7 @@ class GradeNotAvailable extends StatelessWidget {
                 backgroundColor:
                     MaterialStateProperty.all(AppTheme.etsLightRed)),
             onPressed: onPressed,
-            child: Text(AppIntl.of(context).retry))
+            child: Text(AppIntl.of(context)!.retry))
       ],
     );
   }

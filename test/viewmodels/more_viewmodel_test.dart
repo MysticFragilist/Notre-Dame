@@ -39,16 +39,16 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  CacheManagerMock cacheManagerMock;
-  SettingsManagerMock settingsManagerMock;
-  CourseRepositoryMock courseRepositoryMock;
-  PreferencesService preferenceService;
-  UserRepositoryMock userRepositoryMock;
-  NavigationService navigationService;
-  GithubApiMock githubApiMock;
+  CacheManagerMock? cacheManagerMock;
+  SettingsManagerMock? settingsManagerMock;
+  late CourseRepositoryMock courseRepositoryMock;
+  PreferencesService? preferenceService;
+  UserRepositoryMock? userRepositoryMock;
+  NavigationService? navigationService;
+  late GithubApiMock githubApiMock;
 
   AppIntl appIntl;
-  MoreViewModel viewModel;
+  late MoreViewModel viewModel;
 
   final List<Session> sessions = [
     Session(
@@ -92,13 +92,13 @@ void main() {
   void verifyEveryFunctionsInLogout() {
     verifyInOrder([
       // Check if the cacheManager has been emptied out
-      cacheManagerMock.empty(),
+      cacheManagerMock!.empty(),
       // Check if preference manager is clear
-      preferenceService.clear(),
+      preferenceService!.clear(),
       // Check if user repository logOut is called
-      userRepositoryMock.logOut(),
+      userRepositoryMock!.logOut(),
       // Check if the settings manager has reset lang and theme and notified his listener
-      settingsManagerMock.resetLanguageAndThemeMode(),
+      settingsManagerMock!.resetLanguageAndThemeMode(),
     ]);
     verifyNoMoreInteractions(cacheManagerMock);
     verifyNoMoreInteractions(preferenceService);
@@ -106,17 +106,17 @@ void main() {
     verifyNoMoreInteractions(settingsManagerMock);
 
     // Make sure that the registered cache
-    expect(courseRepositoryMock.sessions.length, 0,
+    expect(courseRepositoryMock.sessions!.length, 0,
         reason: 'has emptied out the sessions list');
-    expect(courseRepositoryMock.coursesActivities.length, 0,
+    expect(courseRepositoryMock.coursesActivities!.length, 0,
         reason: 'has emptied out the courseActivities list');
-    expect(courseRepositoryMock.courses.length, 0,
+    expect(courseRepositoryMock.courses!.length, 0,
         reason: 'has emptied out the courses list');
 
     // Check if navigation has been rerouted to login page
     verifyInOrder([
-      navigationService.pop(),
-      navigationService.pushNamedAndRemoveUntil(RouterPaths.login)
+      navigationService!.pop(),
+      navigationService!.pushNamedAndRemoveUntil(RouterPaths.login)
     ]);
 
     verifyNoMoreInteractions(navigationService);
@@ -159,7 +159,7 @@ void main() {
     group('logout - ', () {
       test('If the correct function have been called when logout occur',
           () async {
-        UserRepositoryMock.stubLogOut(userRepositoryMock);
+        UserRepositoryMock.stubLogOut(userRepositoryMock!);
 
         await viewModel.logout();
 
@@ -169,8 +169,8 @@ void main() {
       test(
           'If an error occur from the cache manager that the logout function finishes out',
           () async {
-        CacheManagerMock.stubEmptyException(cacheManagerMock);
-        UserRepositoryMock.stubLogOut(userRepositoryMock);
+        CacheManagerMock.stubEmptyException(cacheManagerMock!);
+        UserRepositoryMock.stubLogOut(userRepositoryMock!);
 
         await viewModel.logout();
 
@@ -179,7 +179,7 @@ void main() {
     });
 
     group('sendFeedback - ', () {
-      Uint8List screenshotData;
+      late Uint8List screenshotData;
 
       setUp(() async {
         final ByteData bytes = await rootBundle
@@ -192,7 +192,7 @@ void main() {
         GithubApiMock.stubLocalFile(githubApiMock, file);
 
         await file.writeAsBytes(image.encodePng(
-            image.copyResize(image.decodeImage(screenshotData), width: 307)));
+            image.copyResize(image.decodeImage(screenshotData)!, width: 307)));
 
         await viewModel.sendFeedback('Notre-Dame bug report', screenshotData);
 

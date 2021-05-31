@@ -23,11 +23,11 @@ import '../mock/services/internal_info_service_mock.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  NavigationService navigationService;
-  AnalyticsService analyticsService;
-  InternalInfoService internalInfoService;
+  NavigationService? navigationService;
+  AnalyticsService? analyticsService;
+  late InternalInfoService internalInfoService;
 
-  WebLinkCardViewModel viewModel;
+  late WebLinkCardViewModel viewModel;
 
   final _quickLink = QuickLink(
       image: 'assets/images/ic_security_red.png',
@@ -60,7 +60,7 @@ void main() {
       test('navigate to security', () async {
         await viewModel.onLinkClicked(_securityQuickLink);
 
-        verify(navigationService.pushNamed(RouterPaths.security));
+        verify(navigationService!.pushNamed(RouterPaths.security));
         verifyNoMoreInteractions(navigationService);
       });
 
@@ -70,7 +70,7 @@ void main() {
 
         await viewModel.onLinkClicked(_quickLink);
 
-        verify(navigationService.pushNamed(RouterPaths.webView,
+        verify(navigationService!.pushNamed(RouterPaths.webView,
             arguments: _quickLink));
         verifyNoMoreInteractions(navigationService);
       });

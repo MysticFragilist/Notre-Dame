@@ -65,7 +65,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          AppIntl.of(context).choose_language_title,
+                          AppIntl.of(context)!.choose_language_title,
                           style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -79,7 +79,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          AppIntl.of(context).choose_language_subtitle,
+                          AppIntl.of(context)!.choose_language_subtitle,
                           style: const TextStyle(
                               fontSize: 16, color: Colors.white),
                         ),

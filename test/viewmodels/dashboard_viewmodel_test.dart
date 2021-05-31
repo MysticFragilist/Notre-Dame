@@ -29,10 +29,10 @@ import '../mock/managers/settings_manager_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
 
 void main() {
-  PreferencesService preferenceService;
-  SettingsManager settingsManager;
-  DashboardViewModel viewModel;
-  CourseRepository courseRepository;
+  late PreferencesService preferenceService;
+  SettingsManager? settingsManager;
+  late DashboardViewModel viewModel;
+  CourseRepository? courseRepository;
 
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
@@ -184,17 +184,17 @@ void main() {
 
         expect(await viewModel.futureToRunGrades(), courses);
 
-        await untilCalled(courseRepository.sessions);
-        await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepository!.sessions);
+        await untilCalled(courseRepository!.sessions);
 
         expect(viewModel.courses, courses);
 
         verifyInOrder([
-          courseRepository.sessions,
-          courseRepository.activeSessions,
-          courseRepository.activeSessions,
-          courseRepository.getCourses(fromCacheOnly: true),
-          courseRepository.getCourses(),
+          courseRepository!.sessions,
+          courseRepository!.activeSessions,
+          courseRepository!.activeSessions,
+          courseRepository!.getCourses(fromCacheOnly: true),
+          courseRepository!.getCourses(),
         ]);
 
         verifyNoMoreInteractions(courseRepository);
@@ -228,17 +228,17 @@ void main() {
             reason:
                 "Even if SignetsAPI call fails, should return the cache contents");
 
-        await untilCalled(courseRepository.sessions);
-        await untilCalled(courseRepository.sessions);
+        await untilCalled(courseRepository!.sessions);
+        await untilCalled(courseRepository!.sessions);
 
         expect(viewModel.courses, courses);
 
         verifyInOrder([
-          courseRepository.sessions,
-          courseRepository.activeSessions,
-          courseRepository.activeSessions,
-          courseRepository.getCourses(fromCacheOnly: true),
-          courseRepository.getCourses(),
+          courseRepository!.sessions,
+          courseRepository!.activeSessions,
+          courseRepository!.activeSessions,
+          courseRepository!.getCourses(fromCacheOnly: true),
+          courseRepository!.getCourses(),
         ]);
 
         verifyNoMoreInteractions(courseRepository);
@@ -264,7 +264,7 @@ void main() {
           PreferencesFlag.progressBarCard
         ]);
 
-        verify(settingsManager.getDashboard()).called(1);
+        verify(settingsManager!.getDashboard()).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
 
@@ -278,18 +278,18 @@ void main() {
         await viewModel.futureToRun();
         await viewModel.futureToRunSchedule();
 
-        await untilCalled(courseRepository.getCoursesActivities());
+        await untilCalled(courseRepository!.getCoursesActivities());
 
         expect(viewModel.todayDateEvents, activities);
 
-        verify(courseRepository.getCoursesActivities()).called(1);
+        verify(courseRepository!.getCoursesActivities()).called(1);
 
-        verify(courseRepository.getCoursesActivities(fromCacheOnly: true))
+        verify(courseRepository!.getCoursesActivities(fromCacheOnly: true))
             .called(1);
 
-        verify(courseRepository.coursesActivities).called(1);
+        verify(courseRepository!.coursesActivities).called(1);
 
-        verify(settingsManager.getDashboard()).called(1);
+        verify(settingsManager!.getDashboard()).called(1);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
@@ -315,7 +315,7 @@ void main() {
         await viewModel.futureToRun();
         expect(viewModel.cardsToDisplay, []);
 
-        verify(settingsManager.getDashboard()).called(1);
+        verify(settingsManager!.getDashboard()).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
     });
@@ -363,24 +363,24 @@ void main() {
         viewModel.hideCard(PreferencesFlag.scheduleCard);
 
         await untilCalled(
-            settingsManager.setInt(PreferencesFlag.scheduleCard, -1));
+            settingsManager!.setInt(PreferencesFlag.scheduleCard, -1));
 
         expect(viewModel.cards, hiddenCardDashboard);
         expect(viewModel.cardsToDisplay,
             [PreferencesFlag.aboutUsCard, PreferencesFlag.progressBarCard]);
 
-        verify(settingsManager.setInt(PreferencesFlag.scheduleCard, -1))
+        verify(settingsManager!.setInt(PreferencesFlag.scheduleCard, -1))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 0))
+        verify(settingsManager!.setInt(PreferencesFlag.aboutUsCard, 0))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 1))
+        verify(settingsManager!.setInt(PreferencesFlag.progressBarCard, 1))
             .called(1);
 
         // Call the setter.
         viewModel.setAllCardsVisible();
 
         await untilCalled(
-            settingsManager.setInt(PreferencesFlag.progressBarCard, 2));
+            settingsManager!.setInt(PreferencesFlag.progressBarCard, 2));
 
         expect(viewModel.cards, dashboard);
         expect(viewModel.cardsToDisplay, [
@@ -389,12 +389,12 @@ void main() {
           PreferencesFlag.progressBarCard
         ]);
 
-        verify(settingsManager.getDashboard()).called(1);
-        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 0))
+        verify(settingsManager!.getDashboard()).called(1);
+        verify(settingsManager!.setInt(PreferencesFlag.aboutUsCard, 0))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 1))
+        verify(settingsManager!.setInt(PreferencesFlag.scheduleCard, 1))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 2))
+        verify(settingsManager!.setInt(PreferencesFlag.progressBarCard, 2))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -429,7 +429,7 @@ void main() {
         viewModel.setOrder(PreferencesFlag.progressBarCard, 0);
 
         await untilCalled(
-            settingsManager.setInt(PreferencesFlag.progressBarCard, 0));
+            settingsManager!.setInt(PreferencesFlag.progressBarCard, 0));
 
         expect(viewModel.cards, reorderedDashboard);
         expect(viewModel.cardsToDisplay, [
@@ -438,12 +438,12 @@ void main() {
           PreferencesFlag.scheduleCard
         ]);
 
-        verify(settingsManager.getDashboard()).called(1);
-        verify(settingsManager.setInt(PreferencesFlag.progressBarCard, 0))
+        verify(settingsManager!.getDashboard()).called(1);
+        verify(settingsManager!.setInt(PreferencesFlag.progressBarCard, 0))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.aboutUsCard, 1))
+        verify(settingsManager!.setInt(PreferencesFlag.aboutUsCard, 1))
             .called(1);
-        verify(settingsManager.setInt(PreferencesFlag.scheduleCard, 2))
+        verify(settingsManager!.setInt(PreferencesFlag.scheduleCard, 2))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });

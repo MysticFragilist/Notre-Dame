@@ -23,12 +23,12 @@ void main() {
   const String passwordCodeValid = "password";
   const String passwordCodeInvalid = "";
 
-  NavigationService navigationService;
-  UserRepositoryMock userRepositoryMock;
+  late NavigationService navigationService;
+  late UserRepositoryMock userRepositoryMock;
 
-  AppIntl appIntl;
+  AppIntl? appIntl;
 
-  LoginViewModel viewModel;
+  late LoginViewModel viewModel;
 
   group('LoginViewModel - ', () {
     setUp(() async {
@@ -53,7 +53,7 @@ void main() {
 
       test('with empty value should return login_error_field_required', () {
         expect(viewModel.validateUniversalCode(""),
-            appIntl.login_error_field_required);
+            appIntl!.login_error_field_required);
         expect(viewModel.universalCode, "");
       });
 
@@ -61,7 +61,7 @@ void main() {
           'with wrong formatted universal code should return login_error_invalid_universal_code',
           () {
         expect(viewModel.validateUniversalCode(universalCodeInvalid),
-            appIntl.login_error_invalid_universal_code);
+            appIntl!.login_error_invalid_universal_code);
         expect(viewModel.universalCode, "");
       });
     });
@@ -74,7 +74,7 @@ void main() {
 
       test('with empty value should return login_error_field_required', () {
         expect(viewModel.validatePassword(passwordCodeInvalid),
-            appIntl.login_error_field_required);
+            appIntl!.login_error_field_required);
         expect(viewModel.password, passwordCodeInvalid);
       });
     });
@@ -118,7 +118,7 @@ void main() {
           () async {
         viewModel.validateUniversalCode(universalCodeValid);
 
-        expect(await viewModel.authenticate(), appIntl.error);
+        expect(await viewModel.authenticate(), appIntl!.error);
       });
 
       test('with wrong credentials should return a error message', () async {
@@ -128,7 +128,7 @@ void main() {
         viewModel.validateUniversalCode("AA11112");
         viewModel.validatePassword(passwordCodeValid);
 
-        expect(await viewModel.authenticate(), appIntl.error);
+        expect(await viewModel.authenticate(), appIntl!.error);
         expect(viewModel.password, "");
       });
     });

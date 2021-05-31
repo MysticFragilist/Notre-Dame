@@ -29,14 +29,14 @@ import '../mock/services/networking_service_mock.dart';
 import '../mock/services/signets_api_mock.dart';
 
 void main() {
-  AnalyticsService analyticsService;
-  MonETSApi monETSApi;
-  FlutterSecureStorage secureStorage;
-  CacheManager cacheManager;
-  SignetsApi signetsApi;
-  NetworkingServiceMock networkingService;
+  AnalyticsService? analyticsService;
+  MonETSApi? monETSApi;
+  FlutterSecureStorage? secureStorage;
+  CacheManager? cacheManager;
+  SignetsApi? signetsApi;
+  NetworkingServiceMock? networkingService;
 
-  UserRepository manager;
+  late UserRepository manager;
 
   group('UserRepository - ', () {
     setUp(() {
@@ -77,13 +77,13 @@ void main() {
             reason: "Check the authentication is successful");
 
         // Verify the secureStorage is used
-        verify(secureStorage.write(
+        verify(secureStorage!.write(
             key: UserRepository.usernameSecureKey, value: user.username));
-        verify(secureStorage.write(
+        verify(secureStorage!.write(
             key: UserRepository.passwordSecureKey, value: ""));
 
         // Verify the user id is set in the analytics
-        verify(analyticsService.setUserProperties(
+        verify(analyticsService!.setUserProperties(
             userId: user.username, domain: user.domain));
 
         expect(manager.monETSUser, user,
@@ -99,16 +99,16 @@ void main() {
             reason: "The authentication failed so the result should be false");
 
         // Verify the user id isn't set in the analytics
-        verify(analyticsService.logError(UserRepository.tag, any)).called(1);
+        verify(analyticsService!.logError(UserRepository.tag, any!)).called(1);
 
         // Verify the secureStorage isn't used
-        verifyNever(secureStorage.write(
+        verifyNever(secureStorage!.write(
             key: UserRepository.usernameSecureKey, value: username));
-        verifyNever(secureStorage.write(
+        verifyNever(secureStorage!.write(
             key: UserRepository.passwordSecureKey, value: ""));
 
         // Verify the user id is set in the analytics
-        verifyNever(analyticsService.setUserProperties(
+        verifyNever(analyticsService!.setUserProperties(
             userId: username, domain: anyNamed("domain")));
 
         expect(manager.monETSUser, null,
@@ -140,10 +140,10 @@ void main() {
             reason: "Result should be true");
 
         verifyInOrder([
-          secureStorage.read(key: UserRepository.usernameSecureKey),
-          secureStorage.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
-          analyticsService.setUserProperties(
+          secureStorage!.read(key: UserRepository.usernameSecureKey),
+          secureStorage!.read(key: UserRepository.passwordSecureKey),
+          monETSApi!.authenticate(username: username, password: password),
+          analyticsService!.setUserProperties(
               userId: username, domain: user.domain)
         ]);
 
@@ -171,10 +171,10 @@ void main() {
             reason: "Result should be false");
 
         verifyInOrder([
-          secureStorage.read(key: UserRepository.usernameSecureKey),
-          secureStorage.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
-          analyticsService.logError(UserRepository.tag, any)
+          secureStorage!.read(key: UserRepository.usernameSecureKey),
+          secureStorage!.read(key: UserRepository.passwordSecureKey),
+          monETSApi!.authenticate(username: username, password: password),
+          analyticsService!.logError(UserRepository.tag, any!)
         ]);
 
         expect(manager.monETSUser, null,
@@ -196,7 +196,7 @@ void main() {
             reason: "Result should be false");
 
         verifyInOrder(
-            [secureStorage.read(key: UserRepository.usernameSecureKey)]);
+            [secureStorage!.read(key: UserRepository.usernameSecureKey)]);
 
         verifyNoMoreInteractions(secureStorage);
         verifyZeroInteractions(monETSApi);
@@ -215,10 +215,10 @@ void main() {
         expect(manager.monETSUser, null,
             reason: "The user shouldn't be available after a logout");
 
-        verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
-        verify(secureStorage.delete(key: UserRepository.passwordSecureKey));
+        verify(secureStorage!.delete(key: UserRepository.usernameSecureKey));
+        verify(secureStorage!.delete(key: UserRepository.passwordSecureKey));
 
-        verifyNever(analyticsService.logError(UserRepository.tag, any));
+        verifyNever(analyticsService!.logError(UserRepository.tag, any!));
       });
     });
 
@@ -251,10 +251,10 @@ void main() {
             reason: "Result should be 'password'");
 
         verifyInOrder([
-          secureStorage.read(key: UserRepository.usernameSecureKey),
-          secureStorage.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
-          analyticsService.setUserProperties(
+          secureStorage!.read(key: UserRepository.usernameSecureKey),
+          secureStorage!.read(key: UserRepository.passwordSecureKey),
+          monETSApi!.authenticate(username: username, password: password),
+          analyticsService!.setUserProperties(
               userId: username, domain: user.domain)
         ]);
       });
@@ -282,11 +282,11 @@ void main() {
             reason: "Result should be 'password'");
 
         verifyInOrder([
-          analyticsService.logEvent(UserRepository.tag, any),
-          secureStorage.read(key: UserRepository.usernameSecureKey),
-          secureStorage.read(key: UserRepository.passwordSecureKey),
-          monETSApi.authenticate(username: username, password: password),
-          analyticsService.setUserProperties(
+          analyticsService!.logEvent(UserRepository.tag, any!),
+          secureStorage!.read(key: UserRepository.usernameSecureKey),
+          secureStorage!.read(key: UserRepository.passwordSecureKey),
+          monETSApi!.authenticate(username: username, password: password),
+          analyticsService!.setUserProperties(
               userId: username, domain: user.domain)
         ]);
       });
@@ -312,9 +312,9 @@ void main() {
             reason:
                 'The authentication failed so an ApiException should be raised.');
 
-        await untilCalled(analyticsService.logError(UserRepository.tag, any));
+        await untilCalled(analyticsService!.logError(UserRepository.tag, any!));
 
-        verify(analyticsService.logError(UserRepository.tag, any)).called(1);
+        verify(analyticsService!.logError(UserRepository.tag, any!)).called(1);
       });
     });
 
@@ -355,7 +355,7 @@ void main() {
             signetsApi as SignetsApiMock, username, []);
 
         // Stub to simulate that the user has an active internet connection
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService!);
       });
 
       test("Programs are loaded from cache", () async {
@@ -367,16 +367,16 @@ void main() {
         expect(manager.programs, programs,
             reason: 'The programs list should now be loaded.');
 
-        verify(cacheManager.get(UserRepository.programsCacheKey));
+        verify(cacheManager!.get(UserRepository.programsCacheKey));
         verify(manager.getPassword());
-        verify(cacheManager.update(
+        verify(cacheManager!.update(
             UserRepository.programsCacheKey, jsonEncode(programs)));
       });
 
       test("Trying to load programs from cache but cache doesn't exist",
           () async {
         // Stub to simulate an exception when trying to get the programs from the cache
-        reset(cacheManager as CacheManagerMock);
+        reset(cacheManager as CacheManagerMock?);
         CacheManagerMock.stubGetException(
             cacheManager as CacheManagerMock, UserRepository.programsCacheKey);
 
@@ -387,20 +387,20 @@ void main() {
         expect(results, []);
         expect(manager.programs, []);
 
-        verify(cacheManager.get(UserRepository.programsCacheKey));
+        verify(cacheManager!.get(UserRepository.programsCacheKey));
         verify(manager.getPassword());
-        verifyNever(cacheManager.update(
+        verifyNever(cacheManager!.update(
             UserRepository.programsCacheKey, jsonEncode(programs)));
       });
 
       test("SignetsAPI return another program", () async {
         // Stub to simulate presence of program cache
-        reset(cacheManager as CacheManagerMock);
+        reset(cacheManager as CacheManagerMock?);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             UserRepository.programsCacheKey, jsonEncode([]));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        reset(signetsApi as SignetsApiMock);
+        reset(signetsApi as SignetsApiMock?);
         SignetsApiMock.stubGetPrograms(
             signetsApi as SignetsApiMock, username, programs);
 
@@ -412,15 +412,15 @@ void main() {
         expect(manager.programs, programs,
             reason: 'The programs list should now be loaded.');
 
-        verify(cacheManager.get(UserRepository.programsCacheKey));
+        verify(cacheManager!.get(UserRepository.programsCacheKey));
         verify(manager.getPassword());
-        verify(cacheManager.update(
+        verify(cacheManager!.update(
             UserRepository.programsCacheKey, jsonEncode(programs)));
       });
 
       test("SignetsAPI return a program that already exists", () async {
         // Stub SignetsApi answer to test only the cache retrieving
-        reset(signetsApi as SignetsApiMock);
+        reset(signetsApi as SignetsApiMock?);
         SignetsApiMock.stubGetPrograms(
             signetsApi as SignetsApiMock, username, programs);
 
@@ -432,15 +432,15 @@ void main() {
         expect(manager.programs, programs,
             reason: 'The programs list should not have any duplicata..');
 
-        verify(cacheManager.get(UserRepository.programsCacheKey));
+        verify(cacheManager!.get(UserRepository.programsCacheKey));
         verify(manager.getPassword());
-        verify(cacheManager.update(
+        verify(cacheManager!.update(
             UserRepository.programsCacheKey, jsonEncode(programs)));
       });
 
       test("SignetsAPI return an exception", () async {
         // Stub to simulate presence of program cache
-        reset(cacheManager as CacheManagerMock);
+        reset(cacheManager as CacheManagerMock?);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             UserRepository.programsCacheKey, jsonEncode([]));
 
@@ -451,22 +451,22 @@ void main() {
         expect(manager.programs, isNull);
         expect(manager.getPrograms(), throwsA(isInstanceOf<ApiException>()));
 
-        await untilCalled(networkingService.hasConnectivity());
+        await untilCalled(networkingService!.hasConnectivity());
         expect(manager.programs, [],
             reason: 'The programs list should be empty');
 
-        await untilCalled(analyticsService.logError(UserRepository.tag, any));
+        await untilCalled(analyticsService!.logError(UserRepository.tag, any!));
 
-        verify(cacheManager.get(UserRepository.programsCacheKey));
+        verify(cacheManager!.get(UserRepository.programsCacheKey));
         verify(manager.getPassword());
-        verify(analyticsService.logError(UserRepository.tag, any));
+        verify(analyticsService!.logError(UserRepository.tag, any!));
 
-        verifyNever(cacheManager.update(UserRepository.programsCacheKey, any));
+        verifyNever(cacheManager!.update(UserRepository.programsCacheKey, any!));
       });
 
       test("Cache update fail", () async {
         // Stub to simulate presence of program cache
-        reset(cacheManager as CacheManagerMock);
+        reset(cacheManager as CacheManagerMock?);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             UserRepository.programsCacheKey, jsonEncode([]));
 
@@ -492,7 +492,7 @@ void main() {
           () async {
         //Stub the networkingService to return no connectivity
         reset(networkingService);
-        NetworkingServiceMock.stubHasConnectivity(networkingService,
+        NetworkingServiceMock.stubHasConnectivity(networkingService!,
             hasConnectivity: false);
 
         final programsCache = await manager.getPrograms();
@@ -530,7 +530,7 @@ void main() {
             signetsApi as SignetsApiMock, username, null);
 
         // Stub to simulate that the user has an active internet connection
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        NetworkingServiceMock.stubHasConnectivity(networkingService!);
       });
 
       test("Info are loaded from cache", () async {
@@ -541,15 +541,15 @@ void main() {
         expect(results, info);
         expect(manager.info, info, reason: 'The info should now be loaded.');
 
-        verify(cacheManager.get(UserRepository.infoCacheKey));
+        verify(cacheManager!.get(UserRepository.infoCacheKey));
         verify(manager.getPassword());
         verify(
-            cacheManager.update(UserRepository.infoCacheKey, jsonEncode(info)));
+            cacheManager!.update(UserRepository.infoCacheKey, jsonEncode(info)));
       });
 
       test("Trying to load info from cache but cache doesn't exist", () async {
         // Stub to simulate an exception when trying to get the info from the cache
-        reset(cacheManager as CacheManagerMock);
+        reset(cacheManager as CacheManagerMock?);
         CacheManagerMock.stubGetException(
             cacheManager as CacheManagerMock, UserRepository.infoCacheKey);
 
@@ -559,15 +559,15 @@ void main() {
         expect(results, isNull);
         expect(manager.info, isNull);
 
-        verify(cacheManager.get(UserRepository.infoCacheKey));
+        verify(cacheManager!.get(UserRepository.infoCacheKey));
         verify(manager.getPassword());
         verifyNever(
-            cacheManager.update(UserRepository.infoCacheKey, jsonEncode(info)));
+            cacheManager!.update(UserRepository.infoCacheKey, jsonEncode(info)));
       });
 
       test("SignetsAPI return another info", () async {
         // Stub to simulate presence of info cache
-        reset(cacheManager as CacheManagerMock);
+        reset(cacheManager as CacheManagerMock?);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             UserRepository.infoCacheKey, jsonEncode(info));
 
@@ -577,7 +577,7 @@ void main() {
             firstName: 'Johnny',
             lastName: 'Doe',
             permanentCode: 'DOEJ00000000');
-        reset(signetsApi as SignetsApiMock);
+        reset(signetsApi as SignetsApiMock?);
         SignetsApiMock.stubGetInfo(
             signetsApi as SignetsApiMock, username, anotherInfo);
 
@@ -588,15 +588,15 @@ void main() {
         expect(results, info);
         expect(manager.info, info, reason: 'The info should now be loaded.');
 
-        verify(cacheManager.get(UserRepository.infoCacheKey));
+        verify(cacheManager!.get(UserRepository.infoCacheKey));
         verify(manager.getPassword());
         verify(
-            cacheManager.update(UserRepository.infoCacheKey, jsonEncode(info)));
+            cacheManager!.update(UserRepository.infoCacheKey, jsonEncode(info)));
       });
 
       test("SignetsAPI return a info that already exists", () async {
         // Stub SignetsApi answer to test only the cache retrieving
-        reset(signetsApi as SignetsApiMock);
+        reset(signetsApi as SignetsApiMock?);
         SignetsApiMock.stubGetInfo(
             signetsApi as SignetsApiMock, username, info);
 
@@ -608,15 +608,15 @@ void main() {
         expect(manager.info, info,
             reason: 'The info should not have any duplicata..');
 
-        verify(cacheManager.get(UserRepository.infoCacheKey));
+        verify(cacheManager!.get(UserRepository.infoCacheKey));
         verify(manager.getPassword());
         verifyNever(
-            cacheManager.update(UserRepository.infoCacheKey, jsonEncode(info)));
+            cacheManager!.update(UserRepository.infoCacheKey, jsonEncode(info)));
       });
 
       test("SignetsAPI return an exception", () async {
         // Stub to simulate presence of info cache
-        reset(cacheManager as CacheManagerMock);
+        reset(cacheManager as CacheManagerMock?);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             UserRepository.infoCacheKey, jsonEncode(info));
 
@@ -628,18 +628,18 @@ void main() {
         expect(manager.getInfo(), throwsA(isInstanceOf<ApiException>()));
         expect(manager.info, null, reason: 'The info should be empty');
 
-        await untilCalled(analyticsService.logError(UserRepository.tag, any));
+        await untilCalled(analyticsService!.logError(UserRepository.tag, any!));
 
-        verify(cacheManager.get(UserRepository.infoCacheKey));
+        verify(cacheManager!.get(UserRepository.infoCacheKey));
         verify(manager.getPassword());
-        verify(analyticsService.logError(UserRepository.tag, any));
+        verify(analyticsService!.logError(UserRepository.tag, any!));
 
-        verifyNever(cacheManager.update(UserRepository.infoCacheKey, any));
+        verifyNever(cacheManager!.update(UserRepository.infoCacheKey, any!));
       });
 
       test("Cache update fail", () async {
         // Stub to simulate presence of session cache
-        reset(cacheManager as CacheManagerMock);
+        reset(cacheManager as CacheManagerMock?);
         CacheManagerMock.stubGet(cacheManager as CacheManagerMock,
             UserRepository.infoCacheKey, jsonEncode(info));
 
@@ -664,7 +664,7 @@ void main() {
           () async {
         //Stub the networkingService to return no connectivity
         reset(networkingService);
-        NetworkingServiceMock.stubHasConnectivity(networkingService,
+        NetworkingServiceMock.stubHasConnectivity(networkingService!,
             hasConnectivity: false);
 
         final infoCache = await manager.getInfo();

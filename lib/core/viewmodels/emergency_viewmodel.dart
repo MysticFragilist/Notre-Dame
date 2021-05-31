@@ -9,9 +9,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/viewmodels/security_viewmodel.dart';
 
 class EmergencyViewModel extends SecurityViewModel {
-  WebViewController webViewController;
+  late WebViewController webViewController;
 
-  EmergencyViewModel({@required AppIntl intl}) : super(intl: intl);
+  EmergencyViewModel({required AppIntl intl}) : super(intl: intl);
 
   /// used to load the emergency procedures html files inside the webView
   Future loadHtmlFromAssets(String filename, BuildContext context) async {

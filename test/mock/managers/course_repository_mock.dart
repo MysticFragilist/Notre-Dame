@@ -15,8 +15,8 @@ import 'package:notredame/core/utils/api_exception.dart';
 class CourseRepositoryMock extends Mock implements CourseRepository {
   /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].
   static void stubCoursesActivities(CourseRepositoryMock mock,
-      {List<CourseActivity> toReturn = const []}) {
-    when(mock.coursesActivities).thenReturn(toReturn);
+      {List<CourseActivity?> toReturn = const []}) {
+    when(mock.coursesActivities).thenReturn(toReturn as List<CourseActivity>?);
   }
 
   /// Stub the getter [sessions] of [mock] when called will return [toReturn].
@@ -33,9 +33,9 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
 
   /// Stub the function [getCoursesActivities] of [mock] when called will return [toReturn].
   static void stubGetCoursesActivities(CourseRepositoryMock mock,
-      {List<CourseActivity> toReturn = const [], bool fromCacheOnly}) {
+      {List<CourseActivity> toReturn = const [], bool? fromCacheOnly}) {
     when(mock.getCoursesActivities(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")!))
         .thenAnswer((_) async => toReturn);
   }
 
@@ -43,9 +43,9 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   static void stubGetCoursesActivitiesException(CourseRepositoryMock mock,
       {Exception toThrow =
           const ApiException(prefix: 'ApiException', message: ''),
-      bool fromCacheOnly}) {
+      bool? fromCacheOnly}) {
     when(mock.getCoursesActivities(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")!))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
   }
@@ -67,9 +67,9 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
 
   /// Stub the function [getCourses] of [mock] when called will return [toReturn].
   static void stubGetCourses(CourseRepositoryMock mock,
-      {List<Course> toReturn = const [], bool fromCacheOnly}) {
+      {List<Course> toReturn = const [], bool? fromCacheOnly}) {
     when(mock.getCourses(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")!))
         .thenAnswer((_) async => toReturn);
   }
 
@@ -83,9 +83,9 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   static void stubGetCoursesException(CourseRepositoryMock mock,
       {Exception toThrow =
           const ApiException(prefix: 'ApiException', message: ''),
-      bool fromCacheOnly}) {
+      bool? fromCacheOnly}) {
     when(mock.getCourses(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")!))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
   }
@@ -93,7 +93,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   /// Stub the function [getCourseSummary] of [mock] when called will return [toReturn].
   static void stubGetCourseSummary(
       CourseRepositoryMock mock, Course courseCalled,
-      {Course toReturn}) {
+      {Course? toReturn}) {
     when(mock.getCourseSummary(courseCalled)).thenAnswer((_) async => toReturn);
   }
 

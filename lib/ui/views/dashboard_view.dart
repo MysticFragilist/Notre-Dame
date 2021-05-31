@@ -24,7 +24,7 @@ import 'package:notredame/ui/utils/loading.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class DashboardView extends StatefulWidget {
-  const DashboardView({Key key}) : super(key: key);
+  const DashboardView({Key? key}) : super(key: key);
 
   @override
   _DashboardViewState createState() => _DashboardViewState();
@@ -32,7 +32,7 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _DashboardViewState extends State<DashboardView>
 
     _animationController.forward();
 
-    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+    SchedulerBinding.instance!.addPostFrameCallback((Duration duration) {
       DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
     });
   }
@@ -65,7 +65,7 @@ class _DashboardViewState extends State<DashboardView>
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
               appBar: AppBar(
-                  title: Text(AppIntl.of(context).title_dashboard),
+                  title: Text(AppIntl.of(context)!.title_dashboard),
                   centerTitle: false,
                   automaticallyImplyLeading: false,
                   actions: [
@@ -92,7 +92,7 @@ class _DashboardViewState extends State<DashboardView>
   List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
 
-    for (final PreferencesFlag element in model.cardsToDisplay) {
+    for (final PreferencesFlag element in model.cardsToDisplay!) {
       switch (element) {
         case PreferencesFlag.aboutUsCard:
           cards.add(_buildAboutUsCard(model, element));
@@ -126,7 +126,7 @@ class _DashboardViewState extends State<DashboardView>
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context).card_applets_title,
+                child: Text(AppIntl.of(context)!.card_applets_title,
                     style: Theme.of(context).primaryTextTheme.headline6),
               )),
           Column(
@@ -134,7 +134,7 @@ class _DashboardViewState extends State<DashboardView>
             children: [
               Container(
                 padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                child: Text(AppIntl.of(context).card_applets_text,
+                child: Text(AppIntl.of(context)!.card_applets_text,
                     style: Theme.of(context).primaryTextTheme.bodyText2),
               ),
               Container(
@@ -144,21 +144,21 @@ class _DashboardViewState extends State<DashboardView>
                     onPressed: () {
                       Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
                     },
-                    child: Text(AppIntl.of(context).facebook.toUpperCase(),
+                    child: Text(AppIntl.of(context)!.facebook.toUpperCase(),
                         style: Theme.of(context).primaryTextTheme.button),
                   ),
                   TextButton(
                     onPressed: () {
                       Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
                     },
-                    child: Text(AppIntl.of(context).github.toUpperCase(),
+                    child: Text(AppIntl.of(context)!.github.toUpperCase(),
                         style: Theme.of(context).primaryTextTheme.button),
                   ),
                   TextButton(
                     onPressed: () {
                       Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
                     },
-                    child: Text(AppIntl.of(context).email.toUpperCase(),
+                    child: Text(AppIntl.of(context)!.email.toUpperCase(),
                         style: Theme.of(context).primaryTextTheme.button),
                   ),
                 ]),
@@ -181,7 +181,7 @@ class _DashboardViewState extends State<DashboardView>
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context).progress_bar_title,
+                child: Text(AppIntl.of(context)!.progress_bar_title,
                     style: Theme.of(context).textTheme.headline6),
               )),
           if (model.progress >= 0.0)
@@ -203,7 +203,7 @@ class _DashboardViewState extends State<DashboardView>
                 padding: const EdgeInsets.only(top: 16),
                 child: Center(
                   child: Text(
-                    AppIntl.of(context).progress_bar_message(
+                    AppIntl.of(context)!.progress_bar_message(
                         model.sessionDays[0], model.sessionDays[1]),
                     style: const TextStyle(color: Colors.white),
                   ),
@@ -214,7 +214,7 @@ class _DashboardViewState extends State<DashboardView>
             Container(
               padding: const EdgeInsets.all(16),
               child: Center(
-                child: Text(AppIntl.of(context).session_without),
+                child: Text(AppIntl.of(context)!.session_without),
               ),
             ),
         ]),
@@ -235,14 +235,14 @@ class _DashboardViewState extends State<DashboardView>
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context).title_schedule,
+                child: Text(AppIntl.of(context)!.title_schedule,
                     style: Theme.of(context).textTheme.headline6),
               )),
           if (model.todayDateEvents.isEmpty)
             SizedBox(
                 height: 100,
                 child:
-                    Center(child: Text(AppIntl.of(context).schedule_no_event)))
+                    Center(child: Text(AppIntl.of(context)!.schedule_no_event)))
           else
             _buildEventList(model.todayDateEvents)
         ]),
@@ -279,7 +279,7 @@ class _DashboardViewState extends State<DashboardView>
                 alignment: Alignment.centerLeft,
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                  child: Text(AppIntl.of(context).grades_title,
+                  child: Text(AppIntl.of(context)!.grades_title,
                       style: Theme.of(context).textTheme.headline6),
                 ),
               ),
@@ -287,7 +287,7 @@ class _DashboardViewState extends State<DashboardView>
                 SizedBox(
                   height: 100,
                   child: Center(
-                      child: Text(AppIntl.of(context)
+                      child: Text(AppIntl.of(context)!
                           .grades_msg_no_grades
                           .split("\n")
                           .first)),
@@ -314,8 +314,8 @@ class _DashboardViewState extends State<DashboardView>
       newIndex -= 1;
     }
 
-    final PreferencesFlag elementMoved = model.cards.keys
-        .firstWhere((element) => model.cards[element] == oldIndex);
+    final PreferencesFlag elementMoved = model.cards!.keys
+        .firstWhere((element) => model.cards![element] == oldIndex);
 
     model.setOrder(elementMoved, newIndex);
   }

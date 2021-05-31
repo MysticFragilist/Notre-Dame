@@ -19,20 +19,20 @@ import 'package:notredame/core/utils/utils.dart';
 class MoreView extends StatelessWidget {
   /// License text box
   List<Widget> aboutBoxChildren(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodyText2;
+    final textStyle = Theme.of(context).textTheme.bodyText2!;
     return <Widget>[
       const SizedBox(height: 24),
       RichText(
         text: TextSpan(
           children: <TextSpan>[
             TextSpan(
-                style: textStyle, text: AppIntl.of(context).flutter_license),
+                style: textStyle, text: AppIntl.of(context)!.flutter_license),
             TextSpan(
                 style: textStyle.copyWith(color: Colors.blue),
-                text: AppIntl.of(context).flutter_website,
+                text: AppIntl.of(context)!.flutter_website,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => Utils.launchURL(
-                      AppIntl.of(context).flutter_website,
+                      AppIntl.of(context)!.flutter_website,
                       AppIntl.of(context))),
             TextSpan(style: textStyle, text: '.'),
           ],
@@ -48,13 +48,13 @@ class MoreView extends StatelessWidget {
         builder: (context, model, child) {
           return BaseScaffold(
             appBar: AppBar(
-              title: Text(AppIntl.of(context).title_more),
+              title: Text(AppIntl.of(context)!.title_more),
               automaticallyImplyLeading: false,
             ),
             body: ListView(
               children: [
                 ListTile(
-                  title: Text(AppIntl.of(context).more_about_applets_title),
+                  title: Text(AppIntl.of(context)!.more_about_applets_title),
                   leading: Hero(
                     tag: 'about',
                     child: Image.asset(
@@ -64,28 +64,28 @@ class MoreView extends StatelessWidget {
                     ),
                   ),
                   onTap: () =>
-                      model.navigationService.pushNamed(RouterPaths.about),
+                      model.navigationService!.pushNamed(RouterPaths.about),
                 ),
                 ListTile(
-                  title: Text(AppIntl.of(context).more_report_bug),
+                  title: Text(AppIntl.of(context)!.more_report_bug),
                   leading: const Icon(Icons.bug_report),
-                  onTap: () => BetterFeedback.of(context).show((
+                  onTap: () => BetterFeedback.of(context)!.show((
                     String feedbackText,
-                    Uint8List feedbackScreenshot,
+                    Uint8List? feedbackScreenshot,
                   ) {
                     model
-                        .sendFeedback(feedbackText, feedbackScreenshot)
-                        .then((value) => BetterFeedback.of(context).hide());
+                        .sendFeedback(feedbackText, feedbackScreenshot!)
+                        .then((value) => BetterFeedback.of(context)!.hide());
                   }),
                 ),
                 ListTile(
-                  title: Text(AppIntl.of(context).more_contributors),
+                  title: Text(AppIntl.of(context)!.more_contributors),
                   leading: const Icon(Icons.people_outline),
-                  onTap: () => model.navigationService
+                  onTap: () => model.navigationService!
                       .pushNamed(RouterPaths.contributors),
                 ),
                 ListTile(
-                  title: Text(AppIntl.of(context).more_open_source_licenses),
+                  title: Text(AppIntl.of(context)!.more_open_source_licenses),
                   leading: const Icon(Icons.code),
                   onTap: () => Navigator.of(context).push(
                     PageRouteBuilder(
@@ -95,7 +95,7 @@ class MoreView extends StatelessWidget {
                             child: Image.asset(
                                 'assets/images/favicon_applets.png')),
                         applicationName:
-                            AppIntl.of(context).more_open_source_licenses,
+                            AppIntl.of(context)!.more_open_source_licenses,
                         applicationVersion: model.appVersion,
                         applicationLegalese:
                             '\u{a9} ${DateTime.now().year} App|ETS',
@@ -106,30 +106,30 @@ class MoreView extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  title: Text(AppIntl.of(context).settings_title),
+                  title: Text(AppIntl.of(context)!.settings_title),
                   leading: const Icon(Icons.settings),
                   onTap: () =>
-                      model.navigationService.pushNamed(RouterPaths.settings),
+                      model.navigationService!.pushNamed(RouterPaths.settings),
                 ),
                 ListTile(
-                  title: Text(AppIntl.of(context).more_log_out),
+                  title: Text(AppIntl.of(context)!.more_log_out),
                   leading: const Icon(Icons.logout),
                   onTap: () => Navigator.of(context).push(
                     PageRouteBuilder(
                       pageBuilder: (context, _, __) => AlertDialog(
                         title: Text(
-                          AppIntl.of(context).more_log_out,
+                          AppIntl.of(context)!.more_log_out,
                           style: const TextStyle(color: Colors.red),
                         ),
-                        content: Text(AppIntl.of(context)
+                        content: Text(AppIntl.of(context)!
                             .more_prompt_log_out_confirmation),
                         actions: [
                           TextButton(
                               onPressed: () async => model.logout(),
-                              child: Text(AppIntl.of(context).yes)),
+                              child: Text(AppIntl.of(context)!.yes)),
                           TextButton(
                               onPressed: () => Navigator.of(context).pop(),
-                              child: Text(AppIntl.of(context).no))
+                              child: Text(AppIntl.of(context)!.no))
                         ],
                       ),
                       opaque: false,

@@ -3,25 +3,25 @@ import 'package:flutter/material.dart';
 
 /// User received from MonETS after a authentication
 class MonETSUser {
-  final String domain;
+  final String? domain;
 
-  final int typeUsagerId;
+  final int? typeUsagerId;
 
   /// Username of the user
-  final String username;
+  final String? username;
 
   /// Get the universal code extracted from the username
-  String get universalCode => username.replaceFirst("$domain\\", "");
+  String get universalCode => username!.replaceFirst("$domain\\", "");
 
   MonETSUser(
-      {@required this.domain,
-      @required this.typeUsagerId,
-      @required this.username});
+      {required this.domain,
+      required this.typeUsagerId,
+      required this.username});
 
   MonETSUser.fromJson(Map<String, dynamic> json)
-      : domain = json['Domaine'] as String,
-        typeUsagerId = json['TypeUsagerId'] as int,
-        username = json['Username'] as String;
+      : domain = json['Domaine'] as String?,
+        typeUsagerId = json['TypeUsagerId'] as int?,
+        username = json['Username'] as String?;
 
   @override
   bool operator ==(Object other) =>

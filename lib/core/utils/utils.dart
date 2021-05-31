@@ -8,16 +8,16 @@ import 'package:notredame/core/services/networking_service.dart';
 
 class Utils {
   /// Used to open a url
-  static Future<void> launchURL(String url, AppIntl intl) async {
+  static Future<void> launchURL(String url, AppIntl? intl) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      Fluttertoast.showToast(msg: intl.error);
+      Fluttertoast.showToast(msg: intl!.error);
       throw 'Could not launch $url';
     }
   }
 
-  static double getGradeInPercentage(double grade, double maxGrade) {
+  static double getGradeInPercentage(double? grade, double? maxGrade) {
     if (grade == null || maxGrade == null || grade == 0.0 || maxGrade == 0.0) {
       return 0.0;
     }
@@ -26,9 +26,9 @@ class Utils {
   }
 
   static Future showNoConnectionToast(
-      NetworkingService networkingService, AppIntl intl) async {
+      NetworkingService networkingService, AppIntl? intl) async {
     if (!await networkingService.hasConnectivity()) {
-      Fluttertoast.showToast(msg: intl.no_connectivity);
+      Fluttertoast.showToast(msg: intl!.no_connectivity);
     }
   }
 }

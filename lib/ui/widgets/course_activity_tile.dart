@@ -21,10 +21,10 @@ class CourseActivityTile extends StatelessWidget {
         child: ListTile(
           leading: _buildLeading(),
           dense: false,
-          title: Text(activity.courseGroup),
+          title: Text(activity.courseGroup!),
           subtitle:
               Text("${activity.courseName}\n${activity.activityDescription}"),
-          trailing: Text(activity.activityLocation),
+          trailing: Text(activity.activityLocation!),
         ),
       );
 
@@ -41,11 +41,11 @@ class CourseActivityTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(timeFormat.format(activity.startDateTime)),
-                Text(timeFormat.format(activity.endDateTime)),
+                Text(timeFormat.format(activity.startDateTime!)),
+                Text(timeFormat.format(activity.endDateTime!)),
               ],
             ),
-            VerticalDivider(color: colorFor(activity.courseName), thickness: 2)
+            VerticalDivider(color: colorFor(activity.courseName!), thickness: 2)
           ],
         ),
       );

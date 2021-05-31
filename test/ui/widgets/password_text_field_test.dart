@@ -10,7 +10,7 @@ import 'package:notredame/ui/widgets/password_text_field.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group('PasswordFormField - ', () {
     setUpAll(() async {

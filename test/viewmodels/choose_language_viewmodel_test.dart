@@ -20,11 +20,11 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
-ChooseLanguageViewModel viewModel;
+late ChooseLanguageViewModel viewModel;
 
 void main() {
-  NavigationService navigationService;
-  SettingsManager settingsManager;
+  late NavigationService navigationService;
+  late SettingsManager settingsManager;
 
   group("ChooseLanguageViewModel - ", () {
     setUp(() async {
@@ -83,7 +83,7 @@ void main() {
       });
 
       test('returns the languages with an exception', () async {
-        const AppIntl intlNull = null;
+        const AppIntl? intlNull = null;
         final ChooseLanguageViewModel viewModelWithInvalidIntl =
             ChooseLanguageViewModel(intl: intlNull);
 

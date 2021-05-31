@@ -24,9 +24,9 @@ import 'package:notredame/ui/utils/app_theme.dart';
 
 class ScheduleView extends StatefulWidget {
   @visibleForTesting
-  final DateTime initialDay;
+  final DateTime? initialDay;
 
-  const ScheduleView({Key key, this.initialDay}) : super(key: key);
+  const ScheduleView({Key? key, this.initialDay}) : super(key: key);
 
   @override
   _ScheduleViewState createState() => _ScheduleViewState();
@@ -38,7 +38,7 @@ class _ScheduleViewState extends State<ScheduleView>
 
   static const Color _defaultColor = Color(0xff76859B);
 
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   void initState() {
@@ -72,7 +72,7 @@ class _ScheduleViewState extends State<ScheduleView>
                 isLoading: model.busy(model.isLoadingEvents),
                 isInteractionLimitedWhileLoading: false,
                 appBar: AppBar(
-                  title: Text(AppIntl.of(context).title_schedule),
+                  title: Text(AppIntl.of(context)!.title_schedule),
                   centerTitle: false,
                   automaticallyImplyLeading: false,
                   actions: _buildActionButtons(model),
@@ -95,7 +95,7 @@ class _ScheduleViewState extends State<ScheduleView>
                           padding: const EdgeInsets.symmetric(vertical: 64.0),
                           child: Center(
                               child:
-                                  Text(AppIntl.of(context).schedule_no_event)),
+                                  Text(AppIntl.of(context)!.schedule_no_event)),
                         )
                       else
                         _buildEventList(model.selectedDateEvents),
@@ -106,7 +106,7 @@ class _ScheduleViewState extends State<ScheduleView>
               ));
 
   /// Build the square with the number of [events] for the [date]
-  Widget _buildEventsMarker(
+  Widget? _buildEventsMarker(
       ScheduleViewModel model, DateTime date, List events) {
     if (events.isNotEmpty) {
       return Positioned(
@@ -145,21 +145,21 @@ class _ScheduleViewState extends State<ScheduleView>
             startingDayOfWeek:
                 model.settings[PreferencesFlag.scheduleSettingsStartWeekday]
                     as StartingDayOfWeek,
-            locale: model.locale.toLanguageTag(),
+            locale: model.locale!.toLanguageTag(),
             selectedDayPredicate: (day) {
               return isSameDay(model.selectedDate, day);
             },
             weekendDays: const [],
             headerStyle: const HeaderStyle(
                 titleCentered: true, formatButtonVisible: false),
-            eventLoader: model.coursesActivitiesFor,
+            eventLoader: model.coursesActivitiesFor as List<_> Function(DateTime)?,
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 model.selectedDate = selectedDay;
                 model.focusedDate.value = focusedDay;
               });
             },
-            calendarFormat: model.calendarFormat,
+            calendarFormat: model.calendarFormat!,
             onFormatChanged: (format) {
               setState(() {
                 model.setCalendarFormat(format);
@@ -216,7 +216,7 @@ class _ScheduleViewState extends State<ScheduleView>
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) => [
         if ((model.settings[PreferencesFlag.scheduleSettingsShowTodayBtn]
-                as bool) ==
+                as bool?) ==
             true)
           IconButton(
               icon: const Icon(Icons.today),

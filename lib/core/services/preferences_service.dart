@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 class PreferencesService {
-  Future<bool> setBool(PreferencesFlag flag, {@required bool value}) async {
+  Future<bool> setBool(PreferencesFlag flag, {required bool value}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setBool(flag.toString(), value);
@@ -30,19 +30,19 @@ class PreferencesService {
     return prefs.setInt(flag.toString(), value);
   }
 
-  Future<bool> getBool(PreferencesFlag flag) async {
+  Future<bool?> getBool(PreferencesFlag flag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.getBool(flag.toString());
   }
 
-  Future<int> getInt(PreferencesFlag flag) async {
+  Future<int?> getInt(PreferencesFlag flag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.getInt(flag.toString());
   }
 
-  Future<String> getString(PreferencesFlag flag) async {
+  Future<String?> getString(PreferencesFlag flag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.getString(flag.toString());

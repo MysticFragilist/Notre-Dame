@@ -45,7 +45,7 @@ class _LoginViewState extends State<LoginView> {
                       key: formKey,
                       onChanged: () {
                         setState(() {
-                          formKey.currentState.validate();
+                          formKey.currentState!.validate();
                         });
                       },
                       child: AutofillGroup(
@@ -84,7 +84,7 @@ class _LoginViewState extends State<LoginView> {
                                       borderSide: BorderSide(
                                           color: errorTextColor,
                                           width: borderRadiusOnFocus)),
-                                  labelText: AppIntl.of(context)
+                                  labelText: AppIntl.of(context)!
                                       .login_prompt_universal_code,
                                   labelStyle:
                                       const TextStyle(color: Colors.white54),
@@ -119,7 +119,7 @@ class _LoginViewState extends State<LoginView> {
                                               Fluttertoast.showToast(
                                                   msg: error);
                                             }
-                                            formKey.currentState.reset();
+                                            formKey.currentState!.reset();
                                           });
                                         },
                                   style: ButtonStyle(
@@ -132,7 +132,7 @@ class _LoginViewState extends State<LoginView> {
                                             vertical: 16)),
                                   ),
                                   child: Text(
-                                    AppIntl.of(context).login_action_sign_in,
+                                    AppIntl.of(context)!.login_action_sign_in,
                                     style: TextStyle(
                                         color: model.canSubmit
                                             ? submitTextColor
@@ -153,7 +153,7 @@ class _LoginViewState extends State<LoginView> {
                       spacing: -20,
                       children: <Widget>[
                         Text(
-                          AppIntl.of(context).login_applets_logo,
+                          AppIntl.of(context)!.login_applets_logo,
                           style: const TextStyle(color: Colors.white),
                         ),
                         Image.asset(

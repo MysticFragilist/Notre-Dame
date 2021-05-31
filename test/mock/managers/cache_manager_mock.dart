@@ -25,7 +25,7 @@ class CacheManagerMock extends Mock implements CacheManager {
   static void stubUpdateException(CacheManagerMock mock, String key,
       {Exception exceptionToThrow =
           const CacheException(prefix: 'CacheException', message: '')}) {
-    when(mock.update(key, any)).thenThrow(exceptionToThrow);
+    when(mock.update(key, any!)).thenThrow(exceptionToThrow);
   }
 
   /// Stub a exception while calling the delete function of [mock] when [key] is used.

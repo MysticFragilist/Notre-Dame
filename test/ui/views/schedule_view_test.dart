@@ -27,14 +27,14 @@ import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/networking_service_mock.dart';
 
 void main() {
-  SettingsManager settingsManager;
-  CourseRepository courseRepository;
+  late SettingsManager settingsManager;
+  late CourseRepository courseRepository;
   NetworkingServiceMock networkingService;
 
   // Some activities
-  CourseActivity activityYesterday;
-  CourseActivity activityToday;
-  CourseActivity activityTomorrow;
+  CourseActivity? activityYesterday;
+  CourseActivity? activityToday;
+  CourseActivity? activityTomorrow;
 
   // Some settings
   Map<PreferencesFlag, dynamic> settings = {

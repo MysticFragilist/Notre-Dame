@@ -19,10 +19,10 @@ import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 
-UserRepository userRepository;
-SettingsManager settingsManager;
-NetworkingServiceMock networkingService;
-ProfileViewModel viewModel;
+UserRepository? userRepository;
+SettingsManager? settingsManager;
+late NetworkingServiceMock networkingService;
+late ProfileViewModel viewModel;
 
 void main() {
   // Needed to support FlutterToast.
@@ -96,9 +96,9 @@ void main() {
         expect(await viewModel.futureToRun(), []);
 
         verifyInOrder([
-          userRepository.getInfo(fromCacheOnly: true),
-          userRepository.getPrograms(fromCacheOnly: true),
-          userRepository.getInfo(),
+          userRepository!.getInfo(fromCacheOnly: true),
+          userRepository!.getPrograms(fromCacheOnly: true),
+          userRepository!.getInfo(),
         ]);
 
         verifyNoMoreInteractions(userRepository);
@@ -120,9 +120,9 @@ void main() {
             reason: "Even if SignetsAPI fails we should receives a list.");
 
         verifyInOrder([
-          userRepository.getInfo(fromCacheOnly: true),
-          userRepository.getPrograms(fromCacheOnly: true),
-          userRepository.getInfo(),
+          userRepository!.getInfo(fromCacheOnly: true),
+          userRepository!.getPrograms(fromCacheOnly: true),
+          userRepository!.getInfo(),
         ]);
 
         verifyNoMoreInteractions(userRepository);
@@ -137,7 +137,7 @@ void main() {
 
         expect(viewModel.profileStudent, info);
 
-        verify(userRepository.info).called(1);
+        verify(userRepository!.info).called(1);
 
         verifyNoMoreInteractions(userRepository);
       });
@@ -150,7 +150,7 @@ void main() {
 
         expect(viewModel.programList, programs);
 
-        verify(userRepository.programs).called(2);
+        verify(userRepository!.programs).called(2);
 
         verifyNoMoreInteractions(userRepository);
       });
@@ -171,9 +171,9 @@ void main() {
         expect(viewModel.profileStudent, info);
 
         verifyInOrder([
-          userRepository.getInfo(),
-          userRepository.getPrograms(),
-          userRepository.info,
+          userRepository!.getInfo(),
+          userRepository!.getPrograms(),
+          userRepository!.info,
         ]);
 
         verifyNoMoreInteractions(userRepository);

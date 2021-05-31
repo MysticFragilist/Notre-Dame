@@ -22,9 +22,9 @@ class GithubApi {
   static const String _repositorySlug = "ApplETS/Notre-Dame";
   static const String _repositoryReportSlug = "ApplETS/Notre-Dame-Bug-report";
 
-  GitHub _github;
+  late GitHub _github;
 
-  final InternalInfoService _internalInfoService =
+  final InternalInfoService? _internalInfoService =
       locator<InternalInfoService>();
 
   GithubApi() {
@@ -38,7 +38,7 @@ class GithubApi {
   }
 
   /// Upload a file to the ApplETS/Notre-Dame-Bug-report repository
-  void uploadFileToGithub({@required String filePath, @required File file}) {
+  void uploadFileToGithub({required String filePath, required File file}) {
     _github.repositories.createFile(
         RepositorySlug.full(_repositoryReportSlug),
         CreateFile(
@@ -54,7 +54,7 @@ class GithubApi {
   /// The bug report will contain a file, a description [feedbackText] and also some information about the
   /// application/device.
   Future<void> createGithubIssue(
-      {@required String feedbackText, @required String fileName}) async {
+      {required String feedbackText, required String fileName}) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     _github.issues.create(
         RepositorySlug.full(_repositorySlug),
@@ -64,7 +64,7 @@ class GithubApi {
                 "```$feedbackText```\n\n"
                 "**Screenshot** \n"
                 "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
-                "${await _internalInfoService.getDeviceInfoForErrorReporting()}",
+                "${await _internalInfoService!.getDeviceInfoForErrorReporting()}",
             labels: ['bug', 'platform: ${Platform.operatingSystem}']));
   }
 

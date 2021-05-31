@@ -16,7 +16,7 @@ import '../../mock/managers/user_repository_mock.dart';
 import '../../mock/services/networking_service_mock.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
   UserRepository userRepository;
   NetworkingServiceMock networkingService;
   group('Profile view - ', () {

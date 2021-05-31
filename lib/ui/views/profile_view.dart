@@ -26,13 +26,13 @@ class ProfileView extends StatelessWidget {
                   ListView(padding: const EdgeInsets.all(0.0), children: [
                     ListTile(
                       title: Text(
-                        AppIntl.of(context).profile_student_status_title,
+                        AppIntl.of(context)!.profile_student_status_title,
                         style: const TextStyle(color: AppTheme.etsLightRed),
                       ),
                     ),
                     ListTile(
-                      title: Text(AppIntl.of(context).profile_balance),
-                      trailing: Text(model.profileStudent.balance),
+                      title: Text(AppIntl.of(context)!.profile_balance),
+                      trailing: Text(model.profileStudent.balance!),
                     ),
                     const Divider(
                       thickness: 2,
@@ -41,33 +41,33 @@ class ProfileView extends StatelessWidget {
                     ),
                     ListTile(
                       title: Text(
-                        AppIntl.of(context).profile_personal_information_title,
+                        AppIntl.of(context)!.profile_personal_information_title,
                         style: const TextStyle(color: AppTheme.etsLightRed),
                       ),
                     ),
                     ListTile(
-                      title: Text(AppIntl.of(context).profile_first_name),
-                      trailing: Text(model.profileStudent.firstName),
+                      title: Text(AppIntl.of(context)!.profile_first_name),
+                      trailing: Text(model.profileStudent.firstName!),
                     ),
                     ListTile(
-                      title: Text(AppIntl.of(context).profile_last_name),
-                      trailing: Text(model.profileStudent.lastName),
+                      title: Text(AppIntl.of(context)!.profile_last_name),
+                      trailing: Text(model.profileStudent.lastName!),
                     ),
                     ListTile(
-                        title: Text(AppIntl.of(context).profile_permanent_code),
-                        trailing: Text(model.profileStudent.permanentCode)),
+                        title: Text(AppIntl.of(context)!.profile_permanent_code),
+                        trailing: Text(model.profileStudent.permanentCode!)),
                     ListTile(
                         title: Text(
-                            AppIntl.of(context).login_prompt_universal_code),
+                            AppIntl.of(context)!.login_prompt_universal_code),
                         trailing: Text(model.universalAccessCode)),
                     ListView.builder(
                       padding: const EdgeInsets.all(0.0),
                       shrinkWrap: true,
                       reverse: true,
                       physics: const ScrollPhysics(),
-                      itemCount: model.programList.length,
+                      itemCount: model.programList!.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return StudentProgram(model.programList[index]);
+                        return StudentProgram(model.programList![index]);
                       },
                     ),
                   ]),

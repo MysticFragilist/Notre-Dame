@@ -15,7 +15,7 @@ import 'package:notredame/core/models/course_summary.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,

@@ -8,13 +8,13 @@ import 'package:notredame/ui/widgets/bottom_bar.dart';
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
 class BaseScaffold extends StatelessWidget {
-  final AppBar appBar;
+  final AppBar? appBar;
 
-  final Widget body;
+  final Widget? body;
 
-  final FloatingActionButton fab;
+  final FloatingActionButton? fab;
 
-  final FloatingActionButtonLocation fabPosition;
+  final FloatingActionButtonLocation? fabPosition;
 
   final bool _showBottomBar;
 
@@ -42,7 +42,7 @@ class BaseScaffold extends StatelessWidget {
           top: false,
           child: Stack(
             children: [
-              body,
+              body!,
               if (_isLoading)
                 buildLoading(
                     isInteractionLimitedWhileLoading:

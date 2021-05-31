@@ -20,7 +20,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/core/utils/utils.dart';
 
 class GradesDetailsView extends StatefulWidget {
-  final Course course;
+  final Course? course;
 
   const GradesDetailsView({this.course});
 
@@ -64,7 +64,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                       title: Align(
                         alignment: AlignmentDirectional.bottomStart,
                         child: Text(
-                          model.course.acronym ?? "",
+                          model.course!.acronym ?? "",
                           style: TextStyle(
                               fontSize: topHeight < initialTopHeight ? 20 : 19),
                         ),
@@ -88,9 +88,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _buildClassInfo(model.course.title ?? ""),
-                        _buildClassInfo(AppIntl.of(context)
-                            .grades_group_number(model.course.group ?? "")),
+                        _buildClassInfo(model.course!.title ?? ""),
+                        _buildClassInfo(AppIntl.of(context)!
+                            .grades_group_number(model.course!.group ?? "")),
                       ],
                     ),
                   ),
@@ -106,7 +106,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
       );
 
   Widget _buildGradeEvaluations(GradesDetailsViewModel model) {
-    if (model.course.summary != null) {
+    if (model.course!.summary != null) {
       return ListView(
         padding: const EdgeInsets.all(5.0),
         children: <Widget>[
@@ -123,14 +123,14 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                         child: GradeCircularProgress(
                           1.0,
                           key: const Key("GradeCircularProgress_summary"),
-                          finalGrade: model.course.grade,
+                          finalGrade: model.course!.grade,
                           studentGrade: Utils.getGradeInPercentage(
-                            model.course.summary.currentMark,
-                            model.course.summary.markOutOf,
+                            model.course!.summary!.currentMark,
+                            model.course!.summary!.markOutOf,
                           ),
                           averageGrade: Utils.getGradeInPercentage(
-                            model.course.summary.passMark,
-                            model.course.summary.markOutOf,
+                            model.course!.summary!.passMark,
+                            model.course!.summary!.markOutOf,
                           ),
                         ),
                       ),
@@ -141,10 +141,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                           children: <Widget>[
                             _buildGradesSummary(
                               Utils.getGradeInPercentage(
-                                model.course.summary.currentMark,
-                                model.course.summary.markOutOf,
+                                model.course!.summary!.currentMark,
+                                model.course!.summary!.markOutOf,
                               ),
-                              AppIntl.of(context).grades_current_rating,
+                              AppIntl.of(context)!.grades_current_rating,
                               Colors.green,
                               context,
                             ),
@@ -152,9 +152,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                               padding: const EdgeInsets.only(top: 15.0),
                               child: _buildGradesSummary(
                                 Utils.getGradeInPercentage(
-                                    model.course.summary.passMark,
-                                    model.course.summary.markOutOf),
-                                AppIntl.of(context).grades_average,
+                                    model.course!.summary!.passMark,
+                                    model.course!.summary!.markOutOf),
+                                AppIntl.of(context)!.grades_average,
                                 Colors.red,
                                 context,
                               ),
@@ -172,40 +172,40 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
                     Expanded(
                       flex: 3,
                       child: _buildCourseGradeSummary(
-                        AppIntl.of(context).grades_median,
+                        AppIntl.of(context)!.grades_median,
                         validateGrade(
                           context,
-                          model.course.summary.median.toString(),
-                          AppIntl.of(context).grades_grade_in_percentage(
-                              model.course.summary.median),
+                          model.course!.summary!.median.toString(),
+                          AppIntl.of(context)!.grades_grade_in_percentage(
+                              model.course!.summary!.median!),
                         ),
                       ),
                     ),
                     Expanded(
                       flex: 3,
                       child: _buildCourseGradeSummary(
-                        AppIntl.of(context).grades_standard_deviation,
+                        AppIntl.of(context)!.grades_standard_deviation,
                         validateGrade(
                           context,
-                          model.course.summary.standardDeviation.toString(),
-                          model.course.summary.standardDeviation.toString(),
+                          model.course!.summary!.standardDeviation.toString(),
+                          model.course!.summary!.standardDeviation.toString(),
                         ),
                       ),
                     ),
                     Expanded(
                       flex: 3,
                       child: _buildCourseGradeSummary(
-                        AppIntl.of(context).grades_percentile_rank,
+                        AppIntl.of(context)!.grades_percentile_rank,
                         validateGrade(
                           context,
-                          model.course.summary.percentileRank.toString(),
-                          model.course.summary.percentileRank.toString(),
+                          model.course!.summary!.percentileRank.toString(),
+                          model.course!.summary!.percentileRank.toString(),
                         ),
                       ),
                     ),
                   ]),
               Column(children: <Widget>[
-                for (var evaluation in model.course.summary.evaluations)
+                for (var evaluation in model.course!.summary!.evaluations)
                   GradeEvaluationTile(evaluation,
                       key: Key("GradeEvaluationTile_${evaluation.title}")),
               ]),
@@ -244,21 +244,21 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
         FittedBox(
           fit: BoxFit.fitWidth,
           child: Text(
-              AppIntl.of(context)
+              AppIntl.of(context)!
                   .grades_grade_with_percentage(grade, 100, grade),
               style:
-                  Theme.of(context).textTheme.headline6.copyWith(color: color)),
+                  Theme.of(context).textTheme.headline6!.copyWith(color: color)),
         ),
         Text(recipient,
             style:
-                Theme.of(context).textTheme.bodyText1.copyWith(color: color)),
+                Theme.of(context).textTheme.bodyText1!.copyWith(color: color)),
       ],
     );
   }
 
   String validateGrade(BuildContext context, String grade, String text) {
     if (grade == "null" || grade == null) {
-      return AppIntl.of(context).grades_not_available;
+      return AppIntl.of(context)!.grades_not_available;
     }
 
     return text;
