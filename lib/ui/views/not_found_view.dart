@@ -11,9 +11,9 @@ import 'package:notredame/core/viewmodels/not_found_viewmodel.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class NotFoundView extends StatefulWidget {
-  final String? pageName;
+  final String pageName;
 
-  const NotFoundView({this.pageName});
+  const NotFoundView({required this.pageName});
 
   @override
   _NotFoundState createState() => _NotFoundState();

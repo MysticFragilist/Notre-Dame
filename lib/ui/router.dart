@@ -90,7 +90,7 @@ class AppRouter {
         return PageRouteBuilder(
             settings: RouteSettings(name: routeSettings.name),
             pageBuilder: (_, __, ___) =>
-                NotFoundView(pageName: routeSettings.name));
+                NotFoundView(pageName: routeSettings.name ?? "/unknown"));
     }
   }
 }

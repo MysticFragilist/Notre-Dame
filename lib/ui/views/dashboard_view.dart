@@ -45,7 +45,7 @@ class _DashboardViewState extends State<DashboardView>
     _animationController.forward();
 
     SchedulerBinding.instance!.addPostFrameCallback((Duration duration) {
-      DashboardViewModel(intl: AppIntl.of(context)).startDiscovery(context);
+      DashboardViewModel(intl: AppIntl.of(context)!).startDiscovery(context);
     });
   }
 
@@ -59,7 +59,7 @@ class _DashboardViewState extends State<DashboardView>
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
         viewModelBuilder: () => DashboardViewModel(
-              intl: AppIntl.of(context),
+              intl: AppIntl.of(context)!,
             ),
         builder: (context, model, child) {
           return BaseScaffold(
@@ -92,7 +92,7 @@ class _DashboardViewState extends State<DashboardView>
   List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
 
-    for (final PreferencesFlag element in model.cardsToDisplay!) {
+    for (final PreferencesFlag element in model.cardsToDisplay) {
       switch (element) {
         case PreferencesFlag.aboutUsCard:
           cards.add(_buildAboutUsCard(model, element));

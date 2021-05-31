@@ -44,7 +44,7 @@ class MoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MoreViewModel>.reactive(
-        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return BaseScaffold(
             appBar: AppBar(
@@ -64,7 +64,7 @@ class MoreView extends StatelessWidget {
                     ),
                   ),
                   onTap: () =>
-                      model.navigationService!.pushNamed(RouterPaths.about),
+                      model.navigationService.pushNamed(RouterPaths.about),
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context)!.more_report_bug),
@@ -81,7 +81,7 @@ class MoreView extends StatelessWidget {
                 ListTile(
                   title: Text(AppIntl.of(context)!.more_contributors),
                   leading: const Icon(Icons.people_outline),
-                  onTap: () => model.navigationService!
+                  onTap: () => model.navigationService
                       .pushNamed(RouterPaths.contributors),
                 ),
                 ListTile(
@@ -109,7 +109,7 @@ class MoreView extends StatelessWidget {
                   title: Text(AppIntl.of(context)!.settings_title),
                   leading: const Icon(Icons.settings),
                   onTap: () =>
-                      model.navigationService!.pushNamed(RouterPaths.settings),
+                      model.navigationService.pushNamed(RouterPaths.settings),
                 ),
                 ListTile(
                   title: Text(AppIntl.of(context)!.more_log_out),

@@ -35,7 +35,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
         viewModelBuilder: () => GradesDetailsViewModel(
-            course: widget.course, intl: AppIntl.of(context)),
+            course: widget.course, intl: AppIntl.of(context)!),
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
           body: NestedScrollView(
@@ -246,8 +246,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
           child: Text(
               AppIntl.of(context)!
                   .grades_grade_with_percentage(grade, 100, grade),
-              style:
-                  Theme.of(context).textTheme.headline6!.copyWith(color: color)),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6!
+                  .copyWith(color: color)),
         ),
         Text(recipient,
             style:
@@ -257,7 +259,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
   }
 
   String validateGrade(BuildContext context, String grade, String text) {
-    if (grade == "null" || grade == null) {
+    if (grade == "null") {
       return AppIntl.of(context)!.grades_not_available;
     }
 
@@ -278,7 +280,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 14.0),
                 child: Text(
-                  title ?? "",
+                  title,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 16,

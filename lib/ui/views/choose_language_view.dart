@@ -44,7 +44,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<ChooseLanguageViewModel>.reactive(
         viewModelBuilder: () =>
-            ChooseLanguageViewModel(intl: AppIntl.of(context)),
+            ChooseLanguageViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
               backgroundColor: Theme.of(context).brightness == Brightness.light
                   ? AppTheme.etsLightRed

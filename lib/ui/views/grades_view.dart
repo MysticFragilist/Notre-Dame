@@ -25,7 +25,7 @@ class _GradesViewState extends State<GradesView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GradesViewModel>.reactive(
-        viewModelBuilder: () => GradesViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => GradesViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return RefreshIndicator(
             onRefresh: () => model.refresh(),
@@ -45,9 +45,10 @@ class _GradesViewState extends State<GradesView> {
                       itemCount: model.coursesBySession.length,
                       itemBuilder: (BuildContext context, int index) =>
                           _buildSessionCourses(
-                              _sessionName(model.sessionOrder[index]!,
+                              _sessionName(model.sessionOrder[index],
                                   AppIntl.of(context)),
-                              model.coursesBySession[model.sessionOrder[index]]!,
+                              model
+                                  .coursesBySession[model.sessionOrder[index]]!,
                               model)),
                 if (model.isBusy)
                   buildLoading(isInteractionLimitedWhileLoading: false)

@@ -17,7 +17,7 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ProfileViewModel>.reactive(
-          viewModelBuilder: () => ProfileViewModel(intl: AppIntl.of(context)),
+          viewModelBuilder: () => ProfileViewModel(intl: AppIntl.of(context)!),
           builder: (context, model, child) {
             return RefreshIndicator(
               onRefresh: () => model.refresh(),
@@ -54,7 +54,8 @@ class ProfileView extends StatelessWidget {
                       trailing: Text(model.profileStudent.lastName!),
                     ),
                     ListTile(
-                        title: Text(AppIntl.of(context)!.profile_permanent_code),
+                        title:
+                            Text(AppIntl.of(context)!.profile_permanent_code),
                         trailing: Text(model.profileStudent.permanentCode!)),
                     ListTile(
                         title: Text(
