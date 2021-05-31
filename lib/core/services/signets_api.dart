@@ -48,7 +48,7 @@ class SignetsApi {
   /// all the activities between these dates.
   Future<List<CourseActivity>> getCoursesActivities(
       {required String username,
-      required String? password,
+      required String password,
       required String session,
       String courseGroup = "",
       DateTime? startDate,
@@ -76,7 +76,7 @@ class SignetsApi {
       operationContent.text(session);
     });
     operationContent.element("pCoursGroupe", nest: () {
-      operationContent.text(courseGroup ?? "");
+      operationContent.text(courseGroup);
     });
 
     operationContent.element("pDateDebut", nest: () {
@@ -110,7 +110,7 @@ class SignetsApi {
 
   /// Call the SignetsAPI to get the courses of the student ([username]).
   Future<List<Course>> getCourses(
-      {required String username, required String? password}) async {
+      {required String username, required String password}) async {
     // Generate initial soap envelope
     final body =
         buildBasicSOAPBody(Urls.listCourseOperation, username, password)
@@ -128,8 +128,8 @@ class SignetsApi {
   /// of [course] for the student ([username]).
   Future<CourseSummary> getCourseSummary(
       {required String username,
-      required String? password,
-      required Course? course}) async {
+      required String password,
+      required Course course}) async {
     // Generate initial soap envelope
     final body =
         buildBasicSOAPBody(Urls.listEvaluationsOperation, username, password)
@@ -138,13 +138,13 @@ class SignetsApi {
 
     // Add the content needed by the operation
     operationContent.element("pSigle", nest: () {
-      operationContent.text(course!.acronym!);
+      operationContent.text(course.acronym!);
     });
     operationContent.element("pGroupe", nest: () {
-      operationContent.text(course!.group!);
+      operationContent.text(course.group!);
     });
     operationContent.element("pSession", nest: () {
-      operationContent.text(course!.session!);
+      operationContent.text(course.session!);
     });
 
     body
@@ -172,7 +172,7 @@ class SignetsApi {
 
   /// Call the SignetsAPI to get the list of all the [Session] for the student ([username]).
   Future<List<Session>> getSessions(
-      {required String username, required String? password}) async {
+      {required String username, required String password}) async {
     // Generate initial soap envelope
     final body =
         buildBasicSOAPBody(Urls.listSessionsOperation, username, password)
@@ -190,7 +190,7 @@ class SignetsApi {
 
   /// Call the SignetsAPI to get the [ProfileStudent] for the student ([username]).
   Future<ProfileStudent> getStudentInfo(
-      {required String username, required String? password}) async {
+      {required String username, required String password}) async {
     // Generate initial soap envelope
     final body =
         buildBasicSOAPBody(Urls.infoStudentOperation, username, password)
@@ -205,7 +205,7 @@ class SignetsApi {
 
   /// Call the SignetsAPI to get the list of all the [Program] for the student ([username]).
   Future<List<Program>> getPrograms(
-      {required String username, required String? password}) async {
+      {required String username, required String password}) async {
     // Generate initial soap envelope
     final body =
         buildBasicSOAPBody(Urls.listProgramsOperation, username, password)
@@ -231,7 +231,7 @@ class SignetsApi {
   /// [firstElementName] should be the SOAP operation of the request.
   @visibleForTesting
   XmlBuilder buildBasicSOAPBody(
-      String firstElementName, String username, String? password) {
+      String firstElementName, String username, String password) {
     final builder = XmlBuilder();
 
     builder.processing('xml', 'version="1.0" encoding="utf-8"');

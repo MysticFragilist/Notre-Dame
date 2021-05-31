@@ -195,7 +195,7 @@ class UserRepository {
       final String? password = await getPassword();
 
       final List<Program> fetchedProgram = await _signetsApi.getPrograms(
-          username: monETSUser!.universalCode, password: password);
+          username: monETSUser!.universalCode, password: password ?? "");
       _logger
           .d("$tag - getPrograms: ${fetchedProgram.length} programs fetched.");
       for (final Program program in fetchedProgram) {
@@ -232,7 +232,7 @@ class UserRepository {
     // Load the student profile from the cache if the information doesn't exist
     if (_info == null) {
       try {
-        final infoCached = jsonDecode(await _cacheManager!.get(infoCacheKey))
+        final infoCached = jsonDecode(await _cacheManager.get(infoCacheKey))
             as Map<String, dynamic>;
 
         // Build info loaded from the cache.
@@ -253,7 +253,7 @@ class UserRepository {
       final String? password = await getPassword();
 
       final fetchedInfo = await _signetsApi.getStudentInfo(
-          username: monETSUser!.universalCode, password: password);
+          username: monETSUser!.universalCode, password: password ?? "");
       _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 
       if (_info != fetchedInfo) {
@@ -267,7 +267,7 @@ class UserRepository {
           "$tag - getInfo: exception raised while trying to update the cache.");
       return _info;
     } on Exception catch (e) {
-      _analyticsService!.logError(tag, "Exception raised during getInfo: $e");
+      _analyticsService.logError(tag, "Exception raised during getInfo: $e");
       rethrow;
     }
 
