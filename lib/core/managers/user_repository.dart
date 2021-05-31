@@ -76,27 +76,27 @@ class UserRepository {
   /// will be saved in the secure storage of the device to authorize a silent
   /// authentication next time.
   Future<bool> authenticate(
-      {required String? username,
-      required String? password,
+      {required String username,
+      required String password,
       bool isSilent = false}) async {
     try {
-      _monETSUser = await _monETSApi!
-          .authenticate(username: username, password: password);
+      _monETSUser =
+          await _monETSApi.authenticate(username: username, password: password);
     } catch (e) {
-      _analyticsService!.logError(tag, "Authenticate - ${e.toString()}");
+      _analyticsService.logError(tag, "Authenticate - ${e.toString()}");
       return false;
     }
 
-    await _analyticsService!
-        .setUserProperties(userId: username, domain: _monETSUser!.domain);
+    await _analyticsService.setUserProperties(
+        userId: username, domain: _monETSUser!.domain);
 
     // Save the credentials in the secure storage
     if (!isSilent) {
       try {
-        await _secureStorage!.write(key: usernameSecureKey, value: username);
-        await _secureStorage!.write(key: passwordSecureKey, value: password);
+        await _secureStorage.write(key: usernameSecureKey, value: username);
+        await _secureStorage.write(key: passwordSecureKey, value: password);
       } on PlatformException catch (e) {
-        _analyticsService!.logError(
+        _analyticsService.logError(
             tag, "Authenticate - PlatformException - ${e.toString()}");
         return false;
       }
@@ -108,14 +108,14 @@ class UserRepository {
   /// Check if there are credentials saved and so authenticate the user, otherwise
   /// return false
   Future<bool> silentAuthenticate() async {
-    final String? username = await _secureStorage!.read(key: usernameSecureKey);
+    final String? username = await _secureStorage.read(key: usernameSecureKey);
 
     if (username != null) {
       final String? password =
-          await _secureStorage!.read(key: passwordSecureKey);
+          await _secureStorage.read(key: passwordSecureKey);
 
       return authenticate(
-          username: username, password: password, isSilent: true);
+          username: username, password: password ?? "", isSilent: true);
     }
 
     return false;
@@ -127,11 +127,11 @@ class UserRepository {
 
     // Delete the credentials from the secure storage
     try {
-      await _secureStorage!.delete(key: usernameSecureKey);
-      await _secureStorage!.delete(key: passwordSecureKey);
+      await _secureStorage.delete(key: usernameSecureKey);
+      await _secureStorage.delete(key: passwordSecureKey);
     } on PlatformException catch (e) {
-      _analyticsService!
-          .logError(tag, "Authenticate - PlatformException - ${e.toString()}");
+      _analyticsService.logError(
+          tag, "Authenticate - PlatformException - ${e.toString()}");
       return false;
     }
     return true;
@@ -141,8 +141,8 @@ class UserRepository {
   /// WARNING This isn't a good practice but currently the password has to be sent in clear.
   Future<String?> getPassword() async {
     if (_monETSUser == null) {
-      _analyticsService!
-          .logEvent(tag, "Trying to acquire password but not authenticated");
+      _analyticsService.logEvent(
+          tag, "Trying to acquire password but not authenticated");
       final result = await silentAuthenticate();
 
       if (!result) {
@@ -150,7 +150,7 @@ class UserRepository {
       }
     }
 
-    final String? password = await _secureStorage!.read(key: passwordSecureKey);
+    final String? password = await _secureStorage.read(key: passwordSecureKey);
 
     return password;
   }
@@ -160,7 +160,7 @@ class UserRepository {
   /// from the [SignetsApi].
   Future<List<Program>?> getPrograms({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
-    if (!(await _networkingService!.hasConnectivity())) {
+    if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
       fromCacheOnly = true;
     }
@@ -171,17 +171,17 @@ class UserRepository {
         _programs = [];
 
         final List programsCached =
-            jsonDecode(await _cacheManager!.get(programsCacheKey))
+            jsonDecode(await _cacheManager.get(programsCacheKey))
                 as List<dynamic>;
 
         // Build list of programs loaded from the cache.
         _programs = programsCached
             .map((e) => Program.fromJson(e as Map<String, dynamic>))
             .toList();
-        _logger!.d(
+        _logger.d(
             "$tag - getPrograms: ${_programs!.length} programs loaded from cache.");
       } on CacheException catch (_) {
-        _logger!.e(
+        _logger.e(
             "$tag - getPrograms: exception raised while trying to load the programs from cache.");
       }
     }
@@ -194,9 +194,9 @@ class UserRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String? password = await getPassword();
 
-      final List<Program> fetchedProgram = await _signetsApi!
-          .getPrograms(username: monETSUser!.universalCode, password: password);
-      _logger!
+      final List<Program> fetchedProgram = await _signetsApi.getPrograms(
+          username: monETSUser!.universalCode, password: password);
+      _logger
           .d("$tag - getPrograms: ${fetchedProgram.length} programs fetched.");
       for (final Program program in fetchedProgram) {
         if (!_programs!.contains(program)) {
@@ -205,14 +205,14 @@ class UserRepository {
       }
 
       // Update cache
-      _cacheManager!.update(programsCacheKey, jsonEncode(_programs));
+      _cacheManager.update(programsCacheKey, jsonEncode(_programs));
     } on CacheException catch (_) {
-      _logger!.e(
+      _logger.e(
           "$tag - getPrograms: exception raised while trying to update the cache.");
       return _programs;
     } on Exception catch (e) {
-      _analyticsService!
-          .logError(tag, "Exception raised during getPrograms: $e");
+      _analyticsService.logError(
+          tag, "Exception raised during getPrograms: $e");
       rethrow;
     }
 
@@ -224,7 +224,7 @@ class UserRepository {
   /// from the [SignetsApi].
   Future<ProfileStudent?> getInfo({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
-    if (!(await _networkingService!.hasConnectivity())) {
+    if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
       fromCacheOnly = true;
     }
@@ -237,9 +237,9 @@ class UserRepository {
 
         // Build info loaded from the cache.
         _info = ProfileStudent.fromJson(infoCached);
-        _logger!.d("$tag - getInfo: $_info info loaded from cache.");
+        _logger.d("$tag - getInfo: $_info info loaded from cache.");
       } on CacheException catch (_) {
-        _logger!.e(
+        _logger.e(
             "$tag - getInfo: exception raised while trying to load the info from cache.");
       }
     }
@@ -252,18 +252,18 @@ class UserRepository {
       // getPassword will try to authenticate the user if not authenticated.
       final String? password = await getPassword();
 
-      final fetchedInfo = await _signetsApi!.getStudentInfo(
+      final fetchedInfo = await _signetsApi.getStudentInfo(
           username: monETSUser!.universalCode, password: password);
-      _logger!.d("$tag - getInfo: $fetchedInfo info fetched.");
+      _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 
       if (_info != fetchedInfo) {
         _info ??= fetchedInfo;
 
         // Update cache
-        _cacheManager!.update(infoCacheKey, jsonEncode(_info));
+        _cacheManager.update(infoCacheKey, jsonEncode(_info));
       }
     } on CacheException catch (_) {
-      _logger!.e(
+      _logger.e(
           "$tag - getInfo: exception raised while trying to update the cache.");
       return _info;
     } on Exception catch (e) {
@@ -275,11 +275,11 @@ class UserRepository {
   }
 
   Future<bool> wasPreviouslyLoggedIn() async {
-    final String? username = await _secureStorage!.read(key: usernameSecureKey);
+    final String? username = await _secureStorage.read(key: usernameSecureKey);
 
     if (username != null) {
       final String? password =
-          await _secureStorage!.read(key: passwordSecureKey);
+          await _secureStorage.read(key: passwordSecureKey);
       return password != null && password.isNotEmpty;
     }
     return false;
