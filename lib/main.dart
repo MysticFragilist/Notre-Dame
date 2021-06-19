@@ -47,7 +47,7 @@ Future<void> main() async {
   messaging.getToken().then((value) {
     print(value);
   });
-
+  await messaging.subscribeToTopic('global');
   FirebaseMessaging.onBackgroundMessage(NotificationService().messageHandler);
   FirebaseMessaging.onMessageOpenedApp.listen((message) {
     print('Message clicked!');
