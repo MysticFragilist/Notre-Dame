@@ -18,7 +18,7 @@ import 'package:notredame/ui/router.dart';
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
-import 'package:notredame/core/services/firebase_messaging_service.dart';
+import 'package:notredame/core/services/notification_service.dart';
 
 // UTILS
 import 'package:notredame/locator.dart';
@@ -48,8 +48,7 @@ Future<void> main() async {
     print(value);
   });
 
-  FirebaseMessaging.onBackgroundMessage(
-      FirebaseMessagingService().messageHandler);
+  FirebaseMessaging.onBackgroundMessage(NotificationService().messageHandler);
   FirebaseMessaging.onMessageOpenedApp.listen((message) {
     print('Message clicked!');
   });
