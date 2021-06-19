@@ -41,17 +41,7 @@ Future<void> main() async {
   final SettingsManager settingsManager = locator<SettingsManager>();
   await settingsManager.fetchLanguageAndThemeMode();
 
-  FirebaseMessaging messaging;
-
-  messaging = FirebaseMessaging.instance;
-  messaging.getToken().then((value) {
-    print(value);
-  });
-  await messaging.subscribeToTopic('global');
-  FirebaseMessaging.onBackgroundMessage(NotificationService().messageHandler);
-  FirebaseMessaging.onMessageOpenedApp.listen((message) {
-    print('Message clicked!');
-  });
+  NotificationService.initialize();
 
   if (kDebugMode) {
     FlutterConfig.loadEnvVariables();
