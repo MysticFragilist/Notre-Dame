@@ -82,7 +82,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
           setBusyForObject(isLoadingEvents, false);
           Utils.showNoConnectionToast(_networkingService, _appIntl);
         });
-        return value!;
+        return value ?? [];
       });
 
   Future refresh() async {

@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/networking_service.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
@@ -70,8 +71,7 @@ void main() {
     setUp(() async {
       // Setting up mocks
       userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
-      networkingServiceMock =
-          setupNetworkingServiceMock() as NetworkingServiceMock;
+      networkingServiceMock = setupNetworkingServiceMock();
       setupFlutterToastMock();
 
       // Stub to simulate that the user has an active internet connection
@@ -82,7 +82,7 @@ void main() {
 
     tearDown(() {
       unregister<UserRepository>();
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingService>();
       tearDownFlutterToastMock();
     });
 

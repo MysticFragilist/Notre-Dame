@@ -231,11 +231,11 @@ CourseRepository setupCourseRepositoryMock() {
   return service;
 }
 
-NetworkingService setupNetworkingServiceMock() {
-  unregister<NetworkingServiceMock>();
+NetworkingServiceMock setupNetworkingServiceMock() {
+  unregister<NetworkingService>();
   final service = NetworkingServiceMock();
 
-  locator.registerSingleton<NetworkingServiceMock>(service);
+  locator.registerSingleton<NetworkingService>(service);
 
   return service;
 }
