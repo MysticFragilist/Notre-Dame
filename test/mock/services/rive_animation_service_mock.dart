@@ -16,7 +16,7 @@ class RiveAnimationServiceMock extends Mock implements RiveAnimationService {
           Invocation.method(#loadRiveFile, [], {
             const Symbol('riveFileName'): riveFileName,
           }),
-          returnValue: Future<Artboard>.value()) as Future<Artboard>;
+          returnValue: Future<Artboard>.value(Artboard())) as Future<Artboard>;
 
   /// Stub the load rive file when the method is called with any string argument
   /// to return [artboardToReturn]
