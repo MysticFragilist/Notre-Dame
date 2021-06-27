@@ -154,8 +154,9 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         return AppIntl.of(context)!.schedule_settings_calendar_format_week;
       case CalendarFormat.twoWeeks:
         return AppIntl.of(context)!.schedule_settings_calendar_format_2_weeks;
+      default:
+        return AppIntl.of(context)!.schedule_settings_calendar_format_month;
     }
-    return AppIntl.of(context)!.schedule_settings_calendar_format_month;
   }
 
   String getTextForDay(BuildContext context, StartingDayOfWeek day) {

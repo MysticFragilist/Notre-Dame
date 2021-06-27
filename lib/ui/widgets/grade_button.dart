@@ -19,15 +19,15 @@ class GradeButton extends StatelessWidget {
   final Course course;
 
   /// Used to redirect on the dashboard.
-  final NavigationService? _navigationService = locator<NavigationService>();
+  final NavigationService _navigationService = locator<NavigationService>();
 
   GradeButton(this.course);
 
   @override
   Widget build(BuildContext context) => Card(
         child: InkWell(
-            onTap: () => _navigationService!.pushNamed(RouterPaths.gradeDetails,
-                arguments: course),
+            onTap: () => _navigationService!
+                .pushNamed(RouterPaths.gradeDetails, arguments: course),
             child: SizedBox(
               height: 68,
               width: 68,
