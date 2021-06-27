@@ -14,13 +14,74 @@ import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/utils/api_exception.dart';
 
+// UTILS
+import '../../defaults.dart';
+
 /// Mock for the [SignetsApi]
 class SignetsApiMock extends Mock implements SignetsApi {
+  @override
+  Future<List<CourseActivity>> getCoursesActivities(
+          {required String? username,
+          required String? password,
+          required String session,
+          String courseGroup = "",
+          DateTime? startDate,
+          DateTime? endDate}) async =>
+      super.noSuchMethod(
+              Invocation.method(#getCoursesActivities, [
+                username,
+                password,
+                session,
+                courseGroup,
+                startDate,
+                endDate
+              ]),
+              returnValue: Future<List<CourseActivity>>.value([]))
+          as Future<List<CourseActivity>>;
+
+  @override
+  Future<List<Course>> getCourses(
+          {required String? username, required String? password}) async =>
+      super.noSuchMethod(Invocation.method(#getCourses, [username, password]),
+          returnValue: Future<List<Course>>.value([])) as Future<List<Course>>;
+
+  @override
+  Future<CourseSummary> getCourseSummary(
+          {required String? username,
+          required String? password,
+          required Course? course}) async =>
+      super.noSuchMethod(
+              Invocation.method(#getCourseSummary, [username, password]),
+              returnValue: Future<CourseSummary>.value(defaultCourseSummary))
+          as Future<CourseSummary>;
+
+  @override
+  Future<List<Session>> getSessions(
+          {required String? username, required String? password}) =>
+      super.noSuchMethod(Invocation.method(#getSessions, [username, password]),
+              returnValue: Future<List<Session>>.value([]))
+          as Future<List<Session>>;
+
+  @override
+  Future<ProfileStudent> getStudentInfo(
+          {required String? username, required String? password}) async =>
+      super.noSuchMethod(
+              Invocation.method(#getStudentInfo, [username, password]),
+              returnValue: Future<ProfileStudent>.value(defaultProfileStudent))
+          as Future<ProfileStudent>;
+
+  @override
+  Future<List<Program>> getPrograms(
+          {required String? username, required String? password}) async =>
+      super.noSuchMethod(Invocation.method(#getPrograms, [username, password]),
+              returnValue: Future<List<Program>>.value([]))
+          as Future<List<Program>>;
+
   /// Stub the answer of the [getCoursesActivities] when the [session] is used.
   static void stubGetCoursesActivities(SignetsApiMock mock, String session,
       List<CourseActivity> coursesActivitiesToReturn) {
     when(mock.getCoursesActivities(
-            username: anyNamed("username")!,
+            username: anyNamed("username"),
             password: anyNamed("password"),
             session: session))
         .thenAnswer((_) async => coursesActivitiesToReturn);
@@ -32,7 +93,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
       {ApiException exceptionToThrow =
           const ApiException(prefix: CourseRepository.tag, message: "")}) {
     when(mock.getCoursesActivities(
-            username: anyNamed("username")!,
+            username: anyNamed("username"),
             password: anyNamed("password"),
             session: session))
         .thenThrow(exceptionToThrow);
@@ -73,7 +134,8 @@ class SignetsApiMock extends Mock implements SignetsApi {
       SignetsApiMock mock, String username, ProfileStudent? infoToReturn) {
     when(mock.getStudentInfo(
             username: username, password: anyNamed("password")))
-        .thenAnswer(((_) async => infoToReturn!) as Future<ProfileStudent> Function(Invocation));
+        .thenAnswer(((_) async => infoToReturn!) as Future<ProfileStudent>
+            Function(Invocation));
   }
 
   /// Throw [exceptionToThrow] when [getInfo] with the [username] is used.
@@ -106,7 +168,8 @@ class SignetsApiMock extends Mock implements SignetsApi {
       {CourseSummary? summaryToReturn}) {
     when(mock.getCourseSummary(
             username: username, course: course, password: anyNamed("password")))
-        .thenAnswer(((_) async => summaryToReturn!) as Future<CourseSummary> Function(Invocation));
+        .thenAnswer(((_) async => summaryToReturn!) as Future<CourseSummary>
+            Function(Invocation));
   }
 
   /// Throw [exceptionToThrow] when [getCourseSummary] with the [username] and [course] is used.

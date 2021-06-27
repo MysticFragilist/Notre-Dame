@@ -232,10 +232,10 @@ CourseRepository setupCourseRepositoryMock() {
 }
 
 NetworkingService setupNetworkingServiceMock() {
-  unregister<NetworkingService>();
+  unregister<NetworkingServiceMock>();
   final service = NetworkingServiceMock();
 
-  locator.registerSingleton<NetworkingService>(service);
+  locator.registerSingleton<NetworkingServiceMock>(service);
 
   return service;
 }

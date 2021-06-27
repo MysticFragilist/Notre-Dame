@@ -9,6 +9,18 @@ import 'package:notredame/core/utils/cache_exception.dart';
 
 /// Mock for the [CacheManager]
 class CacheManagerMock extends Mock implements CacheManager {
+  @override
+  Future<String> get(String? key) async => super.noSuchMethod(
+      Invocation.method(#get, [
+        key,
+      ]),
+      returnValue: Future<String>.value("")) as Future<String>;
+
+  @override
+  Future update(String? key, String? value) async =>
+      super.noSuchMethod(Invocation.method(#update, [key, value]),
+          returnValue: Future) as Future;
+
   /// Stub the get function of [mock], when [key] is used, [valueToReturn] is answered.
   static void stubGet(CacheManagerMock mock, String key, String valueToReturn) {
     when(mock.get(key)).thenAnswer((_) async => valueToReturn);
@@ -25,7 +37,7 @@ class CacheManagerMock extends Mock implements CacheManager {
   static void stubUpdateException(CacheManagerMock mock, String key,
       {Exception exceptionToThrow =
           const CacheException(prefix: 'CacheException', message: '')}) {
-    when(mock.update(key, any!)).thenThrow(exceptionToThrow);
+    when(mock.update(key, any)).thenThrow(exceptionToThrow);
   }
 
   /// Stub a exception while calling the delete function of [mock] when [key] is used.

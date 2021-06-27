@@ -9,9 +9,17 @@ import 'package:notredame/core/services/mon_ets_api.dart';
 
 // UTILS
 import 'package:notredame/core/utils/http_exceptions.dart';
+import '../../defaults.dart';
 
 /// Mock for the [MonETSApi]
 class MonETSApiMock extends Mock implements MonETSApi {
+  @override
+  Future<MonETSUser> authenticate(
+          {required String? username, required String? password}) async =>
+      super.noSuchMethod(Invocation.method(#authenticate, [username, password]),
+              returnValue: Future<MonETSUser>.value(defaultMonETSUser))
+          as Future<MonETSUser>;
+
   /// Stub the user to return when a authenticate is called using the username
   /// of [userToReturn]
   static void stubAuthenticate(MonETSApiMock mock, MonETSUser userToReturn) {

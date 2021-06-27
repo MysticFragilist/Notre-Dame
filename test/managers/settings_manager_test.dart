@@ -8,7 +8,6 @@ import 'package:table_calendar/table_calendar.dart';
 
 // MANAGER
 import 'package:notredame/core/managers/settings_manager.dart';
-import 'package:notredame/core/services/analytics_service.dart';
 
 // SERVICE
 import 'package:notredame/core/services/preferences_service.dart';
@@ -19,19 +18,22 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import '../helpers.dart';
 
 // MOCK
+import '../mock/services/analytics_service_mock.dart';
 import '../mock/services/preferences_service_mock.dart';
 
 void main() {
-  AnalyticsService? analyticsService;
-  PreferencesService? preferencesService;
+  late AnalyticsServiceMock analyticsServiceMock;
+  late PreferencesServiceMock preferencesServiceMock;
   late SettingsManager manager;
 
   group("SettingsManager - ", () {
     setUp(() async {
       // Setting up mocks
       setupLogger();
-      analyticsService = setupAnalyticsServiceMock();
-      preferencesService = setupPreferencesServiceMock();
+      analyticsServiceMock =
+          setupAnalyticsServiceMock() as AnalyticsServiceMock;
+      preferencesServiceMock =
+          setupPreferencesServiceMock() as PreferencesServiceMock;
 
       await setupAppIntl();
 
@@ -45,16 +47,13 @@ void main() {
     group("getScheduleSettings - ", () {
       test("validate default behaviour", () async {
         // Stubs the answer of the preferences services
-        PreferencesServiceMock.stubGetString(
-            preferencesService as PreferencesServiceMock,
+        PreferencesServiceMock.stubGetString(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsStartWeekday,
             toReturn: null);
-        PreferencesServiceMock.stubGetString(
-            preferencesService as PreferencesServiceMock,
+        PreferencesServiceMock.stubGetString(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsCalendarFormat,
             toReturn: null);
-        PreferencesServiceMock.stubGetBool(
-            preferencesService as PreferencesServiceMock,
+        PreferencesServiceMock.stubGetBool(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsShowTodayBtn,
             toReturn: null);
 
@@ -69,32 +68,29 @@ void main() {
 
         expect(result, expected);
 
-        verify(preferencesService!
+        verify(preferencesServiceMock
                 .getString(PreferencesFlag.scheduleSettingsStartWeekday))
             .called(1);
-        verify(preferencesService!
+        verify(preferencesServiceMock
                 .getString(PreferencesFlag.scheduleSettingsCalendarFormat))
             .called(1);
-        verify(preferencesService!
+        verify(preferencesServiceMock
                 .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn))
             .called(1);
 
-        verifyNoMoreInteractions(preferencesService);
-        verifyNoMoreInteractions(analyticsService);
+        verifyNoMoreInteractions(preferencesServiceMock);
+        verifyNoMoreInteractions(analyticsServiceMock);
       });
 
       test("validate the loading of the settings", () async {
         // Stubs the answer of the preferences services
-        PreferencesServiceMock.stubGetString(
-            preferencesService as PreferencesServiceMock,
+        PreferencesServiceMock.stubGetString(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsStartWeekday,
             toReturn: EnumToString.convertToString(StartingDayOfWeek.sunday));
-        PreferencesServiceMock.stubGetString(
-            preferencesService as PreferencesServiceMock,
+        PreferencesServiceMock.stubGetString(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsCalendarFormat,
             toReturn: EnumToString.convertToString(CalendarFormat.month));
-        PreferencesServiceMock.stubGetBool(
-            preferencesService as PreferencesServiceMock,
+        PreferencesServiceMock.stubGetBool(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsShowTodayBtn,
             toReturn: false);
 
@@ -109,18 +105,18 @@ void main() {
 
         expect(result, expected);
 
-        verify(preferencesService!
+        verify(preferencesServiceMock
                 .getString(PreferencesFlag.scheduleSettingsStartWeekday))
             .called(1);
-        verify(preferencesService!
+        verify(preferencesServiceMock
                 .getString(PreferencesFlag.scheduleSettingsCalendarFormat))
             .called(1);
-        verify(preferencesService!
+        verify(preferencesServiceMock
                 .getBool(PreferencesFlag.scheduleSettingsShowTodayBtn))
             .called(1);
 
-        verifyNoMoreInteractions(preferencesService);
-        verifyNoMoreInteractions(analyticsService);
+        verifyNoMoreInteractions(preferencesServiceMock);
+        verifyNoMoreInteractions(analyticsServiceMock);
       });
     });
 
@@ -129,55 +125,54 @@ void main() {
         const flag = PreferencesFlag.theme;
         manager.setThemeMode(ThemeMode.light);
 
-        verify(preferencesService!.setString(
+        verify(preferencesServiceMock.setString(
                 PreferencesFlag.theme, ThemeMode.light.toString()))
             .called(1);
 
-        verify(analyticsService!.logEvent(
+        verify(analyticsServiceMock.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any!))
+                any))
             .called(1);
 
         manager.setThemeMode(ThemeMode.dark);
 
-        verify(preferencesService!.setString(
+        verify(preferencesServiceMock.setString(
                 PreferencesFlag.theme, ThemeMode.dark.toString()))
             .called(1);
 
-        verify(analyticsService!.logEvent(
+        verify(analyticsServiceMock.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any!))
+                any))
             .called(1);
 
         manager.setThemeMode(ThemeMode.system);
 
-        verify(preferencesService!.setString(
+        verify(preferencesServiceMock.setString(
                 PreferencesFlag.theme, ThemeMode.system.toString()))
             .called(1);
 
-        verify(analyticsService!.logEvent(
+        verify(analyticsServiceMock.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any!))
+                any))
             .called(1);
 
-        verifyNoMoreInteractions(preferencesService);
-        verifyNoMoreInteractions(analyticsService);
+        verifyNoMoreInteractions(preferencesServiceMock);
+        verifyNoMoreInteractions(analyticsServiceMock);
       });
 
       test("validate default behaviour", () async {
         const flag = PreferencesFlag.theme;
-        PreferencesServiceMock.stubGetString(
-            preferencesService as PreferencesServiceMock, flag,
+        PreferencesServiceMock.stubGetString(preferencesServiceMock, flag,
             toReturn: ThemeMode.light.toString());
 
         manager.themeMode;
-        await untilCalled(preferencesService!.getString(flag));
+        await untilCalled(preferencesServiceMock.getString(flag));
 
         expect(manager.themeMode, ThemeMode.light);
 
-        verify(preferencesService!.getString(flag)).called(2);
+        verify(preferencesServiceMock.getString(flag)).called(2);
 
-        verifyNoMoreInteractions(preferencesService);
+        verifyNoMoreInteractions(preferencesServiceMock);
       });
     });
 
@@ -185,98 +180,100 @@ void main() {
       test("validate default behaviour", () async {
         const flag = PreferencesFlag.locale;
         PreferencesServiceMock.stubGetString(
-            preferencesService as PreferencesServiceMock,
-            PreferencesFlag.locale,
+            preferencesServiceMock, PreferencesFlag.locale,
             toReturn: const Locale('fr').toString());
 
         manager.setLocale('fr');
         manager.locale;
 
-        verify(preferencesService!.setString(PreferencesFlag.locale, 'fr'))
+        verify(preferencesServiceMock.setString(PreferencesFlag.locale, 'fr'))
             .called(1);
-        verify(preferencesService!.getString(PreferencesFlag.locale)).called(1);
+        verify(preferencesServiceMock.getString(PreferencesFlag.locale))
+            .called(1);
 
-        verify(analyticsService!.logEvent(
+        verify(analyticsServiceMock.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any!))
+                any))
             .called(1);
 
-        verifyNoMoreInteractions(preferencesService);
-        verifyNoMoreInteractions(analyticsService);
+        verifyNoMoreInteractions(preferencesServiceMock);
+        verifyNoMoreInteractions(analyticsServiceMock);
       });
 
       test("set french/english", () async {
         const flag = PreferencesFlag.locale;
         manager.setLocale('fr');
 
-        verify(preferencesService!.setString(PreferencesFlag.locale, 'fr'))
+        verify(preferencesServiceMock.setString(PreferencesFlag.locale, 'fr'))
             .called(1);
 
-        untilCalled(analyticsService!.logEvent(
+        untilCalled(analyticsServiceMock.logEvent(
             "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-            any!));
+            any));
 
-        verify(analyticsService!.logEvent(
+        verify(analyticsServiceMock.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any!))
+                any))
             .called(1);
 
         manager.setLocale('en');
 
-        verify(preferencesService!.setString(PreferencesFlag.locale, 'en'))
+        verify(preferencesServiceMock.setString(PreferencesFlag.locale, 'en'))
             .called(1);
 
-        untilCalled(analyticsService!.logEvent(
+        untilCalled(analyticsServiceMock.logEvent(
             "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-            any!));
+            any));
 
-        verify(analyticsService!.logEvent(
+        verify(analyticsServiceMock.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any!))
+                any))
             .called(1);
 
-        verifyNoMoreInteractions(preferencesService);
-        verifyNoMoreInteractions(analyticsService);
+        verifyNoMoreInteractions(preferencesServiceMock);
+        verifyNoMoreInteractions(analyticsServiceMock);
       });
 
       test("default locale isn't set", () {
         const flag = PreferencesFlag.locale;
-        when((preferencesService as PreferencesServiceMock).getString(flag))
+        when(preferencesServiceMock.getString(flag))
             .thenAnswer((_) async => null);
 
         expect(manager.locale, const Locale('en'));
 
-        verify(preferencesService!.getString(PreferencesFlag.locale)).called(1);
+        verify(preferencesServiceMock.getString(PreferencesFlag.locale))
+            .called(1);
 
-        verifyNoMoreInteractions(preferencesService);
-        verifyNoMoreInteractions(analyticsService);
+        verifyNoMoreInteractions(preferencesServiceMock);
+        verifyNoMoreInteractions(analyticsServiceMock);
       });
     });
 
     test("fetch theme and locale", () async {
       PreferencesServiceMock.stubGetString(
-          preferencesService as PreferencesServiceMock, PreferencesFlag.locale,
+          preferencesServiceMock, PreferencesFlag.locale,
           toReturn: const Locale('fr').toString());
       PreferencesServiceMock.stubGetString(
-          preferencesService as PreferencesServiceMock, PreferencesFlag.theme,
+          preferencesServiceMock, PreferencesFlag.theme,
           toReturn: 'ThemeMode.system');
 
       await manager.fetchLanguageAndThemeMode();
 
-      verify(preferencesService!.getString(PreferencesFlag.theme)).called(1);
-      verify(preferencesService!.getString(PreferencesFlag.locale)).called(1);
+      verify(preferencesServiceMock.getString(PreferencesFlag.theme)).called(1);
+      verify(preferencesServiceMock.getString(PreferencesFlag.locale))
+          .called(1);
 
-      verifyNoMoreInteractions(preferencesService);
-      verifyNoMoreInteractions(analyticsService);
+      verifyNoMoreInteractions(preferencesServiceMock);
+      verifyNoMoreInteractions(analyticsServiceMock);
     });
 
     test("reset language and theme", () async {
       // Set local and theme
       PreferencesServiceMock.stubGetString(
-          preferencesService as PreferencesServiceMock, PreferencesFlag.locale,
+          preferencesServiceMock, PreferencesFlag.locale,
           toReturn: const Locale('fr').toString());
       PreferencesServiceMock.stubGetString(
-          preferencesService as PreferencesServiceMock, PreferencesFlag.theme,
+          preferencesServiceMock, PreferencesFlag.theme,
           toReturn: 'ThemeMode.system');
 
       await manager.fetchLanguageAndThemeMode();
@@ -296,97 +293,89 @@ void main() {
 
     test("setString", () async {
       const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
-      PreferencesServiceMock.stubSetString(
-          preferencesService as PreferencesServiceMock, flag);
+      PreferencesServiceMock.stubSetString(preferencesServiceMock, flag);
 
       expect(await manager.setString(flag, "test"), true,
           reason:
               "setString should return true if the PreferenceService return true");
 
-      untilCalled(analyticsService!.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any!));
+      untilCalled(analyticsServiceMock.logEvent(
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
-      verify(analyticsService!.logEvent(
+      verify(analyticsServiceMock.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any!))
+              any))
           .called(1);
-      verify(preferencesService!.setString(flag, any!));
+      verify(preferencesServiceMock.setString(flag, any));
     });
 
     test("setInt", () async {
       const flag = PreferencesFlag.aboutUsCard;
-      PreferencesServiceMock.stubSetInt(
-          preferencesService as PreferencesServiceMock, flag);
+      PreferencesServiceMock.stubSetInt(preferencesServiceMock, flag);
 
       expect(await manager.setInt(flag, 0), true,
           reason:
               "setInt should return true if the PreferenceService return true");
 
-      untilCalled(analyticsService!.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any!));
+      untilCalled(analyticsServiceMock.logEvent(
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
-      verify(analyticsService!.logEvent(
+      verify(analyticsServiceMock.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any!))
+              any))
           .called(1);
-      verify(preferencesService!.setInt(flag, any!));
+      verify(preferencesServiceMock.setInt(flag, any));
     });
 
     test("getString", () async {
       const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
-      PreferencesServiceMock.stubGetString(
-          preferencesService as PreferencesServiceMock, flag);
+      PreferencesServiceMock.stubGetString(preferencesServiceMock, flag);
 
       expect(await manager.getString(flag), 'test',
           reason:
               "setString should return true if the PreferenceService return true");
 
-      untilCalled(analyticsService!.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any!));
+      untilCalled(analyticsServiceMock.logEvent(
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
-      verify(analyticsService!.logEvent(
+      verify(analyticsServiceMock.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any!))
+              any))
           .called(1);
-      verify(preferencesService!.getString(flag));
+      verify(preferencesServiceMock.getString(flag));
     });
 
     test("setBool", () async {
       const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
-      PreferencesServiceMock.stubSetBool(
-          preferencesService as PreferencesServiceMock, flag);
+      PreferencesServiceMock.stubSetBool(preferencesServiceMock, flag);
 
       expect(await manager.setBool(flag, true), true,
           reason:
               "setString should return true if the PreferenceService return true");
 
-      untilCalled(analyticsService!.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any!));
+      untilCalled(analyticsServiceMock.logEvent(
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
-      verify(analyticsService!.logEvent(
+      verify(analyticsServiceMock.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any!))
+              any))
           .called(1);
-      verify(preferencesService!.setBool(flag, value: anyNamed("value")!));
+      verify(preferencesServiceMock.setBool(flag, value: anyNamed("value")));
     });
 
     group("Dashboard - ", () {
       test("validate default behaviour", () async {
         PreferencesServiceMock.stubGetInt(
-            preferencesService as PreferencesServiceMock,
-            PreferencesFlag.aboutUsCard,
+            preferencesServiceMock, PreferencesFlag.aboutUsCard,
             toReturn: null);
         PreferencesServiceMock.stubGetInt(
-            preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleCard,
+            preferencesServiceMock, PreferencesFlag.scheduleCard,
             toReturn: null);
         PreferencesServiceMock.stubGetInt(
-            preferencesService as PreferencesServiceMock,
-            PreferencesFlag.progressBarCard,
+            preferencesServiceMock, PreferencesFlag.progressBarCard,
             toReturn: null);
         PreferencesServiceMock.stubGetInt(
-            preferencesService as PreferencesServiceMock,
-            PreferencesFlag.gradesCard,
+            preferencesServiceMock, PreferencesFlag.gradesCard,
             toReturn: null);
 
         // Cards
@@ -402,35 +391,32 @@ void main() {
           expected,
         );
 
-        verify(preferencesService!.getInt(PreferencesFlag.aboutUsCard))
+        verify(preferencesServiceMock.getInt(PreferencesFlag.aboutUsCard))
             .called(1);
-        verify(preferencesService!.getInt(PreferencesFlag.scheduleCard))
+        verify(preferencesServiceMock.getInt(PreferencesFlag.scheduleCard))
             .called(1);
-        verify(preferencesService!.getInt(PreferencesFlag.progressBarCard))
+        verify(preferencesServiceMock.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesService!.getInt(PreferencesFlag.gradesCard)).called(1);
+        verify(preferencesServiceMock.getInt(PreferencesFlag.gradesCard))
+            .called(1);
 
-        verifyNoMoreInteractions(preferencesService);
-        verifyNoMoreInteractions(analyticsService);
+        verifyNoMoreInteractions(preferencesServiceMock);
+        verifyNoMoreInteractions(analyticsServiceMock);
       });
 
       test("validate the loading of the cards", () async {
         PreferencesServiceMock.stubGetInt(
-            preferencesService as PreferencesServiceMock,
-            PreferencesFlag.aboutUsCard,
+            preferencesServiceMock, PreferencesFlag.aboutUsCard,
             // ignore: avoid_redundant_argument_values
             toReturn: 1);
         PreferencesServiceMock.stubGetInt(
-            preferencesService as PreferencesServiceMock,
-            PreferencesFlag.scheduleCard,
+            preferencesServiceMock, PreferencesFlag.scheduleCard,
             toReturn: 2);
         PreferencesServiceMock.stubGetInt(
-            preferencesService as PreferencesServiceMock,
-            PreferencesFlag.progressBarCard,
+            preferencesServiceMock, PreferencesFlag.progressBarCard,
             toReturn: 0);
         PreferencesServiceMock.stubGetInt(
-            preferencesService as PreferencesServiceMock,
-            PreferencesFlag.gradesCard,
+            preferencesServiceMock, PreferencesFlag.gradesCard,
             toReturn: 3);
 
         // Cards
@@ -446,16 +432,17 @@ void main() {
           expected,
         );
 
-        verify(preferencesService!.getInt(PreferencesFlag.aboutUsCard))
+        verify(preferencesServiceMock.getInt(PreferencesFlag.aboutUsCard))
             .called(1);
-        verify(preferencesService!.getInt(PreferencesFlag.scheduleCard))
+        verify(preferencesServiceMock.getInt(PreferencesFlag.scheduleCard))
             .called(1);
-        verify(preferencesService!.getInt(PreferencesFlag.progressBarCard))
+        verify(preferencesServiceMock.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesService!.getInt(PreferencesFlag.gradesCard)).called(1);
+        verify(preferencesServiceMock.getInt(PreferencesFlag.gradesCard))
+            .called(1);
 
-        verifyNoMoreInteractions(preferencesService);
-        verifyNoMoreInteractions(analyticsService);
+        verifyNoMoreInteractions(preferencesServiceMock);
+        verifyNoMoreInteractions(analyticsServiceMock);
       });
     });
   });
