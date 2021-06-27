@@ -35,7 +35,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   static void stubGetCoursesActivities(CourseRepositoryMock mock,
       {List<CourseActivity> toReturn = const [], bool? fromCacheOnly}) {
     when(mock.getCoursesActivities(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")!))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) async => toReturn);
   }
 
@@ -45,7 +45,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
           const ApiException(prefix: 'ApiException', message: ''),
       bool? fromCacheOnly}) {
     when(mock.getCoursesActivities(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")!))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
   }
@@ -69,7 +69,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   static void stubGetCourses(CourseRepositoryMock mock,
       {List<Course> toReturn = const [], bool? fromCacheOnly}) {
     when(mock.getCourses(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")!))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) async => toReturn);
   }
 
@@ -85,7 +85,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
           const ApiException(prefix: 'ApiException', message: ''),
       bool? fromCacheOnly}) {
     when(mock.getCourses(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")!))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
   }

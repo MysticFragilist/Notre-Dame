@@ -50,7 +50,7 @@ void main() {
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
-                (widget.decoration as BoxDecoration).color == Colors.grey),
+                (widget.decoration as BoxDecoration?)?.color == Colors.grey),
             findsOneWidget,
             reason: "The handle should be grey");
 
@@ -135,7 +135,7 @@ void main() {
         expect(
             find.byWidgetPredicate((widget) =>
                 widget is Container &&
-                (widget.decoration as BoxDecoration).color == Colors.grey),
+                (widget.decoration as BoxDecoration?)?.color == Colors.grey),
             findsNothing,
             reason: "There should not have a handle.");
 

@@ -24,7 +24,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   AppIntl intl;
   late GradesDetailsViewModel viewModel;
-  CourseRepository? courseRepository;
+  late CourseRepositoryMock courseRepositoryMock;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -89,7 +89,8 @@ void main() {
   group("GradesDetailsViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      courseRepository = setupCourseRepositoryMock();
+      courseRepositoryMock =
+          setupCourseRepositoryMock() as CourseRepositoryMock;
       intl = await setupAppIntl();
       setupFlutterToastMock();
 
@@ -105,7 +106,7 @@ void main() {
     group('FutureToRun - -', () {
       test('SignetsAPI gets the summary', () async {
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
 
         await viewModel.futureToRun();
@@ -116,7 +117,7 @@ void main() {
       test('Signets raised an exception while trying to recover course',
           () async {
         CourseRepositoryMock.stubGetCourseSummaryException(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary);
+            courseRepositoryMock, courseWithoutSummary);
 
         await viewModel.futureToRun();
 
@@ -128,7 +129,7 @@ void main() {
       test('Call SignetsAPI to get the summary of the course selected',
           () async {
         CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
 
         await viewModel.refresh();
@@ -138,15 +139,15 @@ void main() {
 
       test('Signets throw an error', () async {
         CourseRepositoryMock.stubGetCourseSummaryException(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary);
+            courseRepositoryMock, courseWithoutSummary);
 
         await viewModel.refresh();
 
         expect(viewModel.course, courseWithoutSummary);
 
-        verify(courseRepository!.getCourseSummary(viewModel.course!));
+        verify(courseRepositoryMock.getCourseSummary(viewModel.course!));
 
-        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(courseRepositoryMock);
       });
     });
   });
