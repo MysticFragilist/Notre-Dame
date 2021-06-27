@@ -13,6 +13,24 @@ import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/utils/api_exception.dart';
 
 class CourseRepositoryMock extends Mock implements CourseRepository {
+  @override
+  Future<List<CourseActivity>?> getCoursesActivities(
+          {bool? fromCacheOnly = false}) async =>
+      super.noSuchMethod(
+              Invocation.method(#getCoursesActivities, [], {
+                const Symbol('fromCacheOnly'): fromCacheOnly,
+              }),
+              returnValue: Future<List<CourseActivity>?>.value())
+          as Future<List<CourseActivity>?>;
+
+  @override
+  Future<List<Course>?> getCourses({bool? fromCacheOnly = false}) async =>
+      super.noSuchMethod(
+          Invocation.method(#getCoursesActivities, [], {
+            const Symbol('fromCacheOnly'): fromCacheOnly,
+          }),
+          returnValue: Future<List<Course>?>.value()) as Future<List<Course>?>;
+
   /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].
   static void stubCoursesActivities(CourseRepositoryMock mock,
       {List<CourseActivity?> toReturn = const []}) {
