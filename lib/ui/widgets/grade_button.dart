@@ -26,8 +26,8 @@ class GradeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card(
         child: InkWell(
-            onTap: () => _navigationService!
-                .pushNamed(RouterPaths.gradeDetails, arguments: course),
+            onTap: () => _navigationService.pushNamed(RouterPaths.gradeDetails,
+                arguments: course),
             child: SizedBox(
               height: 68,
               width: 68,
