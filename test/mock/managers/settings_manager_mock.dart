@@ -9,6 +9,21 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 class SettingsManagerMock extends Mock implements SettingsManager {
+  @override
+  Future<bool> setBool(PreferencesFlag flag, bool? value) async =>
+      super.noSuchMethod(Invocation.method(#setBool, [flag, value]),
+          returnValue: Future<bool>.value(true)) as Future<bool>;
+
+  @override
+  Future<bool> setInt(PreferencesFlag flag, int? value) async =>
+      super.noSuchMethod(Invocation.method(#setInt, [flag, value]),
+          returnValue: Future<bool>.value(true)) as Future<bool>;
+
+  @override
+  Future<bool> setString(PreferencesFlag flag, String? value) async =>
+      super.noSuchMethod(Invocation.method(#setString, [flag, value]),
+          returnValue: Future<bool>.value(true)) as Future<bool>;
+
   /// Stub the [getScheduleSettings] function of [mock], when called return [toReturn].
   static void stubGetScheduleSettings(SettingsManagerMock mock,
       {Map<PreferencesFlag, dynamic> toReturn = const {}}) {
@@ -24,7 +39,7 @@ class SettingsManagerMock extends Mock implements SettingsManager {
   /// Stub the [setString] function of [mock], when called with [flag] return [toReturn].
   static void stubSetString(SettingsManagerMock mock, PreferencesFlag flag,
       {bool toReturn = true}) {
-    when(mock.setString(flag, any!)).thenAnswer((_) async => toReturn);
+    when(mock.setString(flag, any)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the [getString] function of [mock], when called with [flag] return [toReturn].
@@ -36,13 +51,13 @@ class SettingsManagerMock extends Mock implements SettingsManager {
   /// Stub the [setBool] function of [mock], when called with [flag] return [toReturn].
   static void stubSetBool(SettingsManagerMock mock, PreferencesFlag flag,
       {bool toReturn = true}) {
-    when(mock.setBool(flag, any!)).thenAnswer((_) async => toReturn);
+    when(mock.setBool(flag, any)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the [setInt] function of [mock], when called with [flag] return [toReturn].
   static void stubSetInt(SettingsManagerMock mock, PreferencesFlag flag,
       {bool toReturn = true}) {
-    when(mock.setInt(flag, any!)).thenAnswer((_) async => toReturn);
+    when(mock.setInt(flag, any)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the [locale] function of [mock], when called return [toReturn].

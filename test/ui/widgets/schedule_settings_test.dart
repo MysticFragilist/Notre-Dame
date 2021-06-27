@@ -5,9 +5,6 @@ import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// MANAGERS
-import 'package:notredame/core/managers/settings_manager.dart';
-
 // CONSTANTS
 import 'package:notredame/core/constants/preferences_flags.dart';
 
@@ -20,7 +17,7 @@ import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
-  late SettingsManager settingsManager;
+  late SettingsManagerMock settingsManagerMock;
   late AppIntl intl;
 
   // Some settings
@@ -32,14 +29,13 @@ void main() {
 
   group("ScheduleSettings - ", () {
     setUp(() async {
-      settingsManager = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
       intl = await setupAppIntl();
     });
 
     group("ui - ", () {
       testWidgets("With handle", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         await tester
@@ -124,8 +120,7 @@ void main() {
       });
 
       testWidgets("Without handle", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         await tester.pumpWidget(
@@ -210,11 +205,9 @@ void main() {
 
     group("interactions - ", () {
       testWidgets("onChange calendarFormat", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-        SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubSetString(settingsManagerMock,
             PreferencesFlag.scheduleSettingsCalendarFormat);
 
         await tester.pumpWidget(
@@ -225,8 +218,8 @@ void main() {
             ListTile, intl.schedule_settings_calendar_format_2_weeks));
         await tester.pump();
 
-        await untilCalled(settingsManager.setString(
-            PreferencesFlag.scheduleSettingsCalendarFormat, any!));
+        await untilCalled(settingsManagerMock.setString(
+            PreferencesFlag.scheduleSettingsCalendarFormat, any));
 
         final formatTile = find.widgetWithText(
             ListTile, intl.schedule_settings_calendar_format_2_weeks);
@@ -239,11 +232,10 @@ void main() {
       });
 
       testWidgets("onChange showTodayBtn", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-        SettingsManagerMock.stubSetBool(settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsShowTodayBtn);
+        SettingsManagerMock.stubSetBool(
+            settingsManagerMock, PreferencesFlag.scheduleSettingsShowTodayBtn);
 
         await tester.pumpWidget(
             localizedWidget(child: const ScheduleSettings(showHandle: false)));
@@ -261,8 +253,8 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        await untilCalled(settingsManager.setBool(
-            PreferencesFlag.scheduleSettingsShowTodayBtn, any!));
+        await untilCalled(settingsManagerMock.setBool(
+            PreferencesFlag.scheduleSettingsShowTodayBtn, any));
 
         expect(
             tester.widget(find.descendant(
