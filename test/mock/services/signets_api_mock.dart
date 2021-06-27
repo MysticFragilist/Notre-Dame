@@ -28,21 +28,25 @@ class SignetsApiMock extends Mock implements SignetsApi {
           DateTime? startDate,
           DateTime? endDate}) async =>
       super.noSuchMethod(
-              Invocation.method(#getCoursesActivities, [
-                username,
-                password,
-                session,
-                courseGroup,
-                startDate,
-                endDate
-              ]),
+              Invocation.method(#getCoursesActivities, [], {
+                const Symbol('username'): username,
+                const Symbol('password'): password,
+                const Symbol('session'): session,
+                const Symbol('courseGroup'): courseGroup,
+                const Symbol('startDate'): startDate,
+                const Symbol('endDate'): endDate
+              }),
               returnValue: Future<List<CourseActivity>>.value([]))
           as Future<List<CourseActivity>>;
 
   @override
   Future<List<Course>> getCourses(
           {required String? username, required String? password}) async =>
-      super.noSuchMethod(Invocation.method(#getCourses, [username, password]),
+      super.noSuchMethod(
+          Invocation.method(#getCourses, [], {
+            const Symbol('username'): username,
+            const Symbol('password'): password,
+          }),
           returnValue: Future<List<Course>>.value([])) as Future<List<Course>>;
 
   @override
@@ -51,14 +55,22 @@ class SignetsApiMock extends Mock implements SignetsApi {
           required String? password,
           required Course? course}) async =>
       super.noSuchMethod(
-              Invocation.method(#getCourseSummary, [username, password]),
+              Invocation.method(#getCourseSummary, [], {
+                const Symbol('username'): username,
+                const Symbol('password'): password,
+                const Symbol('course'): course,
+              }),
               returnValue: Future<CourseSummary>.value(defaultCourseSummary))
           as Future<CourseSummary>;
 
   @override
   Future<List<Session>> getSessions(
           {required String? username, required String? password}) =>
-      super.noSuchMethod(Invocation.method(#getSessions, [username, password]),
+      super.noSuchMethod(
+              Invocation.method(#getSessions, [], {
+                const Symbol('username'): username,
+                const Symbol('password'): password,
+              }),
               returnValue: Future<List<Session>>.value([]))
           as Future<List<Session>>;
 
@@ -66,14 +78,21 @@ class SignetsApiMock extends Mock implements SignetsApi {
   Future<ProfileStudent> getStudentInfo(
           {required String? username, required String? password}) async =>
       super.noSuchMethod(
-              Invocation.method(#getStudentInfo, [username, password]),
+              Invocation.method(#getStudentInfo, [], {
+                const Symbol('username'): username,
+                const Symbol('password'): password,
+              }),
               returnValue: Future<ProfileStudent>.value(defaultProfileStudent))
           as Future<ProfileStudent>;
 
   @override
   Future<List<Program>> getPrograms(
           {required String? username, required String? password}) async =>
-      super.noSuchMethod(Invocation.method(#getPrograms, [username, password]),
+      super.noSuchMethod(
+              Invocation.method(#getPrograms, [], {
+                const Symbol('username'): username,
+                const Symbol('password'): password,
+              }),
               returnValue: Future<List<Program>>.value([]))
           as Future<List<Program>>;
 
