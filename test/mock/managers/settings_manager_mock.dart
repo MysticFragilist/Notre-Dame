@@ -24,6 +24,11 @@ class SettingsManagerMock extends Mock implements SettingsManager {
       super.noSuchMethod(Invocation.method(#setString, [flag, value]),
           returnValue: Future<bool>.value(true)) as Future<bool>;
 
+  @override
+  Future<String?> getString(PreferencesFlag? flag) async =>
+      super.noSuchMethod(Invocation.method(#getString, [flag]),
+          returnValue: Future<String?>.value()) as Future<String?>;
+
   /// Stub the [getScheduleSettings] function of [mock], when called return [toReturn].
   static void stubGetScheduleSettings(SettingsManagerMock mock,
       {Map<PreferencesFlag, dynamic> toReturn = const {}}) {

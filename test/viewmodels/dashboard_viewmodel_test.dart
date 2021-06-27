@@ -6,7 +6,6 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
 
 // MANAGERS
-import 'package:notredame/core/managers/course_repository.dart';
 import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/models/course.dart';
 

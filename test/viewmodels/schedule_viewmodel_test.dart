@@ -16,10 +16,11 @@ import '../helpers.dart';
 
 // MOCKS
 import '../mock/managers/course_repository_mock.dart';
+import '../mock/managers/settings_manager_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 
-CourseRepository? courseRepository;
-SettingsManager? settingsManager;
+late CourseRepositoryMock courseRepositoryMock;
+late SettingsManagerMock settingsManagerMock;
 late NetworkingServiceMock networkingService;
 late ScheduleViewModel viewModel;
 
@@ -57,8 +58,9 @@ void main() {
   group("ScheduleViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      courseRepository = setupCourseRepositoryMock();
-      settingsManager = setupSettingsManagerMock();
+      courseRepositoryMock =
+          setupCourseRepositoryMock() as CourseRepositoryMock;
+      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
       networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
       setupFlutterToastMock();
 
@@ -79,52 +81,47 @@ void main() {
       test(
           "first load from cache than call SignetsAPI to get the latest events",
           () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
 
         expect(await viewModel.futureToRun(), []);
 
         verifyInOrder([
-          courseRepository!.getCoursesActivities(fromCacheOnly: true),
-          courseRepository!.getCoursesActivities()
+          courseRepositoryMock.getCoursesActivities(fromCacheOnly: true),
+          courseRepositoryMock.getCoursesActivities()
         ]);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
 
       test("Signets throw an error while trying to get new events", () async {
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
         CourseRepositoryMock.stubGetCoursesActivitiesException(
-            courseRepository as CourseRepositoryMock,
+            courseRepositoryMock,
             fromCacheOnly: false);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
 
         expect(await viewModel.futureToRun(), [],
             reason: "Even if SignetsAPI fails we should receives a list.");
 
         // Await until the call to get the activities from signets is sent
-        await untilCalled(courseRepository!.getCoursesActivities());
+        await untilCalled(courseRepositoryMock.getCoursesActivities());
 
         verifyInOrder([
-          courseRepository!.getCoursesActivities(fromCacheOnly: true),
-          courseRepository!.getCoursesActivities()
+          courseRepositoryMock.getCoursesActivities(fromCacheOnly: true),
+          courseRepositoryMock.getCoursesActivities()
         ]);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
 
     group("coursesActivities - ", () {
       test("build the list of activities sort by date", () async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = {
@@ -134,48 +131,45 @@ void main() {
 
         expect(viewModel.coursesActivities, expected);
 
-        verify(courseRepository!.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(1);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
 
     group("coursesActivitiesFor - ", () {
       test("Get the correct list of activities for the specified day", () {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = [gen102, gen103];
 
         expect(viewModel.coursesActivitiesFor(DateTime(2020, 1, 2)), expected);
 
-        verify(courseRepository!.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(1);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
 
       test("If the day doesn't have any events, return an empty list.", () {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         expect(viewModel.coursesActivitiesFor(DateTime(2020, 1, 3)), isEmpty,
             reason: "There is no events for the 3rd Jan on activities");
 
-        verify(courseRepository!.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(1);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
 
     group("selectedDateEvents", () {
       test("The events of the date currently selected are return", () {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = [gen102, gen103];
@@ -183,17 +177,16 @@ void main() {
         // Setting up the viewmodel
         viewModel.coursesActivities;
         viewModel.selectedDate = DateTime(2020, 1, 2);
-        clearInteractions(courseRepository);
+        clearInteractions(courseRepositoryMock);
 
         expect(viewModel.selectedDateEvents, expected);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
 
       test("The events of the date currently selected are return", () {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = [];
@@ -201,20 +194,19 @@ void main() {
         // Setting up the viewmodel
         viewModel.coursesActivities;
         viewModel.selectedDate = DateTime(2020, 1, 3);
-        clearInteractions(courseRepository);
+        clearInteractions(courseRepositoryMock);
 
         expect(viewModel.selectedDateEvents, expected);
 
-        verifyNoMoreInteractions(courseRepository);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(courseRepositoryMock);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
     group('refresh -', () {
       test(
           'Call SignetsAPI to get the coursesActivities than reload the coursesActivities',
           () async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         await viewModel.refresh();
@@ -227,11 +219,11 @@ void main() {
         expect(viewModel.coursesActivities, expected);
 
         verifyInOrder([
-          courseRepository!.getCoursesActivities(),
-          courseRepository!.coursesActivities
+          courseRepositoryMock.getCoursesActivities(),
+          courseRepositoryMock.coursesActivities
         ]);
 
-        verifyNoMoreInteractions(courseRepository);
+        verifyNoMoreInteractions(courseRepositoryMock);
       });
     });
   });

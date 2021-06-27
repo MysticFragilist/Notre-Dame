@@ -20,12 +20,12 @@ import '../mock/managers/settings_manager_mock.dart';
 late SettingsViewModel viewModel;
 
 void main() {
-  SettingsManager? settingsManager;
+  late SettingsManagerMock settingsManagerMock;
 
   group("SettingsViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      settingsManager = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
       final AppIntl intl = await setupAppIntl();
 
       viewModel = SettingsViewModel(intl: intl);
@@ -38,69 +38,69 @@ void main() {
     group("futureToRun - ", () {
       test("The settings are correctly loaded and sets", () async {
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.locale,
+            settingsManagerMock, PreferencesFlag.locale,
             toReturn: 'en');
 
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.theme,
+            settingsManagerMock, PreferencesFlag.theme,
             toReturn: ThemeMode.system.toString());
 
         await viewModel.futureToRun();
         expect(viewModel.currentLocale, 'English');
         expect(viewModel.selectedTheme, ThemeMode.system);
 
-        verify(settingsManager!.getString(any!)).called(2);
-        verifyNoMoreInteractions(settingsManager);
+        verify(settingsManagerMock.getString(any)).called(2);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
 
     group("setter theme - ", () {
       test("can set system theme option", () async {
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
+            settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
         viewModel.selectedTheme = ThemeMode.system;
 
-        await untilCalled(settingsManager!.setThemeMode(ThemeMode.system));
+        await untilCalled(settingsManagerMock.setThemeMode(ThemeMode.system));
 
         expect(viewModel.selectedTheme, ThemeMode.system);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager!.setThemeMode(ThemeMode.system)).called(1);
-        verifyNoMoreInteractions(settingsManager);
+        verify(settingsManagerMock.setThemeMode(ThemeMode.system)).called(1);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
 
       test("can set dark theme option", () async {
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
+            settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
         viewModel.selectedTheme = ThemeMode.dark;
 
-        await untilCalled(settingsManager!.setThemeMode(ThemeMode.dark));
+        await untilCalled(settingsManagerMock.setThemeMode(ThemeMode.dark));
 
         expect(viewModel.selectedTheme, ThemeMode.dark);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager!.setThemeMode(ThemeMode.dark)).called(1);
-        verifyNoMoreInteractions(settingsManager);
+        verify(settingsManagerMock.setThemeMode(ThemeMode.dark)).called(1);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
 
       test("can set light theme option", () async {
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
+            settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
         viewModel.selectedTheme = ThemeMode.light;
 
-        await untilCalled(settingsManager!.setThemeMode(ThemeMode.light));
+        await untilCalled(settingsManagerMock.setThemeMode(ThemeMode.light));
 
         expect(viewModel.selectedTheme, ThemeMode.light);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager!.setThemeMode(ThemeMode.light)).called(1);
-        verifyNoMoreInteractions(settingsManager);
+        verify(settingsManagerMock.setThemeMode(ThemeMode.light)).called(1);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
   });

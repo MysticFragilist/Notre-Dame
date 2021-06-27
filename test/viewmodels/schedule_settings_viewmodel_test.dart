@@ -3,9 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-// MANAGER
-import 'package:notredame/core/managers/settings_manager.dart';
-
 // VIEWMODEL
 import 'package:notredame/core/viewmodels/schedule_settings_viewmodel.dart';
 
@@ -16,7 +13,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
-SettingsManager? settingsManager;
+late SettingsManagerMock settingsManagerMock;
 late ScheduleSettingsViewModel viewModel;
 
 void main() {
@@ -31,15 +28,14 @@ void main() {
 
   group("ScheduleSettingsViewModel - ", () {
     setUp(() {
-      settingsManager = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
       setupFlutterToastMock();
       viewModel = ScheduleSettingsViewModel();
     });
 
     group("futureToRun - ", () {
       test("The settings are correctly loaded and sets", () async {
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         expect(await viewModel.futureToRun(), settings);
@@ -50,76 +46,73 @@ void main() {
         expect(viewModel.showTodayBtn,
             settings[PreferencesFlag.scheduleSettingsShowTodayBtn]);
 
-        verify(settingsManager!.getScheduleSettings()).called(1);
-        verifyNoMoreInteractions(settingsManager);
+        verify(settingsManagerMock.getScheduleSettings()).called(1);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
 
     group("setter calendarFormat - ", () {
       test("calendarFormat is updated on the settings", () async {
-        SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerMock.stubSetString(settingsManagerMock,
             PreferencesFlag.scheduleSettingsCalendarFormat);
 
         // Call the setter.
         viewModel.calendarFormat = CalendarFormat.twoWeeks;
 
-        await untilCalled(settingsManager!.setString(
-            PreferencesFlag.scheduleSettingsCalendarFormat, any!));
+        await untilCalled(settingsManagerMock.setString(
+            PreferencesFlag.scheduleSettingsCalendarFormat, any));
 
         expect(viewModel.calendarFormat, CalendarFormat.twoWeeks);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager!.setString(
-                PreferencesFlag.scheduleSettingsCalendarFormat, any!))
+        verify(settingsManagerMock.setString(
+                PreferencesFlag.scheduleSettingsCalendarFormat, any))
             .called(1);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
 
     group("setter startingDayOfWeek - ", () {
       test("startingDayOfWeek is updated on the settings", () async {
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsStartWeekday);
+            settingsManagerMock, PreferencesFlag.scheduleSettingsStartWeekday);
 
         // Call the setter.
         viewModel.startingDayOfWeek = StartingDayOfWeek.friday;
 
-        await untilCalled(settingsManager!.setString(
-            PreferencesFlag.scheduleSettingsStartWeekday, any!));
+        await untilCalled(settingsManagerMock.setString(
+            PreferencesFlag.scheduleSettingsStartWeekday, any));
 
         expect(viewModel.startingDayOfWeek, StartingDayOfWeek.friday);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager!.setString(
-                PreferencesFlag.scheduleSettingsStartWeekday, any!))
+        verify(settingsManagerMock.setString(
+                PreferencesFlag.scheduleSettingsStartWeekday, any))
             .called(1);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
 
     group("setter showTodayBtn - ", () {
       test("showTodayBtn is updated on the settings", () async {
         SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.scheduleSettingsStartWeekday);
+            settingsManagerMock, PreferencesFlag.scheduleSettingsStartWeekday);
 
         const expected = false;
 
         // Call the setter.
         viewModel.showTodayBtn = expected;
 
-        await untilCalled(settingsManager!.setBool(
-            PreferencesFlag.scheduleSettingsShowTodayBtn, any!));
+        await untilCalled(settingsManagerMock.setBool(
+            PreferencesFlag.scheduleSettingsShowTodayBtn, any));
 
         expect(viewModel.showTodayBtn, expected);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager!.setBool(
-                PreferencesFlag.scheduleSettingsShowTodayBtn, any!))
+        verify(settingsManagerMock.setBool(
+                PreferencesFlag.scheduleSettingsShowTodayBtn, any))
             .called(1);
-        verifyNoMoreInteractions(settingsManager);
+        verifyNoMoreInteractions(settingsManagerMock);
       });
     });
   });

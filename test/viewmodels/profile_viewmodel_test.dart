@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // MANAGERS
-import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/managers/user_repository.dart';
 
 // VIEW-MODEL
@@ -16,12 +15,13 @@ import 'package:notredame/core/models/program.dart';
 import '../helpers.dart';
 
 // MOCKS
+import '../mock/managers/settings_manager_mock.dart';
 import '../mock/managers/user_repository_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 
-UserRepository? userRepository;
-SettingsManager? settingsManager;
-late NetworkingServiceMock networkingService;
+late UserRepositoryMock userRepositoryMock;
+late SettingsManagerMock settingsManagerMock;
+late NetworkingServiceMock networkingServiceMock;
 late ProfileViewModel viewModel;
 
 void main() {
@@ -69,12 +69,13 @@ void main() {
   group("ProfileViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      userRepository = setupUserRepositoryMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
+      networkingServiceMock =
+          setupNetworkingServiceMock() as NetworkingServiceMock;
       setupFlutterToastMock();
 
       // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
+      NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
 
       viewModel = ProfileViewModel(intl: await setupAppIntl());
     });
@@ -89,94 +90,85 @@ void main() {
       test(
           "first load from cache then call SignetsAPI to get the latest events",
           () async {
-        UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock);
-        UserRepositoryMock.stubGetPrograms(
-            userRepository as UserRepositoryMock);
+        UserRepositoryMock.stubGetInfo(userRepositoryMock);
+        UserRepositoryMock.stubGetPrograms(userRepositoryMock);
 
         expect(await viewModel.futureToRun(), []);
 
         verifyInOrder([
-          userRepository!.getInfo(fromCacheOnly: true),
-          userRepository!.getPrograms(fromCacheOnly: true),
-          userRepository!.getInfo(),
+          userRepositoryMock.getInfo(fromCacheOnly: true),
+          userRepositoryMock.getPrograms(fromCacheOnly: true),
+          userRepositoryMock.getInfo(),
         ]);
 
-        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(userRepositoryMock);
       });
 
       test("Signets throw an error while trying to get new events", () async {
-        UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock,
-            fromCacheOnly: true);
-        UserRepositoryMock.stubGetInfoException(
-            userRepository as UserRepositoryMock,
+        UserRepositoryMock.stubGetInfo(userRepositoryMock, fromCacheOnly: true);
+        UserRepositoryMock.stubGetInfoException(userRepositoryMock,
             fromCacheOnly: false);
-        UserRepositoryMock.stubGetPrograms(userRepository as UserRepositoryMock,
+        UserRepositoryMock.stubGetPrograms(userRepositoryMock,
             fromCacheOnly: true);
-        UserRepositoryMock.stubGetProgramsException(
-            userRepository as UserRepositoryMock,
+        UserRepositoryMock.stubGetProgramsException(userRepositoryMock,
             fromCacheOnly: false);
 
         expect(await viewModel.futureToRun(), [],
             reason: "Even if SignetsAPI fails we should receives a list.");
 
         verifyInOrder([
-          userRepository!.getInfo(fromCacheOnly: true),
-          userRepository!.getPrograms(fromCacheOnly: true),
-          userRepository!.getInfo(),
+          userRepositoryMock.getInfo(fromCacheOnly: true),
+          userRepositoryMock.getPrograms(fromCacheOnly: true),
+          userRepositoryMock.getInfo(),
         ]);
 
-        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(userRepositoryMock);
       });
     });
 
     group("info - ", () {
       test("build the info", () async {
-        UserRepositoryMock.stubProfileStudent(
-            userRepository as UserRepositoryMock,
+        UserRepositoryMock.stubProfileStudent(userRepositoryMock,
             toReturn: info);
 
         expect(viewModel.profileStudent, info);
 
-        verify(userRepository!.info).called(1);
+        verify(userRepositoryMock.info).called(1);
 
-        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(userRepositoryMock);
       });
     });
 
     group("programs - ", () {
       test("build the list of programs", () async {
-        UserRepositoryMock.stubPrograms(userRepository as UserRepositoryMock,
-            toReturn: programs);
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: programs);
 
         expect(viewModel.programList, programs);
 
-        verify(userRepository!.programs).called(2);
+        verify(userRepositoryMock.programs).called(2);
 
-        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(userRepositoryMock);
       });
     });
 
     group('refresh -', () {
       test('Call SignetsAPI to get the user info and programs', () async {
-        UserRepositoryMock.stubProfileStudent(
-            userRepository as UserRepositoryMock,
+        UserRepositoryMock.stubProfileStudent(userRepositoryMock,
             toReturn: info);
-        UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock,
-            toReturn: info);
-        UserRepositoryMock.stubGetPrograms(
-            userRepository as UserRepositoryMock);
+        UserRepositoryMock.stubGetInfo(userRepositoryMock, toReturn: info);
+        UserRepositoryMock.stubGetPrograms(userRepositoryMock);
 
         await viewModel.refresh();
 
         expect(viewModel.profileStudent, info);
 
         verifyInOrder([
-          userRepository!.getInfo(),
-          userRepository!.getPrograms(),
-          userRepository!.info,
+          userRepositoryMock.getInfo(),
+          userRepositoryMock.getPrograms(),
+          userRepositoryMock.info,
         ]);
 
-        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(userRepositoryMock);
       });
     });
   });
