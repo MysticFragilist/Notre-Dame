@@ -192,7 +192,7 @@ void main() {
       SettingsManagerMock.stubSetInt(
           settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
 
-      viewModel = DashboardViewModel(intl: intl);
+      viewModel = DashboardViewModel(intl: intl!);
 
       viewModel.todayDate = DateTime(2020);
     });
@@ -559,7 +559,8 @@ void main() {
           expect(find.text(intl!.grades_title), findsOneWidget);
 
           // Swipe Dismissible grades Card horizontally
-          await tester.drag(find.widgetWithText(Dismissible, intl!.grades_title),
+          await tester.drag(
+              find.widgetWithText(Dismissible, intl!.grades_title),
               const Offset(1000.0, 0.0));
 
           // Check that the card is now absent from the view
@@ -591,7 +592,8 @@ void main() {
         await tester.pumpAndSettle();
 
         // Find progress card
-        final progressCard = find.widgetWithText(Card, intl!.progress_bar_title);
+        final progressCard =
+            find.widgetWithText(Card, intl!.progress_bar_title);
         expect(progressCard, findsOneWidget);
 
         // Find progress card Title

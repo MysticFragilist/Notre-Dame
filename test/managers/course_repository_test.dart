@@ -1109,7 +1109,7 @@ void main() {
     group("getCourseSummary - ", () {
       Course? course;
 
-      Course? courseUpdated;
+      late Course courseUpdated;
 
       const String username = "username";
       const String password = "password";
@@ -1161,7 +1161,7 @@ void main() {
 
       test("CourseSummary is fetched and cache is updated", () async {
         SignetsApiMock.stubGetCourseSummary(signetsApiMock, username, course,
-            summaryToReturn: courseUpdated!.summary);
+            summaryToReturn: courseUpdated.summary!);
 
         expect(manager.courses, isNull);
         final results = await manager.getCourseSummary(course!);
@@ -1185,7 +1185,7 @@ void main() {
         CacheManagerMock.stubGet(cacheManagerMock,
             CourseRepository.coursesCacheKey, jsonEncode([course]));
         SignetsApiMock.stubGetCourseSummary(signetsApiMock, username, course,
-            summaryToReturn: courseUpdated!.summary);
+            summaryToReturn: courseUpdated.summary!);
 
         // Load a course
         await manager.getCourses(fromCacheOnly: true);
@@ -1244,7 +1244,7 @@ void main() {
           "Cache update fails, should still return the course with its summary",
           () async {
         SignetsApiMock.stubGetCourseSummary(signetsApiMock, username, course,
-            summaryToReturn: courseUpdated!.summary);
+            summaryToReturn: courseUpdated.summary!);
         CacheManagerMock.stubUpdateException(
             cacheManagerMock, CourseRepository.coursesCacheKey);
 

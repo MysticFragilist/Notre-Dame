@@ -22,7 +22,7 @@ class BottomBar extends StatelessWidget {
   static const int etsView = 3;
   static const int moreView = 4;
 
-  final NavigationService? _navigationService = locator<NavigationService>();
+  final NavigationService _navigationService = locator<NavigationService>();
 
   @override
   Widget build(BuildContext context) {
@@ -64,19 +64,19 @@ class BottomBar extends StatelessWidget {
   void _onTap(int index) {
     switch (index) {
       case dashboardView:
-        _navigationService!.pushNamed(RouterPaths.dashboard);
+        _navigationService.pushNamed(RouterPaths.dashboard);
         break;
       case scheduleView:
-        _navigationService!.pushNamed(RouterPaths.schedule);
+        _navigationService.pushNamed(RouterPaths.schedule);
         break;
       case studentView:
-        _navigationService!.pushNamed(RouterPaths.student);
+        _navigationService.pushNamed(RouterPaths.student);
         break;
       case etsView:
-        _navigationService!.pushNamed(RouterPaths.ets);
+        _navigationService.pushNamed(RouterPaths.ets);
         break;
       case moreView:
-        _navigationService!.pushNamed(RouterPaths.more);
+        _navigationService.pushNamed(RouterPaths.more);
         break;
     }
   }

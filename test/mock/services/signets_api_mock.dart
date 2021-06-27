@@ -150,11 +150,10 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Stub the answer of the [getInfo] when the [username] is used.
   static void stubGetInfo(
-      SignetsApiMock mock, String username, ProfileStudent? infoToReturn) {
+      SignetsApiMock mock, String username, ProfileStudent infoToReturn) {
     when(mock.getStudentInfo(
             username: username, password: anyNamed("password")))
-        .thenAnswer(((_) async => infoToReturn!) as Future<ProfileStudent>
-            Function(Invocation));
+        .thenAnswer((_) async => infoToReturn);
   }
 
   /// Throw [exceptionToThrow] when [getInfo] with the [username] is used.
@@ -184,11 +183,10 @@ class SignetsApiMock extends Mock implements SignetsApi {
   /// Stub the answer of the [getCourseSummary] when the [username] and [course] is used.
   static void stubGetCourseSummary(
       SignetsApiMock mock, String username, Course? course,
-      {CourseSummary? summaryToReturn}) {
+      {required CourseSummary summaryToReturn}) {
     when(mock.getCourseSummary(
             username: username, course: course, password: anyNamed("password")))
-        .thenAnswer(((_) async => summaryToReturn!) as Future<CourseSummary>
-            Function(Invocation));
+        .thenAnswer((_) async => summaryToReturn);
   }
 
   /// Throw [exceptionToThrow] when [getCourseSummary] with the [username] and [course] is used.
