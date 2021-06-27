@@ -10,11 +10,19 @@ import 'package:notredame/core/utils/animation_exception.dart';
 
 /// Mock for the [RiveAnimationService]
 class RiveAnimationServiceMock extends Mock implements RiveAnimationService {
+  @override
+  Future<Artboard> loadRiveFile({required String? riveFileName}) async =>
+      super.noSuchMethod(
+          Invocation.method(#loadRiveFile, [], {
+            const Symbol('riveFileName'): riveFileName,
+          }),
+          returnValue: Future<Artboard>.value()) as Future<Artboard>;
+
   /// Stub the load rive file when the method is called with any string argument
   /// to return [artboardToReturn]
   static void stubLoadRiveFile(RiveAnimationServiceMock mock,
       String riveFileName, Artboard artboardToReturn) {
-    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName")!))
+    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName")))
         .thenAnswer((_) async => artboardToReturn);
   }
 
@@ -22,7 +30,7 @@ class RiveAnimationServiceMock extends Mock implements RiveAnimationService {
   static void stubLoadRiveFileException(RiveAnimationServiceMock mock,
       {AnimationException exceptionToThrow =
           const AnimationException(prefix: "loadRiveFile", message: "")}) {
-    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName")!))
+    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName")))
         .thenThrow(exceptionToThrow);
   }
 
