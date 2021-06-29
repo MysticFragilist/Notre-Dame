@@ -59,9 +59,9 @@ void main() {
     setUp(() async {
       // Setting up mocks
       courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
-      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+          setupCourseRepositoryMock();
+      settingsManagerMock = setupSettingsManagerMock();
+      networkingService = setupNetworkingServiceMock();
       setupFlutterToastMock();
 
       // Stub to simulate that the user has an active internet connection

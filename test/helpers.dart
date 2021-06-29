@@ -70,7 +70,7 @@ Widget localizedWidget(
     );
 
 /// Load a mock of the [AnalyticsService]
-AnalyticsService setupAnalyticsServiceMock() {
+AnalyticsServiceMock setupAnalyticsServiceMock() {
   unregister<AnalyticsService>();
   final service = AnalyticsServiceMock();
 
@@ -80,7 +80,7 @@ AnalyticsService setupAnalyticsServiceMock() {
 }
 
 /// Load a mock of the [RiveAnimationService]
-RiveAnimationService setupRiveAnimationServiceMock() {
+RiveAnimationServiceMock setupRiveAnimationServiceMock() {
   unregister<RiveAnimationService>();
   final service = RiveAnimationServiceMock();
 
@@ -90,7 +90,7 @@ RiveAnimationService setupRiveAnimationServiceMock() {
 }
 
 /// Load a mock of the [InternalInfoService]
-InternalInfoService setupInternalInfoServiceMock() {
+InternalInfoServiceMock setupInternalInfoServiceMock() {
   unregister<InternalInfoService>();
   final service = InternalInfoServiceMock();
 
@@ -116,7 +116,7 @@ void tearDownFlutterToastMock() {
 }
 
 /// Load a mock of the [NavigationService]
-NavigationService setupNavigationServiceMock() {
+NavigationServiceMock setupNavigationServiceMock() {
   unregister<NavigationService>();
   final service = NavigationServiceMock();
 
@@ -126,7 +126,7 @@ NavigationService setupNavigationServiceMock() {
 }
 
 /// Load a mock of the [MonETSApi]
-MonETSApi setupMonETSApiMock() {
+MonETSApiMock setupMonETSApiMock() {
   unregister<MonETSApi>();
   final service = MonETSApiMock();
 
@@ -136,7 +136,7 @@ MonETSApi setupMonETSApiMock() {
 }
 
 /// Load a mock of the [GithubApi]
-GithubApi setupGithubApiMock() {
+GithubApiMock setupGithubApiMock() {
   unregister<GithubApi>();
   final service = GithubApiMock();
 
@@ -146,7 +146,7 @@ GithubApi setupGithubApiMock() {
 }
 
 /// Load a mock of the [FlutterSecureStorage]
-FlutterSecureStorage setupFlutterSecureStorageMock() {
+FlutterSecureStorageMock setupFlutterSecureStorageMock() {
   unregister<FlutterSecureStorage>();
   final service = FlutterSecureStorageMock();
 
@@ -156,7 +156,7 @@ FlutterSecureStorage setupFlutterSecureStorageMock() {
 }
 
 /// Load a mock of the [UserRepository]
-UserRepository setupUserRepositoryMock() {
+UserRepositoryMock setupUserRepositoryMock() {
   unregister<UserRepository>();
   final service = UserRepositoryMock();
 
@@ -171,7 +171,7 @@ Future<AppIntl> setupAppIntl() async {
 }
 
 /// Load a mock of the [SignetsApi]
-SignetsApi setupSignetsApiMock() {
+SignetsApiMock setupSignetsApiMock() {
   unregister<SignetsApi>();
   final service = SignetsApiMock();
 
@@ -181,7 +181,7 @@ SignetsApi setupSignetsApiMock() {
 }
 
 /// Load a mock of the [CacheManager]
-CacheManager setupCacheManagerMock() {
+CacheManagerMock setupCacheManagerMock() {
   unregister<CacheManager>();
   final service = CacheManagerMock();
 
@@ -202,7 +202,7 @@ Logger setupLogger() {
 }
 
 /// Load a mock of the [PreferencesService]
-PreferencesService setupPreferencesServiceMock() {
+PreferencesServiceMock setupPreferencesServiceMock() {
   unregister<PreferencesService>();
   final service = PreferencesServiceMock();
 
@@ -212,7 +212,7 @@ PreferencesService setupPreferencesServiceMock() {
 }
 
 /// Load a mock of the [SettingsManager]
-SettingsManager setupSettingsManagerMock() {
+SettingsManagerMock setupSettingsManagerMock() {
   unregister<SettingsManager>();
   final service = SettingsManagerMock();
 
@@ -222,7 +222,7 @@ SettingsManager setupSettingsManagerMock() {
 }
 
 /// Load a mock of the [CourseRepository]
-CourseRepository setupCourseRepositoryMock() {
+CourseRepositoryMock setupCourseRepositoryMock() {
   unregister<CourseRepository>();
   final service = CourseRepositoryMock();
 

@@ -124,14 +124,13 @@ void main() {
 
   group('MoreViewModel - ', () {
     setUp(() async {
-      cacheManagerMock = setupCacheManagerMock() as CacheManagerMock;
-      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
-      courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
+      cacheManagerMock = setupCacheManagerMock();
+      settingsManagerMock = setupSettingsManagerMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
       preferenceService = setupPreferencesServiceMock();
-      userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
+      userRepositoryMock = setupUserRepositoryMock();
       navigationService = setupNavigationServiceMock();
-      githubApiMock = setupGithubApiMock() as GithubApiMock;
+      githubApiMock = setupGithubApiMock();
       appIntl = await setupAppIntl();
       setupLogger();
       setupFlutterToastMock();

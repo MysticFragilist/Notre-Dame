@@ -23,7 +23,7 @@ import '../mock/services/networking_service_mock.dart';
 void main() {
   late NavigationService navigationService;
   late UserRepositoryMock userRepositoryMock;
-  late SettingsManager settingsManager;
+  late SettingsManagerMock settingsManagerMock;
   late NetworkingServiceMock networkingService;
 
   late StartUpViewModel viewModel;
@@ -31,9 +31,9 @@ void main() {
   group('StartupViewModel - ', () {
     setUp(() async {
       navigationService = setupNavigationServiceMock();
-      settingsManager = setupSettingsManagerMock();
-      userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      settingsManagerMock = setupSettingsManagerMock();
+      userRepositoryMock = setupUserRepositoryMock();
+      networkingService = setupNetworkingServiceMock();
 
       setupLogger();
 
@@ -66,12 +66,11 @@ void main() {
         NetworkingServiceMock.stubHasConnectivity(networkingService);
 
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.discovery,
+            settingsManagerMock, PreferencesFlag.discovery,
             toReturn: 'true');
 
         SettingsManagerMock.stubGetString(
-            settingsManager as SettingsManagerMock,
-            PreferencesFlag.languageChoice,
+            settingsManagerMock, PreferencesFlag.languageChoice,
             toReturn: 'true');
 
         await viewModel.handleStartUp();
@@ -90,8 +89,8 @@ void main() {
         await viewModel.handleStartUp();
 
         verify(navigationService.pushNamed(RouterPaths.chooseLanguage));
-        verify(
-            settingsManager.setString(PreferencesFlag.languageChoice, 'true'));
+        verify(settingsManagerMock.setString(
+            PreferencesFlag.languageChoice, 'true'));
       });
     });
   });

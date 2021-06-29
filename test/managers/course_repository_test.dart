@@ -45,8 +45,8 @@ void main() {
           setupAnalyticsServiceMock() as AnalyticsServiceMock;
       signetsApiMock = setupSignetsApiMock() as SignetsApiMock;
       userRepository = setupUserRepositoryMock();
-      cacheManagerMock = setupCacheManagerMock() as CacheManagerMock;
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      cacheManagerMock = setupCacheManagerMock();
+      networkingService = setupNetworkingServiceMock();
       setupLogger();
 
       manager = CourseRepository();

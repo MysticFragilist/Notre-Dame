@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/managers/settings_manager.dart';
 
 // VIEW-MODEL
 import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
@@ -70,7 +71,7 @@ void main() {
   group("ProfileViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      userRepositoryMock = setupUserRepositoryMock() as UserRepositoryMock;
+      userRepositoryMock = setupUserRepositoryMock();
       networkingServiceMock = setupNetworkingServiceMock();
       setupFlutterToastMock();
 
@@ -83,6 +84,7 @@ void main() {
     tearDown(() {
       unregister<UserRepository>();
       unregister<NetworkingService>();
+      unregister<SettingsManager>();
       tearDownFlutterToastMock();
     });
 

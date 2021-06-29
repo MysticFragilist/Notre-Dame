@@ -37,15 +37,12 @@ void main() {
   group('UserRepository - ', () {
     setUp(() {
       // Setup needed service
-      analyticsServiceMock =
-          setupAnalyticsServiceMock() as AnalyticsServiceMock;
-      monETSApiMock = setupMonETSApiMock() as MonETSApiMock;
-      secureStorageMock =
-          setupFlutterSecureStorageMock() as FlutterSecureStorageMock;
-      cacheManagerMock = setupCacheManagerMock() as CacheManagerMock;
-      signetsApiMock = setupSignetsApiMock() as SignetsApiMock;
-      networkingServiceMock =
-          setupNetworkingServiceMock() as NetworkingServiceMock;
+      analyticsServiceMock = setupAnalyticsServiceMock();
+      monETSApiMock = setupMonETSApiMock();
+      secureStorageMock = setupFlutterSecureStorageMock();
+      cacheManagerMock = setupCacheManagerMock();
+      signetsApiMock = setupSignetsApiMock();
+      networkingServiceMock = setupNetworkingServiceMock();
       setupLogger();
 
       manager = UserRepository();
