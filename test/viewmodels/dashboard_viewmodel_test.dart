@@ -130,17 +130,13 @@ void main() {
   group("DashboardViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
-      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
-      preferenceServiceMock =
-          setupPreferencesServiceMock() as PreferencesServiceMock;
-      courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
+      courseRepositoryMock = setupCourseRepositoryMock();
+      settingsManagerMock = setupSettingsManagerMock();
+      preferenceServiceMock = setupPreferencesServiceMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
 
       setupFlutterToastMock();
-      courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
+      courseRepositoryMock = setupCourseRepositoryMock();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
@@ -148,8 +144,6 @@ void main() {
       CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
           toReturn: [session]);
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
-      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
-          fromCacheOnly: true);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
           fromCacheOnly: false);
     });
@@ -254,6 +248,7 @@ void main() {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock);
 
         await viewModel.futureToRun();
         await viewModel.futureToRunSchedule();
@@ -279,6 +274,7 @@ void main() {
           () async {
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        SettingsManagerMock.stubGetDashboard(settingsManagerMock);
 
         PreferencesServiceMock.stubException(
             preferenceServiceMock as PreferencesServiceMock,
@@ -330,6 +326,7 @@ void main() {
 
         SettingsManagerMock.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
 
         await viewModel.futureToRun();
 

@@ -10,17 +10,23 @@ import 'package:notredame/core/services/preferences_service.dart';
 class PreferencesServiceMock extends Mock implements PreferencesService {
   @override
   Future<bool> setBool(PreferencesFlag flag, {required bool? value}) =>
-      super.noSuchMethod(
-          Invocation.method(#setBool, [flag], {const Symbol('value'): value}),
+      super.noSuchMethod(Invocation.method(#setBool, [flag], {#value: value}),
           returnValue: Future<bool>.value(true)) as Future<bool>;
+
   @override
   Future<bool> setString(PreferencesFlag flag, String? value) =>
       super.noSuchMethod(Invocation.method(#setString, [flag, value]),
           returnValue: Future<bool>.value(true)) as Future<bool>;
+
   @override
   Future<bool> setInt(PreferencesFlag flag, int? value) =>
       super.noSuchMethod(Invocation.method(#setInt, [flag, value]),
           returnValue: Future<bool>.value(true)) as Future<bool>;
+
+  @override
+  Future<int?> getInt(PreferencesFlag flag) async =>
+      super.noSuchMethod(Invocation.method(#getInt, [flag]),
+          returnValue: Future<int?>.value()) as Future<int?>;
 
   /// Stub the answer of [setString] when the [flag] is used.
   static void stubSetString(PreferencesServiceMock mock, PreferencesFlag flag,

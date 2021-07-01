@@ -17,10 +17,8 @@ class MonETSApiMock extends Mock implements MonETSApi {
   Future<MonETSUser> authenticate(
           {required String? username, required String? password}) async =>
       super.noSuchMethod(
-              Invocation.method(#authenticate, [], {
-                const Symbol('username'): username,
-                const Symbol('password'): password
-              }),
+              Invocation.method(#authenticate, [],
+                  {#username: username, #password: password}),
               returnValue: Future<MonETSUser>.value(defaultMonETSUser))
           as Future<MonETSUser>;
 

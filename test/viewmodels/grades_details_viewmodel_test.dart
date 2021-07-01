@@ -89,8 +89,7 @@ void main() {
   group("GradesDetailsViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
+      courseRepositoryMock = setupCourseRepositoryMock();
       intl = await setupAppIntl();
       setupFlutterToastMock();
 

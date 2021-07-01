@@ -17,9 +17,9 @@ class UserRepositoryMock extends Mock implements UserRepository {
           bool isSilent = false}) async =>
       super.noSuchMethod(
           Invocation.method(#authenticate, [], {
-            const Symbol('username'): username,
-            const Symbol('password'): password,
-            const Symbol('isSilent'): isSilent,
+            #username: username,
+            #password: password,
+            #isSilent: isSilent,
           }),
           returnValue: Future<bool>.value(false)) as Future<bool>;
 
@@ -27,7 +27,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
   Future<List<Program>?> getPrograms({bool? fromCacheOnly = false}) async =>
       super.noSuchMethod(
               Invocation.method(#getPrograms, [], {
-                const Symbol('fromCacheOnly'): fromCacheOnly,
+                #fromCacheOnly: fromCacheOnly,
               }),
               returnValue: Future<List<Program>?>.value())
           as Future<List<Program>?>;
@@ -36,7 +36,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
   Future<ProfileStudent?> getInfo({bool? fromCacheOnly = false}) async =>
       super.noSuchMethod(
               Invocation.method(#getPrograms, [], {
-                const Symbol('fromCacheOnly'): fromCacheOnly,
+                #fromCacheOnly: fromCacheOnly,
               }),
               returnValue: Future<ProfileStudent?>.value())
           as Future<ProfileStudent?>;

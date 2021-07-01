@@ -29,6 +29,17 @@ class SettingsManagerMock extends Mock implements SettingsManager {
       super.noSuchMethod(Invocation.method(#getString, [flag]),
           returnValue: Future<String?>.value()) as Future<String?>;
 
+  @override
+  void setLocale(String value) =>
+      super.noSuchMethod(Invocation.method(#setLocale, [value]));
+
+  @override
+  Future<Map<PreferencesFlag, int>> getDashboard() async =>
+      super.noSuchMethod(Invocation.method(#getDashboard, []),
+              returnValue: Future<Map<PreferencesFlag, int>>.value(
+                  Map<PreferencesFlag, int>.from({})))
+          as Future<Map<PreferencesFlag, int>>;
+
   /// Stub the [getScheduleSettings] function of [mock], when called return [toReturn].
   static void stubGetScheduleSettings(SettingsManagerMock mock,
       {Map<PreferencesFlag, dynamic> toReturn = const {}}) {

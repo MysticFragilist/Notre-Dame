@@ -17,24 +17,45 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   Future<List<CourseActivity>?> getCoursesActivities(
           {bool? fromCacheOnly = false}) async =>
       super.noSuchMethod(
-              Invocation.method(#getCoursesActivities, [], {
-                const Symbol('fromCacheOnly'): fromCacheOnly,
-              }),
-              returnValue: Future<List<CourseActivity>?>.value())
-          as Future<List<CourseActivity>?>;
+          Invocation.method(#getCoursesActivities, [], {
+            #fromCacheOnly: fromCacheOnly,
+          }),
+          returnValue: Future<List<CourseActivity>?>.value(
+              List<CourseActivity>.from([]))) as Future<List<CourseActivity>?>;
 
   @override
   Future<List<Course>?> getCourses({bool? fromCacheOnly = false}) async =>
       super.noSuchMethod(
           Invocation.method(#getCoursesActivities, [], {
-            const Symbol('fromCacheOnly'): fromCacheOnly,
+            #fromCacheOnly: fromCacheOnly,
           }),
           returnValue: Future<List<Course>?>.value()) as Future<List<Course>?>;
 
+  @override
+  Future<Course?> getCourseSummary(Course? course) async =>
+      super.noSuchMethod(Invocation.method(#getCourseSummary, [course]),
+          returnValue: Future<Course?>.value()) as Future<Course?>;
+
+  @override
+  List<Session>? get sessions =>
+      super.noSuchMethod(Invocation.getter(#sessions),
+          returnValue: List<Session>.from([])) as List<Session>?;
+
+  @override
+  Future<List<Session>?> getSessions() async =>
+      super.noSuchMethod(Invocation.method(#getSessions, []),
+              returnValue: Future<List<Session>?>.value(List<Session>.from([])))
+          as Future<List<Session>?>;
+
+  @override
+  List<CourseActivity>? get coursesActivities =>
+      super.noSuchMethod(Invocation.getter(#coursesActivities),
+          returnValue: List<CourseActivity>.from([])) as List<CourseActivity>?;
+
   /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].
   static void stubCoursesActivities(CourseRepositoryMock mock,
-      {List<CourseActivity?> toReturn = const []}) {
-    when(mock.coursesActivities).thenReturn(toReturn as List<CourseActivity>?);
+      {List<CourseActivity> toReturn = const []}) {
+    when(mock.coursesActivities).thenReturn(toReturn);
   }
 
   /// Stub the getter [sessions] of [mock] when called will return [toReturn].

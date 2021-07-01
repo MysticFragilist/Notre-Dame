@@ -23,7 +23,7 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      networkingService = setupNetworkingServiceMock();
       userRepository = setupUserRepositoryMock();
 
       UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock);

@@ -19,21 +19,24 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 // OTHERS
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
+import '../mock/services/navigation_service_mock.dart';
 
 late ChooseLanguageViewModel viewModel;
 
 void main() {
-  late NavigationService navigationService;
+  late NavigationServiceMock navigationServiceMock;
   late SettingsManager settingsManager;
 
   group("ChooseLanguageViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      navigationService = setupNavigationServiceMock();
+      navigationServiceMock = setupNavigationServiceMock();
       settingsManager = setupSettingsManagerMock();
       final AppIntl intl = await setupAppIntl();
 
       viewModel = ChooseLanguageViewModel(intl: intl);
+      NavigationServiceMock.stubPop(navigationServiceMock);
+      NavigationServiceMock.stubPushNamed(navigationServiceMock);
     });
 
     tearDown(() {
@@ -50,8 +53,8 @@ void main() {
 
         verify(settingsManager
             .setLocale(AppIntl.supportedLocales.first.languageCode));
-        verify(navigationService.pop());
-        verify(navigationService.pushNamed(RouterPaths.login));
+        verify(navigationServiceMock.pop());
+        verify(navigationServiceMock.pushNamed(RouterPaths.login));
       });
 
       test('can set language français', () async {
@@ -62,8 +65,8 @@ void main() {
 
         verify(settingsManager
             .setLocale(AppIntl.supportedLocales.last.languageCode));
-        verify(navigationService.pop());
-        verify(navigationService.pushNamed(RouterPaths.login));
+        verify(navigationServiceMock.pop());
+        verify(navigationServiceMock.pushNamed(RouterPaths.login));
       });
 
       test('throws an error when index does not exist', () async {
