@@ -85,7 +85,7 @@ void main() {
       setupNavigationServiceMock();
       settingsManager = setupSettingsManagerMock();
       courseRepository = setupCourseRepositoryMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      networkingService = setupNetworkingServiceMock();
 
       SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
 
