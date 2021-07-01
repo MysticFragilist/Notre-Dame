@@ -32,9 +32,9 @@ void main() {
   NetworkingServiceMock networkingService;
 
   // Some activities
-  CourseActivity? activityYesterday;
-  CourseActivity? activityToday;
-  CourseActivity? activityTomorrow;
+  late CourseActivity activityYesterday;
+  late CourseActivity activityToday;
+  late CourseActivity activityTomorrow;
 
   // Some settings
   Map<PreferencesFlag, dynamic> settings = {
