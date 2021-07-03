@@ -41,6 +41,11 @@ class UserRepositoryMock extends Mock implements UserRepository {
               returnValue: Future<ProfileStudent?>.value())
           as Future<ProfileStudent?>;
 
+  @override
+  Future<String> getPassword() async =>
+      super.noSuchMethod(Invocation.method(#getPassword, []),
+          returnValue: Future<String>.value("")) as Future<String>;
+
   /// When [monETSUser] is called will return [userToReturn]
   static void stubMonETSUser(UserRepositoryMock mock, MonETSUser userToReturn) {
     when(mock.monETSUser).thenAnswer((_) => userToReturn);

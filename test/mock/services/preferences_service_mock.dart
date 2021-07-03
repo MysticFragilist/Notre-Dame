@@ -14,9 +14,19 @@ class PreferencesServiceMock extends Mock implements PreferencesService {
           returnValue: Future<bool>.value(true)) as Future<bool>;
 
   @override
+  Future<bool?> getBool(PreferencesFlag flag) async =>
+      super.noSuchMethod(Invocation.method(#getBool, [flag]),
+          returnValue: Future<bool?>.value()) as Future<bool?>;
+
+  @override
   Future<bool> setString(PreferencesFlag flag, String? value) =>
       super.noSuchMethod(Invocation.method(#setString, [flag, value]),
-          returnValue: Future<bool>.value(true)) as Future<bool>;
+          returnValue: Future<bool>.value()) as Future<bool>;
+
+  @override
+  Future<String?> getString(PreferencesFlag flag) async =>
+      super.noSuchMethod(Invocation.method(#getString, [flag]),
+          returnValue: Future<String?>.value()) as Future<String?>;
 
   @override
   Future<bool> setInt(PreferencesFlag flag, int? value) =>

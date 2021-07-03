@@ -8,11 +8,9 @@ import 'package:notredame/core/services/analytics_service.dart';
 class AnalyticsServiceMock extends Mock implements AnalyticsService {
   @override
   Future logError(String prefix, String? message) async =>
-      super.noSuchMethod(Invocation.method(#logError, [prefix, message]),
-          returnValue: Future) as Future;
+      super.noSuchMethod(Invocation.method(#logError, [prefix, message]));
 
   @override
   Future logEvent(String prefix, String? message) async =>
-      super.noSuchMethod(Invocation.method(#logEvent, [prefix, message]),
-          returnValue: Future) as Future;
+      super.noSuchMethod(Invocation.method(#logEvent, [prefix, message]));
 }

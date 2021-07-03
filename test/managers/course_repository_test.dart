@@ -41,9 +41,8 @@ void main() {
   group("CourseRepository - ", () {
     setUp(() {
       // Setup needed services and managers
-      analyticsServiceMock =
-          setupAnalyticsServiceMock() as AnalyticsServiceMock;
-      signetsApiMock = setupSignetsApiMock() as SignetsApiMock;
+      analyticsServiceMock = setupAnalyticsServiceMock();
+      signetsApiMock = setupSignetsApiMock();
       userRepository = setupUserRepositoryMock();
       cacheManagerMock = setupCacheManagerMock();
       networkingService = setupNetworkingServiceMock();

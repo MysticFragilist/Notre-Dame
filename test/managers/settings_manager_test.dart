@@ -30,10 +30,8 @@ void main() {
     setUp(() async {
       // Setting up mocks
       setupLogger();
-      analyticsServiceMock =
-          setupAnalyticsServiceMock() as AnalyticsServiceMock;
-      preferencesServiceMock =
-          setupPreferencesServiceMock() as PreferencesServiceMock;
+      analyticsServiceMock = setupAnalyticsServiceMock();
+      preferencesServiceMock = setupPreferencesServiceMock();
 
       await setupAppIntl();
 

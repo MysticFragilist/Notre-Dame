@@ -23,7 +23,7 @@ import '../mock/services/networking_service_mock.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late CourseRepositoryMock courseRepositoryMock;
-  NetworkingServiceMock networkingService;
+  late NetworkingServiceMock networkingServiceMock;
   AppIntl intl;
   late GradesViewModel viewModel;
 
@@ -91,15 +91,14 @@ void main() {
 
   group('GradesViewModel -', () {
     setUp(() async {
-      courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      courseRepositoryMock = setupCourseRepositoryMock();
+      networkingServiceMock = setupNetworkingServiceMock();
       intl = await setupAppIntl();
       setupNavigationServiceMock();
       setupFlutterToastMock();
 
       // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
+      NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
 
       viewModel = GradesViewModel(intl: intl);
     });

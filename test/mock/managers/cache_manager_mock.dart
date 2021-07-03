@@ -14,12 +14,11 @@ class CacheManagerMock extends Mock implements CacheManager {
       Invocation.method(#get, [
         key,
       ]),
-      returnValue: Future<String>.value("")) as Future<String>;
+      returnValue: Future<String>.value('')) as Future<String>;
 
   @override
   Future update(String? key, String? value) async =>
-      super.noSuchMethod(Invocation.method(#update, [key, value]),
-          returnValue: Future) as Future;
+      super.noSuchMethod(Invocation.method(#update, [key, value]));
 
   /// Stub the get function of [mock], when [key] is used, [valueToReturn] is answered.
   static void stubGet(CacheManagerMock mock, String key, String valueToReturn) {
