@@ -15,7 +15,7 @@ import 'package:notredame/ui/views/grade_details_view.dart';
 
 // OTHERS
 import '../../helpers.dart';
-import '../../mock/managers/course_repository_mock.dart';
+import '../../mock/managers/course_repository_stub.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -107,8 +107,8 @@ void main() {
       testWidgets(
           'when the page is at the top, it displays the course title, acronym and group',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryStub.stubGetCourseSummary(
+            courseRepository as CourseRepositoryStub, courseWithoutSummary,
             toReturn: course);
 
         await tester.pumpWidget(
@@ -125,8 +125,8 @@ void main() {
       testWidgets(
           'when the page is scrolled at the bottom, it does not display the SliverToBoxAdapter',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryStub.stubGetCourseSummary(
+            courseRepository as CourseRepositoryStub, courseWithoutSummary,
             toReturn: course);
 
         await tester.pumpWidget(
@@ -145,8 +145,8 @@ void main() {
 
       testWidgets("display GradeNotAvailable when a course summary is null",
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryStub.stubGetCourseSummary(
+            courseRepository as CourseRepositoryStub, courseWithoutSummary,
             toReturn: courseWithoutSummary);
 
         await tester.pumpWidget(localizedWidget(
@@ -159,8 +159,8 @@ void main() {
 
     group("golden - ", () {
       testWidgets("default view", (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryStub.stubGetCourseSummary(
+            courseRepository as CourseRepositoryStub, courseWithoutSummary,
             toReturn: course);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
@@ -175,8 +175,8 @@ void main() {
 
       testWidgets("if there is no grades available",
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourseSummary(
-            courseRepository as CourseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryStub.stubGetCourseSummary(
+            courseRepository as CourseRepositoryStub, courseWithoutSummary,
             toReturn: courseWithoutSummary);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);

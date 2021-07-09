@@ -36,6 +36,10 @@ chmod +x ./scripts/decrypt.sh
 ./scripts/decrypt.sh
 ```
 
+- Les tests ne fonctionneront pas correctement (les mocks ne seront pas reconnu) si la commande suivante n'est pas lancé:
+```sh
+flutter pub run build_runner build
+```
 ## Démarrer le code
 
 - Pour générer les classes pour l'internationalisation, exécuter les commandes suivantes:

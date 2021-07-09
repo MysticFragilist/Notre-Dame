@@ -166,3 +166,4 @@ modules.xml
 .env.template
 
 coverage/html/
+test/**/*.mocks.dart

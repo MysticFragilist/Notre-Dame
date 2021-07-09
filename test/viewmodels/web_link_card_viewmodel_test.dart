@@ -19,7 +19,7 @@ import 'package:notredame/core/viewmodels/web_link_card_viewmodel.dart';
 
 // OTHER
 import '../helpers.dart';
-import '../mock/services/internal_info_service_mock.dart';
+import '../mock/services/internal_info_service_stub.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,13 +65,13 @@ void main() {
       });
 
       test('navigate to web view if launchInBrowser throw', () async {
-        InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(
-            internalInfoService as InternalInfoServiceMock);
+        InternalInfoServiceStub.stubGetDeviceInfoForErrorReporting(
+            internalInfoService as InternalInfoServiceStub);
 
         await viewModel.onLinkClicked(_quickLink);
 
-        verify(navigationService!.pushNamed(RouterPaths.webView,
-            arguments: _quickLink));
+        verify(navigationService!
+            .pushNamed(RouterPaths.webView, arguments: _quickLink));
         verifyNoMoreInteractions(navigationService);
       });
     });

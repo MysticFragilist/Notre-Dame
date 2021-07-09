@@ -15,12 +15,12 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 
 // OTHERS
 import '../../helpers.dart';
-import '../../mock/managers/course_repository_mock.dart';
-import '../../mock/services/networking_service_mock.dart';
+import '../../mock/managers/course_repository_stub.dart';
+import '../../mock/services/networking_service_stub.dart';
 
 void main() {
   late CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
+  NetworkingServiceStub networkingService;
   late AppIntl intl;
 
   final Course courseSummer = Course(
@@ -65,26 +65,26 @@ void main() {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceStub;
       courseRepository = setupCourseRepositoryMock();
 
       // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
+      NetworkingServiceStub.stubHasConnectivity(networkingService);
     });
     tearDown(() {
       unregister<CourseRepository>();
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingServiceStub>();
     });
     group("golden -", () {
       testWidgets("No grades available", (WidgetTester tester) async {
         // Mock the repository to have 0 courses available
-        CourseRepositoryMock.stubCourses(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCourses(
+            courseRepository as CourseRepositoryStub);
+        CourseRepositoryStub.stubGetCourses(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
@@ -99,14 +99,14 @@ void main() {
       testWidgets("Multiples sessions and grades loaded",
           (WidgetTester tester) async {
         // Mock the repository to have 0 courses available
-        CourseRepositoryMock.stubCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCourses(
+            courseRepository as CourseRepositoryStub,
             toReturn: courses);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(
+            courseRepository as CourseRepositoryStub,
             toReturn: courses,
             fromCacheOnly: true);
 
@@ -125,13 +125,13 @@ void main() {
           "Right message is displayed when there is no grades available",
           (WidgetTester tester) async {
         // Mock the repository to have 0 courses available
-        CourseRepositoryMock.stubCourses(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCourses(
+            courseRepository as CourseRepositoryStub);
+        CourseRepositoryStub.stubGetCourses(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
 
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
@@ -146,14 +146,14 @@ void main() {
           "Correct number of grade button and right session name are displayed",
           (WidgetTester tester) async {
         // Mock the repository to have 4 courses available
-        CourseRepositoryMock.stubCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCourses(
+            courseRepository as CourseRepositoryStub,
             toReturn: courses);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
-        CourseRepositoryMock.stubGetCourses(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(
+            courseRepository as CourseRepositoryStub,
             toReturn: courses,
             fromCacheOnly: true);
 

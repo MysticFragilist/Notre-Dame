@@ -22,14 +22,14 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 import '../../helpers.dart';
 
 // MOCKS
-import '../../mock/managers/course_repository_mock.dart';
-import '../../mock/managers/settings_manager_mock.dart';
-import '../../mock/services/networking_service_mock.dart';
+import '../../mock/managers/course_repository_stub.dart';
+import '../../mock/managers/settings_manager_stub.dart';
+import '../../mock/services/networking_service_stub.dart';
 
 void main() {
   late SettingsManager settingsManager;
   late CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
+  NetworkingServiceStub networkingService;
 
   // Some activities
   CourseActivity? activityYesterday;
@@ -85,12 +85,12 @@ void main() {
       setupNavigationServiceMock();
       settingsManager = setupSettingsManagerMock();
       courseRepository = setupCourseRepositoryMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceStub;
 
-      SettingsManagerMock.stubLocale(settingsManager as SettingsManagerMock);
+      SettingsManagerStub.stubLocale(settingsManager as SettingsManagerStub);
 
       // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
+      NetworkingServiceStub.stubHasConnectivity(networkingService);
 
       settings = {
         PreferencesFlag.scheduleSettingsCalendarFormat: CalendarFormat.week,
@@ -104,16 +104,16 @@ void main() {
           (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub);
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(
+            settingsManager as SettingsManagerStub,
             toReturn: settings);
 
         await tester.pumpWidget(localizedWidget(
@@ -131,16 +131,16 @@ void main() {
 
         settings[PreferencesFlag.scheduleSettingsShowTodayBtn] = false;
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub);
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(
+            settingsManager as SettingsManagerStub,
             toReturn: settings);
 
         await tester.pumpWidget(localizedWidget(
@@ -155,17 +155,17 @@ void main() {
       testWidgets("view with events, day with events selected",
           (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             toReturn: [activityYesterday, activityToday, activityTomorrow]);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(
+            settingsManager as SettingsManagerStub,
             toReturn: settings);
 
         await tester.pumpWidget(localizedWidget(
@@ -183,17 +183,17 @@ void main() {
           (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             toReturn: [activityYesterday, activityTomorrow]);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(
+            settingsManager as SettingsManagerStub,
             toReturn: settings);
 
         await tester.pumpWidget(localizedWidget(
@@ -209,17 +209,17 @@ void main() {
           (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             toReturn: [activityYesterday, activityTomorrow]);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(
+            settingsManager as SettingsManagerStub,
             toReturn: settings);
 
         final testingDate = DateTime(2020);
@@ -260,17 +260,17 @@ void main() {
           (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             toReturn: [activityToday]);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(
+            settingsManager as SettingsManagerStub,
             toReturn: settings);
 
         await tester.pumpWidget(localizedWidget(
@@ -309,17 +309,17 @@ void main() {
           (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             toReturn: [activityToday]);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
-        SettingsManagerMock.stubGetScheduleSettings(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(
+            settingsManager as SettingsManagerStub,
             toReturn: settings);
 
         await tester.pumpWidget(localizedWidget(

@@ -1,10 +1,15 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notredame/core/managers/cache_manager.dart';
 
 // SERVICES / MANAGER
 import 'package:notredame/core/managers/user_repository.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/networking_service.dart';
+import 'package:notredame/core/services/signets_api.dart';
 
 // MODELS
 import 'package:notredame/core/models/mon_ets_user.dart';
@@ -17,20 +22,20 @@ import '../defaults.dart';
 import '../helpers.dart';
 
 // MOCKS
-import '../mock/managers/cache_manager_mock.dart';
-import '../mock/services/analytics_service_mock.dart';
-import '../mock/services/flutter_secure_storage_mock.dart';
-import '../mock/services/mon_ets_api_mock.dart';
-import '../mock/services/networking_service_mock.dart';
-import '../mock/services/signets_api_mock.dart';
+import '../mock/managers/cache_manager_stub.dart';
+import '../mock/services/flutter_secure_storage_stub.dart';
+import '../mock/services/mon_ets_api_stub.dart';
+import '../mock/services/networking_service_stub.dart';
+import '../mock/services/signets_api_stub.dart';
+import '../mocks_generators.mocks.dart';
 
 void main() {
-  late AnalyticsServiceMock analyticsServiceMock;
-  late MonETSApiMock monETSApiMock;
-  late FlutterSecureStorageMock secureStorageMock;
-  late CacheManagerMock cacheManagerMock;
-  late SignetsApiMock signetsApiMock;
-  late NetworkingServiceMock networkingServiceMock;
+  late MockAnalyticsService analyticsServiceMock;
+  late MockMonETSApi monETSApiMock;
+  late MockFlutterSecureStorage secureStorageMock;
+  late MockCacheManager cacheManagerMock;
+  late MockSignetsApi signetsApiMock;
+  late MockNetworkingService networkingServiceMock;
 
   late UserRepository manager;
 
@@ -49,14 +54,14 @@ void main() {
     });
 
     tearDown(() {
-      unregister<AnalyticsServiceMock>();
-      unregister<MonETSApiMock>();
-      unregister<FlutterSecureStorageMock>();
+      unregister<AnalyticsService>();
+      unregister<MockMonETSApi>();
+      unregister<FlutterSecureStorage>();
       clearInteractions(cacheManagerMock);
-      unregister<CacheManagerMock>();
+      unregister<CacheManager>();
       clearInteractions(signetsApiMock);
-      unregister<SignetsApiMock>();
-      unregister<NetworkingServiceMock>();
+      unregister<SignetsApi>();
+      unregister<NetworkingService>();
     });
 
     group('authentication - ', () {
@@ -64,7 +69,7 @@ void main() {
         final MonETSUser user = MonETSUser(
             domain: "ENS", typeUsagerId: 1, username: "right credentials");
 
-        MonETSApiMock.stubAuthenticate(monETSApiMock, user);
+        MonETSApiStub.stubAuthenticate(monETSApiMock, user);
 
         // Result is true
         expect(
@@ -88,7 +93,7 @@ void main() {
 
       test('An exception is throw during the MonETSApi call', () async {
         const String username = "exceptionUser";
-        MonETSApiMock.stubException(monETSApiMock, username);
+        MonETSApiStub.stubException(monETSApiMock, username);
 
         expect(await manager.authenticate(username: username, password: ""),
             isFalse,
@@ -122,12 +127,12 @@ void main() {
         final MonETSUser user =
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
 
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
-        MonETSApiMock.stubAuthenticate(monETSApiMock, user);
+        MonETSApiStub.stubAuthenticate(monETSApiMock, user);
 
         expect(await manager.silentAuthenticate(), isTrue,
             reason: "Result should be true");
@@ -148,12 +153,12 @@ void main() {
         const String username = "username";
         const String password = "password";
 
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
-        MonETSApiMock.stubAuthenticateException(monETSApiMock, username);
+        MonETSApiStub.stubAuthenticateException(monETSApiMock, username);
 
         expect(await manager.silentAuthenticate(), isFalse,
             reason: "Result should be false");
@@ -171,9 +176,9 @@ void main() {
 
       test('credentials are not saved so the authentication should not be done',
           () async {
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: null);
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: null);
 
         expect(await manager.silentAuthenticate(), isFalse,
@@ -219,10 +224,10 @@ void main() {
         final MonETSUser user =
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
 
-        MonETSApiMock.stubAuthenticate(monETSApiMock, user);
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        MonETSApiStub.stubAuthenticate(monETSApiMock, user);
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         expect(await manager.silentAuthenticate(), isTrue);
@@ -248,10 +253,10 @@ void main() {
         final MonETSUser user =
             MonETSUser(domain: "ENS", typeUsagerId: 1, username: username);
 
-        MonETSApiMock.stubAuthenticate(monETSApiMock, user);
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        MonETSApiStub.stubAuthenticate(monETSApiMock, user);
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         expect(await manager.getPassword(), password,
@@ -273,10 +278,10 @@ void main() {
         const String username = "username";
         const String password = "password";
 
-        MonETSApiMock.stubAuthenticateException(monETSApiMock, username);
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        MonETSApiStub.stubAuthenticateException(monETSApiMock, username);
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
+        FlutterSecureStorageStub.stubRead(secureStorageMock,
             key: UserRepository.passwordSecureKey, valueToReturn: password);
 
         expect(manager.getPassword(), throwsA(isInstanceOf<ApiException>()),
@@ -312,10 +317,10 @@ void main() {
 
       setUp(() async {
         // Stub to simulate presence of programs cache
-        CacheManagerMock.stubGet(cacheManagerMock,
+        CacheManagerStub.stubGet(cacheManagerMock,
             UserRepository.programsCacheKey, jsonEncode(programs));
 
-        MonETSApiMock.stubAuthenticate(monETSApiMock, user);
+        MonETSApiStub.stubAuthenticate(monETSApiMock, user);
 
         // Result is true
         expect(
@@ -324,10 +329,10 @@ void main() {
             reason: "Check the authentication is successful");
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsApiMock.stubGetPrograms(signetsApiMock, username, []);
+        SignetsApiStub.stubGetPrograms(signetsApiMock, username, []);
 
         // Stub to simulate that the user has an active internet connection
-        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
+        NetworkingServiceStub.stubHasConnectivity(networkingServiceMock);
       });
 
       test("Programs are loaded from cache", () async {
@@ -349,7 +354,7 @@ void main() {
           () async {
         // Stub to simulate an exception when trying to get the programs from the cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGetException(
+        CacheManagerStub.stubGetException(
             cacheManagerMock, UserRepository.programsCacheKey);
 
         expect(manager.programs, isNull);
@@ -368,12 +373,12 @@ void main() {
       test("SignetsAPI return another program", () async {
         // Stub to simulate presence of program cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheManagerStub.stubGet(
             cacheManagerMock, UserRepository.programsCacheKey, jsonEncode([]));
 
         // Stub SignetsApi answer to test only the cache retrieving
         reset(signetsApiMock);
-        SignetsApiMock.stubGetPrograms(signetsApiMock, username, programs);
+        SignetsApiStub.stubGetPrograms(signetsApiMock, username, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -392,7 +397,7 @@ void main() {
       test("SignetsAPI return a program that already exists", () async {
         // Stub SignetsApi answer to test only the cache retrieving
         reset(signetsApiMock);
-        SignetsApiMock.stubGetPrograms(signetsApiMock, username, programs);
+        SignetsApiStub.stubGetPrograms(signetsApiMock, username, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -411,11 +416,11 @@ void main() {
       test("SignetsAPI return an exception", () async {
         // Stub to simulate presence of program cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheManagerStub.stubGet(
             cacheManagerMock, UserRepository.programsCacheKey, jsonEncode([]));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsApiMock.stubGetProgramsException(signetsApiMock, username);
+        SignetsApiStub.stubGetProgramsException(signetsApiMock, username);
 
         expect(manager.programs, isNull);
         expect(manager.getPrograms(), throwsA(isInstanceOf<ApiException>()));
@@ -438,15 +443,15 @@ void main() {
       test("Cache update fail", () async {
         // Stub to simulate presence of program cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheManagerStub.stubGet(
             cacheManagerMock, UserRepository.programsCacheKey, jsonEncode([]));
 
         // Stub to simulate exception when updating cache
-        CacheManagerMock.stubUpdateException(
+        CacheManagerStub.stubUpdateException(
             cacheManagerMock, UserRepository.programsCacheKey);
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsApiMock.stubGetPrograms(signetsApiMock, username, programs);
+        SignetsApiStub.stubGetPrograms(signetsApiMock, username, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -462,7 +467,7 @@ void main() {
           () async {
         //Stub the networkingService to return no connectivity
         reset(networkingServiceMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock,
+        NetworkingServiceStub.stubHasConnectivity(networkingServiceMock,
             hasConnectivity: false);
 
         final programsCache = await manager.getPrograms();
@@ -484,10 +489,10 @@ void main() {
 
       setUp(() async {
         // Stub to simulate presence of info cache
-        CacheManagerMock.stubGet(
+        CacheManagerStub.stubGet(
             cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
-        MonETSApiMock.stubAuthenticate(monETSApiMock, user);
+        MonETSApiStub.stubAuthenticate(monETSApiMock, user);
 
         // Result is true
         expect(
@@ -496,11 +501,11 @@ void main() {
             reason: "Check the authentication is successful");
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsApiMock.stubGetInfo(
+        SignetsApiStub.stubGetInfo(
             signetsApiMock, username, defaultProfileStudent);
 
         // Stub to simulate that the user has an active internet connection
-        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
+        NetworkingServiceStub.stubHasConnectivity(networkingServiceMock);
       });
 
       test("Info are loaded from cache", () async {
@@ -520,7 +525,7 @@ void main() {
       test("Trying to load info from cache but cache doesn't exist", () async {
         // Stub to simulate an exception when trying to get the info from the cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGetException(
+        CacheManagerStub.stubGetException(
             cacheManagerMock, UserRepository.infoCacheKey);
 
         expect(manager.info, isNull);
@@ -538,7 +543,7 @@ void main() {
       test("SignetsAPI return another info", () async {
         // Stub to simulate presence of info cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheManagerStub.stubGet(
             cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub SignetsApi answer to test only the cache retrieving
@@ -548,7 +553,7 @@ void main() {
             lastName: 'Doe',
             permanentCode: 'DOEJ00000000');
         reset(signetsApiMock);
-        SignetsApiMock.stubGetInfo(signetsApiMock, username, anotherInfo);
+        SignetsApiStub.stubGetInfo(signetsApiMock, username, anotherInfo);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -566,7 +571,7 @@ void main() {
       test("SignetsAPI return a info that already exists", () async {
         // Stub SignetsApi answer to test only the cache retrieving
         reset(signetsApiMock);
-        SignetsApiMock.stubGetInfo(signetsApiMock, username, info);
+        SignetsApiStub.stubGetInfo(signetsApiMock, username, info);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -585,11 +590,11 @@ void main() {
       test("SignetsAPI return an exception", () async {
         // Stub to simulate presence of info cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheManagerStub.stubGet(
             cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsApiMock.stubGetInfoException(signetsApiMock, username);
+        SignetsApiStub.stubGetInfoException(signetsApiMock, username);
 
         expect(manager.info, isNull);
         expect(manager.getInfo(), throwsA(isInstanceOf<ApiException>()));
@@ -608,15 +613,15 @@ void main() {
       test("Cache update fail", () async {
         // Stub to simulate presence of session cache
         reset(cacheManagerMock);
-        CacheManagerMock.stubGet(
+        CacheManagerStub.stubGet(
             cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub to simulate exception when updating cache
-        CacheManagerMock.stubUpdateException(
+        CacheManagerStub.stubUpdateException(
             cacheManagerMock, UserRepository.infoCacheKey);
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsApiMock.stubGetInfo(signetsApiMock, username, info);
+        SignetsApiStub.stubGetInfo(signetsApiMock, username, info);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -631,7 +636,7 @@ void main() {
           () async {
         //Stub the networkingService to return no connectivity
         reset(networkingServiceMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock,
+        NetworkingServiceStub.stubHasConnectivity(networkingServiceMock,
             hasConnectivity: false);
 
         final infoCache = await manager.getInfo();

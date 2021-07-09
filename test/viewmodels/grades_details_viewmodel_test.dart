@@ -14,7 +14,7 @@ import 'package:notredame/core/viewmodels/grades_details_viewmodel.dart';
 // MANAGER
 import 'package:notredame/core/models/course.dart';
 import 'package:notredame/core/managers/course_repository.dart';
-import '../mock/managers/course_repository_mock.dart';
+import '../mock/managers/course_repository_stub.dart';
 
 // HELPERS
 // ignore: directives_ordering
@@ -24,7 +24,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   AppIntl intl;
   late GradesDetailsViewModel viewModel;
-  late CourseRepositoryMock courseRepositoryMock;
+  late CourseRepositoryStub courseRepositoryMock;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -90,7 +90,7 @@ void main() {
     setUp(() async {
       // Setting up mocks
       courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
+          setupCourseRepositoryMock() as CourseRepositoryStub;
       intl = await setupAppIntl();
       setupFlutterToastMock();
 
@@ -105,7 +105,7 @@ void main() {
 
     group('FutureToRun - -', () {
       test('SignetsAPI gets the summary', () async {
-        CourseRepositoryMock.stubGetCourseSummary(
+        CourseRepositoryStub.stubGetCourseSummary(
             courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
 
@@ -116,7 +116,7 @@ void main() {
 
       test('Signets raised an exception while trying to recover course',
           () async {
-        CourseRepositoryMock.stubGetCourseSummaryException(
+        CourseRepositoryStub.stubGetCourseSummaryException(
             courseRepositoryMock, courseWithoutSummary);
 
         await viewModel.futureToRun();
@@ -128,7 +128,7 @@ void main() {
     group('refresh -', () {
       test('Call SignetsAPI to get the summary of the course selected',
           () async {
-        CourseRepositoryMock.stubGetCourseSummary(
+        CourseRepositoryStub.stubGetCourseSummary(
             courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
 
@@ -138,7 +138,7 @@ void main() {
       });
 
       test('Signets throw an error', () async {
-        CourseRepositoryMock.stubGetCourseSummaryException(
+        CourseRepositoryStub.stubGetCourseSummaryException(
             courseRepositoryMock, courseWithoutSummary);
 
         await viewModel.refresh();

@@ -28,8 +28,8 @@ import 'package:notredame/core/models/course_activity.dart';
 import '../../helpers.dart';
 
 // MOCKS
-import '../../mock/managers/course_repository_mock.dart';
-import '../../mock/managers/settings_manager_mock.dart';
+import '../../mock/managers/course_repository_stub.dart';
+import '../../mock/managers/settings_manager_stub.dart';
 
 void main() {
   late SettingsManager settingsManager;
@@ -154,43 +154,43 @@ void main() {
       setupNavigationServiceMock();
       courseRepository = setupCourseRepositoryMock();
 
-      CourseRepositoryMock.stubSessions(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryStub.stubSessions(
+          courseRepository as CourseRepositoryStub,
           toReturn: [session]);
-      CourseRepositoryMock.stubGetSessions(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryStub.stubGetSessions(
+          courseRepository as CourseRepositoryStub,
           toReturn: [session]);
-      CourseRepositoryMock.stubActiveSessions(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryStub.stubActiveSessions(
+          courseRepository as CourseRepositoryStub,
           toReturn: [session]);
-      CourseRepositoryMock.stubCourses(
-          courseRepository as CourseRepositoryMock);
-      CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryStub.stubCourses(
+          courseRepository as CourseRepositoryStub);
+      CourseRepositoryStub.stubGetCourses(
+          courseRepository as CourseRepositoryStub,
           fromCacheOnly: true);
-      CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryStub.stubGetCourses(
+          courseRepository as CourseRepositoryStub,
           fromCacheOnly: false);
-      CourseRepositoryMock.stubCoursesActivities(
-          courseRepository as CourseRepositoryMock);
-      CourseRepositoryMock.stubGetCoursesActivities(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryStub.stubCoursesActivities(
+          courseRepository as CourseRepositoryStub);
+      CourseRepositoryStub.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryStub,
           fromCacheOnly: true);
-      CourseRepositoryMock.stubGetCoursesActivities(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryStub.stubGetCoursesActivities(
+          courseRepository as CourseRepositoryStub,
           fromCacheOnly: false);
 
-      SettingsManagerMock.stubSetInt(
-          settingsManager as SettingsManagerMock, PreferencesFlag.aboutUsCard);
+      SettingsManagerStub.stubSetInt(
+          settingsManager as SettingsManagerStub, PreferencesFlag.aboutUsCard);
 
-      SettingsManagerMock.stubSetInt(
-          settingsManager as SettingsManagerMock, PreferencesFlag.scheduleCard);
+      SettingsManagerStub.stubSetInt(
+          settingsManager as SettingsManagerStub, PreferencesFlag.scheduleCard);
 
-      SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+      SettingsManagerStub.stubSetInt(settingsManager as SettingsManagerStub,
           PreferencesFlag.progressBarCard);
 
-      SettingsManagerMock.stubSetInt(
-          settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
+      SettingsManagerStub.stubSetInt(
+          settingsManager as SettingsManagerStub, PreferencesFlag.gradesCard);
 
       viewModel = DashboardViewModel(intl: intl!);
 
@@ -202,8 +202,8 @@ void main() {
     group('UI - ', () {
       testWidgets('Has view title restore button and cards, displayed',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
@@ -227,19 +227,19 @@ void main() {
 
       testWidgets('Has card aboutUs displayed properly',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             toReturn: activities);
 
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
@@ -265,19 +265,19 @@ void main() {
 
       testWidgets('Has card schedule displayed properly',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             toReturn: activities);
 
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
@@ -304,30 +304,30 @@ void main() {
     group('Interactions - ', () {
       testWidgets('AboutUsCard is dismissible and can be restored',
           (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub);
 
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubSetInt(settingsManager as SettingsManagerStub,
             PreferencesFlag.aboutUsCard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubSetInt(settingsManager as SettingsManagerStub,
             PreferencesFlag.scheduleCard);
 
-        SettingsManagerMock.stubSetInt(
-            settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
+        SettingsManagerStub.stubSetInt(
+            settingsManager as SettingsManagerStub, PreferencesFlag.gradesCard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubSetInt(settingsManager as SettingsManagerStub,
             PreferencesFlag.progressBarCard);
 
         await tester.pumpWidget(localizedWidget(
@@ -359,29 +359,29 @@ void main() {
 
       testWidgets('AboutUsCard is reorderable and can be restored',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub);
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubSetInt(settingsManager as SettingsManagerStub,
             PreferencesFlag.aboutUsCard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubSetInt(settingsManager as SettingsManagerStub,
             PreferencesFlag.scheduleCard);
 
-        SettingsManagerMock.stubSetInt(
-            settingsManager as SettingsManagerMock, PreferencesFlag.gradesCard);
+        SettingsManagerStub.stubSetInt(
+            settingsManager as SettingsManagerStub, PreferencesFlag.gradesCard);
 
-        SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubSetInt(settingsManager as SettingsManagerStub,
             PreferencesFlag.progressBarCard);
 
         await tester.pumpWidget(localizedWidget(
@@ -438,8 +438,8 @@ void main() {
 
       testWidgets('ScheduleCard is dismissible and can be restored',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
@@ -476,8 +476,8 @@ void main() {
       group('UI - gradesCard', () {
         testWidgets('Has card grades displayed - with no courses',
             (WidgetTester tester) async {
-          SettingsManagerMock.stubGetDashboard(
-              settingsManager as SettingsManagerMock,
+          SettingsManagerStub.stubGetDashboard(
+              settingsManager as SettingsManagerStub,
               toReturn: dashboard);
 
           await tester.pumpWidget(localizedWidget(
@@ -500,20 +500,20 @@ void main() {
 
         testWidgets('Has card grades displayed - with courses',
             (WidgetTester tester) async {
-          CourseRepositoryMock.stubCourses(
-              courseRepository as CourseRepositoryMock,
+          CourseRepositoryStub.stubCourses(
+              courseRepository as CourseRepositoryStub,
               toReturn: courses);
-          CourseRepositoryMock.stubGetCourses(
-              courseRepository as CourseRepositoryMock,
+          CourseRepositoryStub.stubGetCourses(
+              courseRepository as CourseRepositoryStub,
               fromCacheOnly: true,
               toReturn: courses);
-          CourseRepositoryMock.stubGetCourses(
-              courseRepository as CourseRepositoryMock,
+          CourseRepositoryStub.stubGetCourses(
+              courseRepository as CourseRepositoryStub,
               fromCacheOnly: false,
               toReturn: courses);
 
-          SettingsManagerMock.stubGetDashboard(
-              settingsManager as SettingsManagerMock,
+          SettingsManagerStub.stubGetDashboard(
+              settingsManager as SettingsManagerStub,
               toReturn: dashboard);
 
           await tester.pumpWidget(localizedWidget(
@@ -535,19 +535,19 @@ void main() {
 
         testWidgets('gradesCard is dismissible and can be restored',
             (WidgetTester tester) async {
-          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+          SettingsManagerStub.stubSetInt(settingsManager as SettingsManagerStub,
               PreferencesFlag.aboutUsCard);
 
-          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+          SettingsManagerStub.stubSetInt(settingsManager as SettingsManagerStub,
               PreferencesFlag.scheduleCard);
 
-          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+          SettingsManagerStub.stubSetInt(settingsManager as SettingsManagerStub,
               PreferencesFlag.progressBarCard);
 
-          SettingsManagerMock.stubSetInt(settingsManager as SettingsManagerMock,
+          SettingsManagerStub.stubSetInt(settingsManager as SettingsManagerStub,
               PreferencesFlag.gradesCard);
-          SettingsManagerMock.stubGetDashboard(
-              settingsManager as SettingsManagerMock,
+          SettingsManagerStub.stubGetDashboard(
+              settingsManager as SettingsManagerStub,
               toReturn: dashboard);
 
           await tester.pumpWidget(localizedWidget(
@@ -583,8 +583,8 @@ void main() {
     group("UI - progressBar", () {
       testWidgets('Has card progressBar displayed',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
@@ -607,8 +607,8 @@ void main() {
 
       testWidgets('progressCard is dismissible and can be restored',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
@@ -641,8 +641,8 @@ void main() {
 
       testWidgets('progressBarCard is reorderable and can be restored',
           (WidgetTester tester) async {
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
@@ -706,8 +706,8 @@ void main() {
           PreferencesFlag.aboutUsCard: 0,
         };
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
@@ -721,21 +721,21 @@ void main() {
       testWidgets("Schedule card", (WidgetTester tester) async {
         tester.binding.window.physicalSizeTestValue = const Size(800, 1410);
 
-        CourseRepositoryMock.stubCoursesActivities(
-            courseRepository as CourseRepositoryMock);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(
+            courseRepository as CourseRepositoryStub);
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivities(
-            courseRepository as CourseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(
+            courseRepository as CourseRepositoryStub,
             fromCacheOnly: false);
 
         dashboard = {
           PreferencesFlag.scheduleCard: 0,
         };
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(
@@ -752,8 +752,8 @@ void main() {
           PreferencesFlag.progressBarCard: 0,
         };
 
-        SettingsManagerMock.stubGetDashboard(
-            settingsManager as SettingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(
+            settingsManager as SettingsManagerStub,
             toReturn: dashboard);
 
         await tester.pumpWidget(localizedWidget(

@@ -17,13 +17,13 @@ import 'package:notredame/core/models/program.dart';
 import '../helpers.dart';
 
 // MOCKS
-import '../mock/managers/settings_manager_mock.dart';
-import '../mock/managers/user_repository_mock.dart';
-import '../mock/services/networking_service_mock.dart';
+import '../mock/managers/settings_manager_stub.dart';
+import '../mock/managers/user_repository_stub.dart';
+import '../mock/services/networking_service_stub.dart';
 
-late UserRepositoryMock userRepositoryMock;
-late SettingsManagerMock settingsManagerMock;
-late NetworkingServiceMock networkingServiceMock;
+late UserRepositoryStub userRepositoryMock;
+late SettingsManagerStub settingsManagerMock;
+late NetworkingServiceStub networkingServiceMock;
 late ProfileViewModel viewModel;
 
 void main() {
@@ -76,7 +76,7 @@ void main() {
       setupFlutterToastMock();
 
       // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
+      NetworkingServiceStub.stubHasConnectivity(networkingServiceMock);
 
       viewModel = ProfileViewModel(intl: await setupAppIntl());
     });
@@ -92,8 +92,8 @@ void main() {
       test(
           "first load from cache then call SignetsAPI to get the latest events",
           () async {
-        UserRepositoryMock.stubGetInfo(userRepositoryMock);
-        UserRepositoryMock.stubGetPrograms(userRepositoryMock);
+        UserRepositoryStub.stubGetInfo(userRepositoryMock);
+        UserRepositoryStub.stubGetPrograms(userRepositoryMock);
 
         expect(await viewModel.futureToRun(), []);
 
@@ -107,12 +107,12 @@ void main() {
       });
 
       test("Signets throw an error while trying to get new events", () async {
-        UserRepositoryMock.stubGetInfo(userRepositoryMock, fromCacheOnly: true);
-        UserRepositoryMock.stubGetInfoException(userRepositoryMock,
+        UserRepositoryStub.stubGetInfo(userRepositoryMock, fromCacheOnly: true);
+        UserRepositoryStub.stubGetInfoException(userRepositoryMock,
             fromCacheOnly: false);
-        UserRepositoryMock.stubGetPrograms(userRepositoryMock,
+        UserRepositoryStub.stubGetPrograms(userRepositoryMock,
             fromCacheOnly: true);
-        UserRepositoryMock.stubGetProgramsException(userRepositoryMock,
+        UserRepositoryStub.stubGetProgramsException(userRepositoryMock,
             fromCacheOnly: false);
 
         expect(await viewModel.futureToRun(), [],
@@ -130,7 +130,7 @@ void main() {
 
     group("info - ", () {
       test("build the info", () async {
-        UserRepositoryMock.stubProfileStudent(userRepositoryMock,
+        UserRepositoryStub.stubProfileStudent(userRepositoryMock,
             toReturn: info);
 
         expect(viewModel.profileStudent, info);
@@ -143,7 +143,7 @@ void main() {
 
     group("programs - ", () {
       test("build the list of programs", () async {
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: programs);
+        UserRepositoryStub.stubPrograms(userRepositoryMock, toReturn: programs);
 
         expect(viewModel.programList, programs);
 
@@ -155,10 +155,10 @@ void main() {
 
     group('refresh -', () {
       test('Call SignetsAPI to get the user info and programs', () async {
-        UserRepositoryMock.stubProfileStudent(userRepositoryMock,
+        UserRepositoryStub.stubProfileStudent(userRepositoryMock,
             toReturn: info);
-        UserRepositoryMock.stubGetInfo(userRepositoryMock, toReturn: info);
-        UserRepositoryMock.stubGetPrograms(userRepositoryMock);
+        UserRepositoryStub.stubGetInfo(userRepositoryMock, toReturn: info);
+        UserRepositoryStub.stubGetPrograms(userRepositoryMock);
 
         await viewModel.refresh();
 

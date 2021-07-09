@@ -15,7 +15,7 @@ import 'package:notredame/core/constants/router_paths.dart';
 
 // OTHER
 import '../helpers.dart';
-import '../mock/managers/user_repository_mock.dart';
+import '../mock/managers/user_repository_stub.dart';
 
 void main() {
   const String universalCodeValid = "AA11111";
@@ -24,7 +24,7 @@ void main() {
   const String passwordCodeInvalid = "";
 
   late NavigationService navigationService;
-  late UserRepositoryMock userRepositoryMock;
+  late UserRepositoryStub userRepositoryMock;
 
   AppIntl? appIntl;
 
@@ -103,7 +103,7 @@ void main() {
     group('signIn - ', () {
       test('with right credentials should redirect to the Dashboard route',
           () async {
-        UserRepositoryMock.stubAuthenticate(
+        UserRepositoryStub.stubAuthenticate(
             userRepositoryMock, universalCodeValid);
 
         viewModel.validateUniversalCode(universalCodeValid);
@@ -122,7 +122,7 @@ void main() {
       });
 
       test('with wrong credentials should return a error message', () async {
-        UserRepositoryMock.stubAuthenticate(userRepositoryMock, "AA11112",
+        UserRepositoryStub.stubAuthenticate(userRepositoryMock, "AA11112",
             toReturn: false);
 
         viewModel.validateUniversalCode("AA11112");

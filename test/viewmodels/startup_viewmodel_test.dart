@@ -16,15 +16,15 @@ import 'package:notredame/core/viewmodels/startup_viewmodel.dart';
 
 // OTHER
 import '../helpers.dart';
-import '../mock/managers/settings_manager_mock.dart';
-import '../mock/managers/user_repository_mock.dart';
-import '../mock/services/networking_service_mock.dart';
+import '../mock/managers/settings_manager_stub.dart';
+import '../mock/managers/user_repository_stub.dart';
+import '../mock/services/networking_service_stub.dart';
 
 void main() {
   late NavigationService navigationService;
-  late UserRepositoryMock userRepositoryMock;
-  late SettingsManagerMock settingsManagerMock;
-  late NetworkingServiceMock networkingService;
+  late UserRepositoryStub userRepositoryMock;
+  late SettingsManagerStub settingsManagerMock;
+  late NetworkingServiceStub networkingService;
 
   late StartUpViewModel viewModel;
 
@@ -48,9 +48,9 @@ void main() {
 
     group('handleStartUp - ', () {
       test('sign in successful', () async {
-        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
-        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        UserRepositoryStub.stubSilentAuthenticate(userRepositoryMock);
+        UserRepositoryStub.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceStub.stubHasConnectivity(networkingService);
 
         await viewModel.handleStartUp();
 
@@ -60,16 +60,16 @@ void main() {
       test(
           'sign in failed redirect to login if Discovery already been completed',
           () async {
-        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
+        UserRepositoryStub.stubSilentAuthenticate(userRepositoryMock,
             toReturn: false);
-        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        UserRepositoryStub.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceStub.stubHasConnectivity(networkingService);
 
-        SettingsManagerMock.stubGetString(
+        SettingsManagerStub.stubGetString(
             settingsManagerMock, PreferencesFlag.discovery,
             toReturn: 'true');
 
-        SettingsManagerMock.stubGetString(
+        SettingsManagerStub.stubGetString(
             settingsManagerMock, PreferencesFlag.languageChoice,
             toReturn: 'true');
 
@@ -81,10 +81,10 @@ void main() {
       test(
           'sign in failed redirect to Choose Language page if Discovery has not been completed',
           () async {
-        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
+        UserRepositoryStub.stubSilentAuthenticate(userRepositoryMock,
             toReturn: false);
-        UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
-        NetworkingServiceMock.stubHasConnectivity(networkingService);
+        UserRepositoryStub.stubWasPreviouslyLoggedIn(userRepositoryMock);
+        NetworkingServiceStub.stubHasConnectivity(networkingService);
 
         await viewModel.handleStartUp();
 

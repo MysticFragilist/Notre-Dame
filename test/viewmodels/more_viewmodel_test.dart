@@ -29,23 +29,23 @@ import 'package:notredame/core/constants/router_paths.dart';
 
 // OTHER
 import '../helpers.dart';
-import '../mock/managers/cache_manager_mock.dart';
-import '../mock/managers/course_repository_mock.dart';
-import '../mock/managers/settings_manager_mock.dart';
-import '../mock/managers/user_repository_mock.dart';
-import '../mock/services/github_api_mock.dart';
+import '../mock/managers/cache_manager_stub.dart';
+import '../mock/managers/course_repository_stub.dart';
+import '../mock/managers/settings_manager_stub.dart';
+import '../mock/managers/user_repository_stub.dart';
+import '../mock/services/github_api_stub.dart';
 
 void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  CacheManagerMock? cacheManagerMock;
-  SettingsManagerMock? settingsManagerMock;
-  late CourseRepositoryMock courseRepositoryMock;
+  CacheManagerStub? cacheManagerMock;
+  SettingsManagerStub? settingsManagerMock;
+  late CourseRepositoryStub courseRepositoryMock;
   PreferencesService? preferenceService;
-  UserRepositoryMock? userRepositoryMock;
+  UserRepositoryStub? userRepositoryMock;
   NavigationService? navigationService;
-  late GithubApiMock githubApiMock;
+  late GithubApiStub githubApiMock;
 
   AppIntl appIntl;
   late MoreViewModel viewModel;
@@ -137,10 +137,10 @@ void main() {
 
       viewModel = MoreViewModel(intl: appIntl);
 
-      CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: courses);
-      CourseRepositoryMock.stubSessions(courseRepositoryMock,
+      CourseRepositoryStub.stubCourses(courseRepositoryMock, toReturn: courses);
+      CourseRepositoryStub.stubSessions(courseRepositoryMock,
           toReturn: sessions);
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+      CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock,
           toReturn: coursesActivities);
     });
 
@@ -158,7 +158,7 @@ void main() {
     group('logout - ', () {
       test('If the correct function have been called when logout occur',
           () async {
-        UserRepositoryMock.stubLogOut(userRepositoryMock!);
+        UserRepositoryStub.stubLogOut(userRepositoryMock!);
 
         await viewModel.logout();
 
@@ -168,8 +168,8 @@ void main() {
       test(
           'If an error occur from the cache manager that the logout function finishes out',
           () async {
-        CacheManagerMock.stubEmptyException(cacheManagerMock!);
-        UserRepositoryMock.stubLogOut(userRepositoryMock!);
+        CacheManagerStub.stubEmptyException(cacheManagerMock!);
+        UserRepositoryStub.stubLogOut(userRepositoryMock!);
 
         await viewModel.logout();
 
@@ -188,7 +188,7 @@ void main() {
 
       test('If the file uploaded matches', () async {
         final File file = File('bugReportTest.png');
-        GithubApiMock.stubLocalFile(githubApiMock, file);
+        GithubApiStub.stubLocalFile(githubApiMock, file);
 
         await file.writeAsBytes(image.encodePng(
             image.copyResize(image.decodeImage(screenshotData)!, width: 307)));
@@ -203,7 +203,7 @@ void main() {
 
       test('If the github issue has been created', () async {
         final File file = File('bugReportTest.png');
-        GithubApiMock.stubLocalFile(githubApiMock, file);
+        GithubApiStub.stubLocalFile(githubApiMock, file);
 
         await viewModel.sendFeedback('Notre-Dame bug report', screenshotData);
 

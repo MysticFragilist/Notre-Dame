@@ -25,12 +25,12 @@ import '../helpers.dart';
 import '../mock/services/http_client_mock.dart';
 
 void main() {
-  HttpClientMock? clientMock;
+  HttpClientStub? clientMock;
   late SignetsApi service;
 
   group('SignetsApi - ', () {
     setUp(() {
-      clientMock = HttpClientMock();
+      clientMock = HttpClientStub();
       service = SignetsApi(client: clientMock);
       setupLogger();
     });
@@ -96,7 +96,7 @@ void main() {
             courseActivityXML + courseActivityXML,
             'ListeDesSeances');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         final result = await service.getCoursesActivities(
             username: username, password: password, session: session);
@@ -118,7 +118,7 @@ void main() {
             SignetsError.scheduleNotAvailable,
             'ListeDesSeances');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         final result = await service.getCoursesActivities(
             username: username, password: password, session: session);
@@ -133,7 +133,7 @@ void main() {
             SignetsError.scheduleNotAvailable,
             'ListeDesSeances');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponseF);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponseF);
 
         final resultF = await service.getCoursesActivities(
             username: username, password: password, session: session);
@@ -233,7 +233,7 @@ void main() {
             'An error occurred',
             'ListeDesSeances');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         expect(
             service.getCoursesActivities(
@@ -253,7 +253,7 @@ void main() {
             SignetsError.credentialsInvalid,
             'ListeDesSeances');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         expect(
             service.getCoursesActivities(
@@ -303,7 +303,7 @@ void main() {
         final String stubResponse = buildResponse(
             Urls.listSessionsOperation, sessionXML + sessionXML, 'liste');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         final result =
             await service.getSessions(username: username, password: password);
@@ -323,7 +323,7 @@ void main() {
         final String stubResponse = buildErrorResponse(
             Urls.listSessionsOperation, 'An error occurred', 'liste');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         expect(service.getSessions(username: username, password: password),
             throwsA(isInstanceOf<ApiException>()),
@@ -352,7 +352,7 @@ void main() {
         final String stubResponse =
             buildResponse(Urls.infoStudentOperation, studentInfoXML);
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         final result = await service.getStudentInfo(
             username: username, password: password);
@@ -371,7 +371,7 @@ void main() {
         final String stubResponse =
             buildErrorResponse(Urls.infoStudentOperation, 'An error occurred');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         expect(service.getStudentInfo(username: username, password: password),
             throwsA(isInstanceOf<ApiException>()),
@@ -416,7 +416,7 @@ void main() {
         final String stubResponse = buildResponse(
             Urls.listProgramsOperation, programXML + programXML, 'liste');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         final result =
             await service.getPrograms(username: username, password: password);
@@ -436,7 +436,7 @@ void main() {
         final String stubResponse = buildErrorResponse(
             Urls.listProgramsOperation, 'An error occurred', 'liste');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         expect(service.getPrograms(username: username, password: password),
             throwsA(isInstanceOf<ApiException>()),
@@ -490,7 +490,7 @@ void main() {
         final String stubResponse = buildResponse(Urls.listCourseOperation,
             courseWithGradeXML + courseWithoutGradeXML, 'liste');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         final result =
             await service.getCourses(username: username, password: password);
@@ -510,7 +510,7 @@ void main() {
         final String stubResponse = buildErrorResponse(
             Urls.listCourseOperation, 'An error occurred', 'liste');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         expect(service.getCourses(username: username, password: password),
             throwsA(isInstanceOf<ApiException>()),
@@ -622,7 +622,7 @@ void main() {
         final String stubResponse =
             buildResponse(Urls.listEvaluationsOperation, courseSummaryXml);
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         final result = await service.getCourseSummary(
             username: username, password: password, course: course);
@@ -638,7 +638,7 @@ void main() {
         final String stubResponse =
             buildResponse(Urls.listEvaluationsOperation, courseSummaryEmptyXml);
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         expect(
             service.getCourseSummary(
@@ -658,7 +658,7 @@ void main() {
         final String stubResponse = buildErrorResponse(
             Urls.listEvaluationsOperation, 'An error occurred');
 
-        HttpClientMock.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
+        HttpClientStub.stubPost(clientMock!, Urls.signetsAPI, stubResponse);
 
         expect(
             service.getCourseSummary(

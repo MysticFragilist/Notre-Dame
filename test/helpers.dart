@@ -24,21 +24,8 @@ import 'package:notredame/core/managers/settings_manager.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/core/services/internal_info_service.dart';
 
-// MOCKS
-import 'mock/managers/cache_manager_mock.dart';
-import 'mock/managers/course_repository_mock.dart';
-import 'mock/managers/settings_manager_mock.dart';
-import 'mock/managers/user_repository_mock.dart';
-import 'mock/services/analytics_service_mock.dart';
-import 'mock/services/flutter_secure_storage_mock.dart';
-import 'mock/services/github_api_mock.dart';
-import 'mock/services/internal_info_service_mock.dart';
-import 'mock/services/mon_ets_api_mock.dart';
-import 'mock/services/navigation_service_mock.dart';
-import 'mock/services/networking_service_mock.dart';
-import 'mock/services/preferences_service_mock.dart';
-import 'mock/services/rive_animation_service_mock.dart';
-import 'mock/services/signets_api_mock.dart';
+// MOCK
+import 'mocks_generators.mocks.dart';
 
 /// Return the path of the [goldenName] file.
 String goldenFilePath(String goldenName) => "./goldenFiles/$goldenName.png";
@@ -70,9 +57,9 @@ Widget localizedWidget(
     );
 
 /// Load a mock of the [AnalyticsService]
-AnalyticsServiceMock setupAnalyticsServiceMock() {
+MockAnalyticsService setupAnalyticsServiceMock() {
   unregister<AnalyticsService>();
-  final service = AnalyticsServiceMock();
+  final service = MockAnalyticsService();
 
   locator.registerSingleton<AnalyticsService>(service);
 
@@ -80,9 +67,9 @@ AnalyticsServiceMock setupAnalyticsServiceMock() {
 }
 
 /// Load a mock of the [RiveAnimationService]
-RiveAnimationServiceMock setupRiveAnimationServiceMock() {
+MockRiveAnimationService setupRiveAnimationServiceMock() {
   unregister<RiveAnimationService>();
-  final service = RiveAnimationServiceMock();
+  final service = MockRiveAnimationService();
 
   locator.registerSingleton<RiveAnimationService>(service);
 
@@ -90,9 +77,9 @@ RiveAnimationServiceMock setupRiveAnimationServiceMock() {
 }
 
 /// Load a mock of the [InternalInfoService]
-InternalInfoServiceMock setupInternalInfoServiceMock() {
+MockInternalInfoService setupInternalInfoServiceMock() {
   unregister<InternalInfoService>();
-  final service = InternalInfoServiceMock();
+  final service = MockInternalInfoService();
 
   locator.registerSingleton<InternalInfoService>(service);
 
@@ -116,9 +103,9 @@ void tearDownFlutterToastMock() {
 }
 
 /// Load a mock of the [NavigationService]
-NavigationServiceMock setupNavigationServiceMock() {
+MockNavigationService setupNavigationServiceMock() {
   unregister<NavigationService>();
-  final service = NavigationServiceMock();
+  final service = MockNavigationService();
 
   locator.registerSingleton<NavigationService>(service);
 
@@ -126,9 +113,9 @@ NavigationServiceMock setupNavigationServiceMock() {
 }
 
 /// Load a mock of the [MonETSApi]
-MonETSApiMock setupMonETSApiMock() {
+MockMonETSApi setupMonETSApiMock() {
   unregister<MonETSApi>();
-  final service = MonETSApiMock();
+  final service = MockMonETSApi();
 
   locator.registerSingleton<MonETSApi>(service);
 
@@ -136,9 +123,9 @@ MonETSApiMock setupMonETSApiMock() {
 }
 
 /// Load a mock of the [GithubApi]
-GithubApiMock setupGithubApiMock() {
+MockGithubApi setupGithubApiMock() {
   unregister<GithubApi>();
-  final service = GithubApiMock();
+  final service = MockGithubApi();
 
   locator.registerSingleton<GithubApi>(service);
 
@@ -146,9 +133,9 @@ GithubApiMock setupGithubApiMock() {
 }
 
 /// Load a mock of the [FlutterSecureStorage]
-FlutterSecureStorageMock setupFlutterSecureStorageMock() {
+MockFlutterSecureStorage setupFlutterSecureStorageMock() {
   unregister<FlutterSecureStorage>();
-  final service = FlutterSecureStorageMock();
+  final service = MockFlutterSecureStorage();
 
   locator.registerSingleton<FlutterSecureStorage>(service);
 
@@ -156,9 +143,9 @@ FlutterSecureStorageMock setupFlutterSecureStorageMock() {
 }
 
 /// Load a mock of the [UserRepository]
-UserRepositoryMock setupUserRepositoryMock() {
+MockUserRepository setupUserRepositoryMock() {
   unregister<UserRepository>();
-  final service = UserRepositoryMock();
+  final service = MockUserRepository();
 
   locator.registerSingleton<UserRepository>(service);
 
@@ -171,9 +158,9 @@ Future<AppIntl> setupAppIntl() async {
 }
 
 /// Load a mock of the [SignetsApi]
-SignetsApiMock setupSignetsApiMock() {
+MockSignetsApi setupSignetsApiMock() {
   unregister<SignetsApi>();
-  final service = SignetsApiMock();
+  final service = MockSignetsApi();
 
   locator.registerSingleton<SignetsApi>(service);
 
@@ -181,9 +168,9 @@ SignetsApiMock setupSignetsApiMock() {
 }
 
 /// Load a mock of the [CacheManager]
-CacheManagerMock setupCacheManagerMock() {
+MockCacheManager setupCacheManagerMock() {
   unregister<CacheManager>();
-  final service = CacheManagerMock();
+  final service = MockCacheManager();
 
   locator.registerSingleton<CacheManager>(service);
 
@@ -202,9 +189,9 @@ Logger setupLogger() {
 }
 
 /// Load a mock of the [PreferencesService]
-PreferencesServiceMock setupPreferencesServiceMock() {
+MockPreferencesService setupPreferencesServiceMock() {
   unregister<PreferencesService>();
-  final service = PreferencesServiceMock();
+  final service = MockPreferencesService();
 
   locator.registerSingleton<PreferencesService>(service);
 
@@ -212,9 +199,9 @@ PreferencesServiceMock setupPreferencesServiceMock() {
 }
 
 /// Load a mock of the [SettingsManager]
-SettingsManagerMock setupSettingsManagerMock() {
+MockSettingsManager setupSettingsManagerMock() {
   unregister<SettingsManager>();
-  final service = SettingsManagerMock();
+  final service = MockSettingsManager();
 
   locator.registerSingleton<SettingsManager>(service);
 
@@ -222,18 +209,18 @@ SettingsManagerMock setupSettingsManagerMock() {
 }
 
 /// Load a mock of the [CourseRepository]
-CourseRepositoryMock setupCourseRepositoryMock() {
+MockCourseRepository setupCourseRepositoryMock() {
   unregister<CourseRepository>();
-  final service = CourseRepositoryMock();
+  final service = MockCourseRepository();
 
   locator.registerSingleton<CourseRepository>(service);
 
   return service;
 }
 
-NetworkingServiceMock setupNetworkingServiceMock() {
+MockNetworkingService setupNetworkingServiceMock() {
   unregister<NetworkingService>();
-  final service = NetworkingServiceMock();
+  final service = MockNetworkingService();
 
   locator.registerSingleton<NetworkingService>(service);
 

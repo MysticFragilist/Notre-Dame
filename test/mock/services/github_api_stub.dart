@@ -1,13 +1,14 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:io';
-
 import 'package:mockito/mockito.dart';
-import 'package:notredame/core/services/github_api.dart';
 
-/// Mock for the [GithubApi]
-class GithubApiMock extends Mock implements GithubApi {
+// UTILS
+import '../../mocks_generators.mocks.dart';
+
+/// Stub functions for the [MockGithubApi]
+class GithubApiStub {
   /// Stub the localFile of propertie [localFile] and return [fileToReturn].
-  static void stubLocalFile(GithubApiMock client, File fileToReturn) {
+  static void stubLocalFile(MockGithubApi client, File fileToReturn) {
     when(client.localFile).thenAnswer((_) async => fileToReturn);
   }
 }

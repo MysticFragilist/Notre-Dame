@@ -14,10 +14,10 @@ import 'package:notredame/ui/widgets/schedule_settings.dart';
 import '../../helpers.dart';
 
 // MOCK
-import '../../mock/managers/settings_manager_mock.dart';
+import '../../mock/managers/settings_manager_stub.dart';
 
 void main() {
-  late SettingsManagerMock settingsManagerMock;
+  late SettingsManagerStub settingsManagerMock;
   late AppIntl intl;
 
   // Some settings
@@ -29,13 +29,13 @@ void main() {
 
   group("ScheduleSettings - ", () {
     setUp(() async {
-      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
+      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerStub;
       intl = await setupAppIntl();
     });
 
     group("ui - ", () {
       testWidgets("With handle", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         await tester
@@ -120,7 +120,7 @@ void main() {
       });
 
       testWidgets("Without handle", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         await tester.pumpWidget(
@@ -205,9 +205,9 @@ void main() {
 
     group("interactions - ", () {
       testWidgets("onChange calendarFormat", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-        SettingsManagerMock.stubSetString(settingsManagerMock,
+        SettingsManagerStub.stubSetString(settingsManagerMock,
             PreferencesFlag.scheduleSettingsCalendarFormat);
 
         await tester.pumpWidget(
@@ -232,9 +232,9 @@ void main() {
       });
 
       testWidgets("onChange showTodayBtn", (WidgetTester tester) async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
-        SettingsManagerMock.stubSetBool(
+        SettingsManagerStub.stubSetBool(
             settingsManagerMock, PreferencesFlag.scheduleSettingsShowTodayBtn);
 
         await tester.pumpWidget(

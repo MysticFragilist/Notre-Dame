@@ -12,30 +12,30 @@ import 'package:notredame/ui/views/profile_view.dart';
 import '../../helpers.dart';
 
 // MOCKS
-import '../../mock/managers/user_repository_mock.dart';
-import '../../mock/services/networking_service_mock.dart';
+import '../../mock/managers/user_repository_stub.dart';
+import '../../mock/services/networking_service_stub.dart';
 
 void main() {
   late AppIntl intl;
   UserRepository userRepository;
-  NetworkingServiceMock networkingService;
+  NetworkingServiceStub networkingService;
   group('Profile view - ', () {
     setUp(() async {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceStub;
       userRepository = setupUserRepositoryMock();
 
-      UserRepositoryMock.stubGetInfo(userRepository as UserRepositoryMock);
+      UserRepositoryStub.stubGetInfo(userRepository as UserRepositoryStub);
 
-      UserRepositoryMock.stubGetPrograms(userRepository as UserRepositoryMock);
+      UserRepositoryStub.stubGetPrograms(userRepository as UserRepositoryStub);
 
       // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
+      NetworkingServiceStub.stubHasConnectivity(networkingService);
     });
 
     tearDown(() {
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingServiceStub>();
     });
 
     testWidgets('contains student status', (WidgetTester tester) async {

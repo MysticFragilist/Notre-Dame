@@ -23,14 +23,14 @@ import 'package:notredame/core/viewmodels/dashboard_viewmodel.dart';
 import '../helpers.dart';
 
 // MOCKS
-import '../mock/managers/course_repository_mock.dart';
-import '../mock/managers/settings_manager_mock.dart';
-import '../mock/services/preferences_service_mock.dart';
+import '../mock/managers/course_repository_stub.dart';
+import '../mock/managers/settings_manager_stub.dart';
+import '../mock/services/preferences_service_stub.dart';
 
 void main() {
   late PreferencesService preferenceServiceMock;
-  late SettingsManagerMock settingsManagerMock;
-  late CourseRepositoryMock courseRepositoryMock;
+  late SettingsManagerStub settingsManagerMock;
+  late CourseRepositoryStub courseRepositoryMock;
   late DashboardViewModel viewModel;
 
   final gen101 = CourseActivity(
@@ -131,26 +131,26 @@ void main() {
     setUp(() async {
       // Setting up mocks
       courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
-      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
+          setupCourseRepositoryMock() as CourseRepositoryStub;
+      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerStub;
       preferenceServiceMock =
-          setupPreferencesServiceMock() as PreferencesServiceMock;
+          setupPreferencesServiceMock() as PreferencesServiceStub;
       courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
+          setupCourseRepositoryMock() as CourseRepositoryStub;
 
       setupFlutterToastMock();
       courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
+          setupCourseRepositoryMock() as CourseRepositoryStub;
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
-      CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
+      CourseRepositoryStub.stubGetSessions(courseRepositoryMock,
           toReturn: [session]);
-      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
+      CourseRepositoryStub.stubActiveSessions(courseRepositoryMock,
           toReturn: [session]);
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
-      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
+      CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock);
+      CourseRepositoryStub.stubGetCoursesActivities(courseRepositoryMock,
           fromCacheOnly: true);
-      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
+      CourseRepositoryStub.stubGetCoursesActivities(courseRepositoryMock,
           fromCacheOnly: false);
     });
 
@@ -162,16 +162,16 @@ void main() {
     group('futureToRunGrades -', () {
       test('first load from cache than call SignetsAPI to get the courses',
           () async {
-        CourseRepositoryMock.stubSessions(courseRepositoryMock,
+        CourseRepositoryStub.stubSessions(courseRepositoryMock,
             toReturn: [session]);
-        CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
+        CourseRepositoryStub.stubGetSessions(courseRepositoryMock,
             toReturn: [session]);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
+        CourseRepositoryStub.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(courseRepositoryMock,
             toReturn: courses, fromCacheOnly: true);
 
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
 
         expect(await viewModel.futureToRunGrades(), courses);
@@ -193,20 +193,20 @@ void main() {
       });
 
       test('Signets throw an error while trying to get courses', () async {
-        CourseRepositoryMock.stubSessions(courseRepositoryMock,
+        CourseRepositoryStub.stubSessions(courseRepositoryMock,
             toReturn: [session]);
-        CourseRepositoryMock.stubGetSessions(courseRepositoryMock,
+        CourseRepositoryStub.stubGetSessions(courseRepositoryMock,
             toReturn: [session]);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
+        CourseRepositoryStub.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
 
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(courseRepositoryMock,
             toReturn: courses, fromCacheOnly: true);
 
-        CourseRepositoryMock.stubGetCoursesException(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesException(courseRepositoryMock,
             fromCacheOnly: false);
 
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
 
         expect(await viewModel.futureToRunGrades(), courses,
@@ -232,10 +232,10 @@ void main() {
 
     group("futureToRun - ", () {
       test("The initial cards are correctly loaded", () async {
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryStub.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock);
 
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await viewModel.futureToRun();
@@ -251,8 +251,8 @@ void main() {
       });
 
       test("build the list todays activities sorted by time", () async {
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         await viewModel.futureToRun();
@@ -277,17 +277,17 @@ void main() {
 
       test("An exception is thrown during the preferenceService call",
           () async {
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryStub.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock);
 
-        PreferencesServiceMock.stubException(
-            preferenceServiceMock as PreferencesServiceMock,
+        PreferencesServiceStub.stubException(
+            preferenceServiceMock as PreferencesServiceStub,
             PreferencesFlag.aboutUsCard);
-        PreferencesServiceMock.stubException(
-            preferenceServiceMock as PreferencesServiceMock,
+        PreferencesServiceStub.stubException(
+            preferenceServiceMock as PreferencesServiceStub,
             PreferencesFlag.scheduleCard);
-        PreferencesServiceMock.stubException(
-            preferenceServiceMock as PreferencesServiceMock,
+        PreferencesServiceStub.stubException(
+            preferenceServiceMock as PreferencesServiceStub,
             PreferencesFlag.progressBarCard);
 
         await viewModel.futureToRun();
@@ -300,9 +300,9 @@ void main() {
 
     group("futureToRunSessionProgressBar - ", () {
       test("There is an active session", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock,
+        CourseRepositoryStub.stubActiveSessions(courseRepositoryMock,
             toReturn: [session]);
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
         viewModel.todayDate = DateTime(2020);
         await viewModel.futureToRunSessionProgressBar();
@@ -311,7 +311,7 @@ void main() {
       });
 
       test("Active session is null", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
+        CourseRepositoryStub.stubActiveSessions(courseRepositoryMock);
 
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, 0.0);
@@ -321,14 +321,14 @@ void main() {
 
     group("interact with cards - ", () {
       test("can hide a card and reset cards to default layout", () async {
-        SettingsManagerMock.stubSetInt(
+        SettingsManagerStub.stubSetInt(
             settingsManagerMock, PreferencesFlag.aboutUsCard);
-        SettingsManagerMock.stubSetInt(
+        SettingsManagerStub.stubSetInt(
             settingsManagerMock, PreferencesFlag.scheduleCard);
-        SettingsManagerMock.stubSetInt(
+        SettingsManagerStub.stubSetInt(
             settingsManagerMock, PreferencesFlag.progressBarCard);
 
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
         await viewModel.futureToRun();
@@ -374,17 +374,17 @@ void main() {
       });
 
       test("can set new order for cards", () async {
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryStub.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock);
 
-        SettingsManagerMock.stubGetDashboard(settingsManagerMock,
+        SettingsManagerStub.stubGetDashboard(settingsManagerMock,
             toReturn: dashboard);
 
-        SettingsManagerMock.stubSetInt(
+        SettingsManagerStub.stubSetInt(
             settingsManagerMock, PreferencesFlag.aboutUsCard);
-        SettingsManagerMock.stubSetInt(
+        SettingsManagerStub.stubSetInt(
             settingsManagerMock, PreferencesFlag.scheduleCard);
-        SettingsManagerMock.stubSetInt(
+        SettingsManagerStub.stubSetInt(
             settingsManagerMock, PreferencesFlag.progressBarCard);
 
         await viewModel.futureToRun();

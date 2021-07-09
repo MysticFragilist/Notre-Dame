@@ -9,24 +9,13 @@ import 'package:notredame/core/services/mon_ets_api.dart';
 
 // UTILS
 import 'package:notredame/core/utils/http_exceptions.dart';
-import '../../defaults.dart';
+import '../../mocks_generators.mocks.dart';
 
-/// Mock for the [MonETSApi]
-class MonETSApiMock extends Mock implements MonETSApi {
-  @override
-  Future<MonETSUser> authenticate(
-          {required String? username, required String? password}) async =>
-      super.noSuchMethod(
-              Invocation.method(#authenticate, [], {
-                const Symbol('username'): username,
-                const Symbol('password'): password
-              }),
-              returnValue: Future<MonETSUser>.value(defaultMonETSUser))
-          as Future<MonETSUser>;
-
+/// Stub functions for the [MonETSApiStub]
+class MonETSApiStub {
   /// Stub the user to return when a authenticate is called using the username
   /// of [userToReturn]
-  static void stubAuthenticate(MonETSApiMock mock, MonETSUser userToReturn) {
+  static void stubAuthenticate(MockMonETSApi mock, MonETSUser userToReturn) {
     when(mock.authenticate(
             username: userToReturn.username, password: anyNamed('password')))
         .thenAnswer((_) async => userToReturn);
@@ -34,7 +23,7 @@ class MonETSApiMock extends Mock implements MonETSApi {
 
   /// Stub to throw an [HttpException] when the authenticate
   /// will be called with this [username]
-  static void stubAuthenticateException(MonETSApiMock mock, String username) {
+  static void stubAuthenticateException(MockMonETSApi mock, String username) {
     when(mock.authenticate(username: username, password: anyNamed('password')))
         .thenThrow(
             HttpException(code: 500, prefix: MonETSApi.tagError, message: ""));
@@ -42,7 +31,7 @@ class MonETSApiMock extends Mock implements MonETSApi {
 
   /// Stub to throw an [Exception] when the authenticate
   /// will be called with this [username]
-  static void stubException(MonETSApiMock mock, String username) {
+  static void stubException(MockMonETSApi mock, String username) {
     when(mock.authenticate(username: username, password: anyNamed('password')))
         .thenThrow(Exception());
   }

@@ -16,35 +16,35 @@ import 'package:notredame/ui/widgets/base_scaffold.dart';
 import '../../helpers.dart';
 
 // MOCKS
-import '../../mock/managers/course_repository_mock.dart';
-import '../../mock/services/networking_service_mock.dart';
+import '../../mock/managers/course_repository_stub.dart';
+import '../../mock/services/networking_service_stub.dart';
 
 void main() {
   CourseRepository courseRepository;
-  NetworkingServiceMock networkingService;
+  NetworkingServiceStub networkingService;
 
   group('StudentView - ', () {
     setUp(() async {
       setupNavigationServiceMock();
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceStub;
       courseRepository = setupCourseRepositoryMock();
 
-      CourseRepositoryMock.stubCourses(
-          courseRepository as CourseRepositoryMock);
-      CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryStub.stubCourses(
+          courseRepository as CourseRepositoryStub);
+      CourseRepositoryStub.stubGetCourses(
+          courseRepository as CourseRepositoryStub,
           fromCacheOnly: false);
-      CourseRepositoryMock.stubGetCourses(
-          courseRepository as CourseRepositoryMock,
+      CourseRepositoryStub.stubGetCourses(
+          courseRepository as CourseRepositoryStub,
           fromCacheOnly: true);
 
       // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
+      NetworkingServiceStub.stubHasConnectivity(networkingService);
     });
 
     tearDown(() {
       unregister<CourseRepository>();
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingServiceStub>();
     });
 
     group('UI - ', () {

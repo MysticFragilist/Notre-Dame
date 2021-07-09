@@ -17,23 +17,21 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 import '../helpers.dart';
 
-// MOCK
-import '../mock/services/analytics_service_mock.dart';
-import '../mock/services/preferences_service_mock.dart';
+// MOCKS
+import '../mock/services/preferences_service_stub.dart';
+import '../mocks_generators.mocks.dart';
 
 void main() {
-  late AnalyticsServiceMock analyticsServiceMock;
-  late PreferencesServiceMock preferencesServiceMock;
+  late MockAnalyticsService analyticsServiceMock;
+  late MockPreferencesService preferencesServiceMock;
   late SettingsManager manager;
 
   group("SettingsManager - ", () {
     setUp(() async {
       // Setting up mocks
       setupLogger();
-      analyticsServiceMock =
-          setupAnalyticsServiceMock() as AnalyticsServiceMock;
-      preferencesServiceMock =
-          setupPreferencesServiceMock() as PreferencesServiceMock;
+      analyticsServiceMock = setupAnalyticsServiceMock();
+      preferencesServiceMock = setupPreferencesServiceMock();
 
       await setupAppIntl();
 
@@ -47,13 +45,13 @@ void main() {
     group("getScheduleSettings - ", () {
       test("validate default behaviour", () async {
         // Stubs the answer of the preferences services
-        PreferencesServiceMock.stubGetString(preferencesServiceMock,
+        PreferencesServiceStub.stubGetString(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsStartWeekday,
             toReturn: null);
-        PreferencesServiceMock.stubGetString(preferencesServiceMock,
+        PreferencesServiceStub.stubGetString(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsCalendarFormat,
             toReturn: null);
-        PreferencesServiceMock.stubGetBool(preferencesServiceMock,
+        PreferencesServiceStub.stubGetBool(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsShowTodayBtn,
             toReturn: null);
 
@@ -84,13 +82,13 @@ void main() {
 
       test("validate the loading of the settings", () async {
         // Stubs the answer of the preferences services
-        PreferencesServiceMock.stubGetString(preferencesServiceMock,
+        PreferencesServiceStub.stubGetString(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsStartWeekday,
             toReturn: EnumToString.convertToString(StartingDayOfWeek.sunday));
-        PreferencesServiceMock.stubGetString(preferencesServiceMock,
+        PreferencesServiceStub.stubGetString(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsCalendarFormat,
             toReturn: EnumToString.convertToString(CalendarFormat.month));
-        PreferencesServiceMock.stubGetBool(preferencesServiceMock,
+        PreferencesServiceStub.stubGetBool(preferencesServiceMock,
             PreferencesFlag.scheduleSettingsShowTodayBtn,
             toReturn: false);
 
@@ -162,7 +160,7 @@ void main() {
 
       test("validate default behaviour", () async {
         const flag = PreferencesFlag.theme;
-        PreferencesServiceMock.stubGetString(preferencesServiceMock, flag,
+        PreferencesServiceStub.stubGetString(preferencesServiceMock, flag,
             toReturn: ThemeMode.light.toString());
 
         manager.themeMode;
@@ -179,7 +177,7 @@ void main() {
     group("Locale - ", () {
       test("validate default behaviour", () async {
         const flag = PreferencesFlag.locale;
-        PreferencesServiceMock.stubGetString(
+        PreferencesServiceStub.stubGetString(
             preferencesServiceMock, PreferencesFlag.locale,
             toReturn: const Locale('fr').toString());
 
@@ -250,10 +248,10 @@ void main() {
     });
 
     test("fetch theme and locale", () async {
-      PreferencesServiceMock.stubGetString(
+      PreferencesServiceStub.stubGetString(
           preferencesServiceMock, PreferencesFlag.locale,
           toReturn: const Locale('fr').toString());
-      PreferencesServiceMock.stubGetString(
+      PreferencesServiceStub.stubGetString(
           preferencesServiceMock, PreferencesFlag.theme,
           toReturn: 'ThemeMode.system');
 
@@ -269,10 +267,10 @@ void main() {
 
     test("reset language and theme", () async {
       // Set local and theme
-      PreferencesServiceMock.stubGetString(
+      PreferencesServiceStub.stubGetString(
           preferencesServiceMock, PreferencesFlag.locale,
           toReturn: const Locale('fr').toString());
-      PreferencesServiceMock.stubGetString(
+      PreferencesServiceStub.stubGetString(
           preferencesServiceMock, PreferencesFlag.theme,
           toReturn: 'ThemeMode.system');
 
@@ -293,7 +291,7 @@ void main() {
 
     test("setString", () async {
       const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
-      PreferencesServiceMock.stubSetString(preferencesServiceMock, flag);
+      PreferencesServiceStub.stubSetString(preferencesServiceMock, flag);
 
       expect(await manager.setString(flag, "test"), true,
           reason:
@@ -311,7 +309,7 @@ void main() {
 
     test("setInt", () async {
       const flag = PreferencesFlag.aboutUsCard;
-      PreferencesServiceMock.stubSetInt(preferencesServiceMock, flag);
+      PreferencesServiceStub.stubSetInt(preferencesServiceMock, flag);
 
       expect(await manager.setInt(flag, 0), true,
           reason:
@@ -329,7 +327,7 @@ void main() {
 
     test("getString", () async {
       const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
-      PreferencesServiceMock.stubGetString(preferencesServiceMock, flag);
+      PreferencesServiceStub.stubGetString(preferencesServiceMock, flag);
 
       expect(await manager.getString(flag), 'test',
           reason:
@@ -347,7 +345,7 @@ void main() {
 
     test("setBool", () async {
       const flag = PreferencesFlag.scheduleSettingsCalendarFormat;
-      PreferencesServiceMock.stubSetBool(preferencesServiceMock, flag);
+      PreferencesServiceStub.stubSetBool(preferencesServiceMock, flag);
 
       expect(await manager.setBool(flag, true), true,
           reason:
@@ -365,16 +363,16 @@ void main() {
 
     group("Dashboard - ", () {
       test("validate default behaviour", () async {
-        PreferencesServiceMock.stubGetInt(
+        PreferencesServiceStub.stubGetInt(
             preferencesServiceMock, PreferencesFlag.aboutUsCard,
             toReturn: null);
-        PreferencesServiceMock.stubGetInt(
+        PreferencesServiceStub.stubGetInt(
             preferencesServiceMock, PreferencesFlag.scheduleCard,
             toReturn: null);
-        PreferencesServiceMock.stubGetInt(
+        PreferencesServiceStub.stubGetInt(
             preferencesServiceMock, PreferencesFlag.progressBarCard,
             toReturn: null);
-        PreferencesServiceMock.stubGetInt(
+        PreferencesServiceStub.stubGetInt(
             preferencesServiceMock, PreferencesFlag.gradesCard,
             toReturn: null);
 
@@ -405,17 +403,17 @@ void main() {
       });
 
       test("validate the loading of the cards", () async {
-        PreferencesServiceMock.stubGetInt(
+        PreferencesServiceStub.stubGetInt(
             preferencesServiceMock, PreferencesFlag.aboutUsCard,
             // ignore: avoid_redundant_argument_values
             toReturn: 1);
-        PreferencesServiceMock.stubGetInt(
+        PreferencesServiceStub.stubGetInt(
             preferencesServiceMock, PreferencesFlag.scheduleCard,
             toReturn: 2);
-        PreferencesServiceMock.stubGetInt(
+        PreferencesServiceStub.stubGetInt(
             preferencesServiceMock, PreferencesFlag.progressBarCard,
             toReturn: 0);
-        PreferencesServiceMock.stubGetInt(
+        PreferencesServiceStub.stubGetInt(
             preferencesServiceMock, PreferencesFlag.gradesCard,
             toReturn: 3);
 

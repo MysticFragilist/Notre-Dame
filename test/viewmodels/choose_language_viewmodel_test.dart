@@ -18,7 +18,7 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHERS
 import '../helpers.dart';
-import '../mock/managers/settings_manager_mock.dart';
+import '../mock/managers/settings_manager_stub.dart';
 
 late ChooseLanguageViewModel viewModel;
 
@@ -43,8 +43,8 @@ void main() {
 
     group("changeLanguage - ", () {
       test('can set language english', () async {
-        SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
+        SettingsManagerStub.stubSetString(
+            settingsManager as SettingsManagerStub, PreferencesFlag.theme);
 
         viewModel.changeLanguage(0);
 
@@ -55,8 +55,8 @@ void main() {
       });
 
       test('can set language français', () async {
-        SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
+        SettingsManagerStub.stubSetString(
+            settingsManager as SettingsManagerStub, PreferencesFlag.theme);
 
         viewModel.changeLanguage(1);
 
@@ -67,8 +67,8 @@ void main() {
       });
 
       test('throws an error when index does not exist', () async {
-        SettingsManagerMock.stubSetString(
-            settingsManager as SettingsManagerMock, PreferencesFlag.theme);
+        SettingsManagerStub.stubSetString(
+            settingsManager as SettingsManagerStub, PreferencesFlag.theme);
 
         expect(() => viewModel.changeLanguage(-1), throwsException,
             reason: "No valid language for the index -1 passed in parameters");

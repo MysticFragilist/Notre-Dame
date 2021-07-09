@@ -15,89 +15,12 @@ import 'package:notredame/core/services/signets_api.dart';
 import 'package:notredame/core/utils/api_exception.dart';
 
 // UTILS
-import '../../defaults.dart';
+import '../../mocks_generators.mocks.dart';
 
 /// Mock for the [SignetsApi]
-class SignetsApiMock extends Mock implements SignetsApi {
-  @override
-  Future<List<CourseActivity>> getCoursesActivities(
-          {required String? username,
-          required String? password,
-          required String session,
-          String courseGroup = "",
-          DateTime? startDate,
-          DateTime? endDate}) async =>
-      super.noSuchMethod(
-              Invocation.method(#getCoursesActivities, [], {
-                const Symbol('username'): username,
-                const Symbol('password'): password,
-                const Symbol('session'): session,
-                const Symbol('courseGroup'): courseGroup,
-                const Symbol('startDate'): startDate,
-                const Symbol('endDate'): endDate
-              }),
-              returnValue: Future<List<CourseActivity>>.value([]))
-          as Future<List<CourseActivity>>;
-
-  @override
-  Future<List<Course>> getCourses(
-          {required String? username, required String? password}) async =>
-      super.noSuchMethod(
-          Invocation.method(#getCourses, [], {
-            const Symbol('username'): username,
-            const Symbol('password'): password,
-          }),
-          returnValue: Future<List<Course>>.value([])) as Future<List<Course>>;
-
-  @override
-  Future<CourseSummary> getCourseSummary(
-          {required String? username,
-          required String? password,
-          required Course? course}) async =>
-      super.noSuchMethod(
-              Invocation.method(#getCourseSummary, [], {
-                const Symbol('username'): username,
-                const Symbol('password'): password,
-                const Symbol('course'): course,
-              }),
-              returnValue: Future<CourseSummary>.value(defaultCourseSummary))
-          as Future<CourseSummary>;
-
-  @override
-  Future<List<Session>> getSessions(
-          {required String? username, required String? password}) =>
-      super.noSuchMethod(
-              Invocation.method(#getSessions, [], {
-                const Symbol('username'): username,
-                const Symbol('password'): password,
-              }),
-              returnValue: Future<List<Session>>.value([]))
-          as Future<List<Session>>;
-
-  @override
-  Future<ProfileStudent> getStudentInfo(
-          {required String? username, required String? password}) async =>
-      super.noSuchMethod(
-              Invocation.method(#getStudentInfo, [], {
-                const Symbol('username'): username,
-                const Symbol('password'): password,
-              }),
-              returnValue: Future<ProfileStudent>.value(defaultProfileStudent))
-          as Future<ProfileStudent>;
-
-  @override
-  Future<List<Program>> getPrograms(
-          {required String? username, required String? password}) async =>
-      super.noSuchMethod(
-              Invocation.method(#getPrograms, [], {
-                const Symbol('username'): username,
-                const Symbol('password'): password,
-              }),
-              returnValue: Future<List<Program>>.value([]))
-          as Future<List<Program>>;
-
+class SignetsApiStub {
   /// Stub the answer of the [getCoursesActivities] when the [session] is used.
-  static void stubGetCoursesActivities(SignetsApiMock mock, String session,
+  static void stubGetCoursesActivities(MockSignetsApi mock, String session,
       List<CourseActivity> coursesActivitiesToReturn) {
     when(mock.getCoursesActivities(
             username: anyNamed("username"),
@@ -108,7 +31,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Throw [exceptionToThrow] when [getCoursesActivities] with the [session] is used.
   static void stubGetCoursesActivitiesException(
-      SignetsApiMock mock, String session,
+      MockSignetsApi mock, String session,
       {ApiException exceptionToThrow =
           const ApiException(prefix: CourseRepository.tag, message: "")}) {
     when(mock.getCoursesActivities(
@@ -120,13 +43,13 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Stub the answer of the [getSessions] when the [username] is used.
   static void stubGetSessions(
-      SignetsApiMock mock, String username, List<Session> sessionsToReturn) {
+      MockSignetsApi mock, String username, List<Session> sessionsToReturn) {
     when(mock.getSessions(username: username, password: anyNamed("password")))
         .thenAnswer((_) async => sessionsToReturn);
   }
 
   /// Throw [exceptionToThrow] when [getSessions] with the [username] is used.
-  static void stubGetSessionsException(SignetsApiMock mock, String username,
+  static void stubGetSessionsException(MockSignetsApi mock, String username,
       {ApiException exceptionToThrow =
           const ApiException(prefix: SignetsApi.tag, message: "")}) {
     when(mock.getSessions(username: username, password: anyNamed("password")))
@@ -135,13 +58,13 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Stub the answer of the [getPrograms] when the [username] is used.
   static void stubGetPrograms(
-      SignetsApiMock mock, String username, List<Program> programsToReturn) {
+      MockSignetsApi mock, String username, List<Program> programsToReturn) {
     when(mock.getPrograms(username: username, password: anyNamed("password")))
         .thenAnswer((_) async => programsToReturn);
   }
 
   /// Throw [exceptionToThrow] when [getPrograms] with the [username] is used.
-  static void stubGetProgramsException(SignetsApiMock mock, String username,
+  static void stubGetProgramsException(MockSignetsApi mock, String username,
       {ApiException exceptionToThrow =
           const ApiException(prefix: SignetsApi.tag, message: "")}) {
     when(mock.getPrograms(username: username, password: anyNamed("password")))
@@ -150,14 +73,14 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Stub the answer of the [getInfo] when the [username] is used.
   static void stubGetInfo(
-      SignetsApiMock mock, String username, ProfileStudent infoToReturn) {
+      MockSignetsApi mock, String username, ProfileStudent infoToReturn) {
     when(mock.getStudentInfo(
             username: username, password: anyNamed("password")))
         .thenAnswer((_) async => infoToReturn);
   }
 
   /// Throw [exceptionToThrow] when [getInfo] with the [username] is used.
-  static void stubGetInfoException(SignetsApiMock mock, String username,
+  static void stubGetInfoException(MockSignetsApi mock, String username,
       {ApiException exceptionToThrow =
           const ApiException(prefix: SignetsApi.tag, message: "")}) {
     when(mock.getStudentInfo(
@@ -166,14 +89,14 @@ class SignetsApiMock extends Mock implements SignetsApi {
   }
 
   /// Stub the answer of the [getCourses] when the [username] is used.
-  static void stubGetCourses(SignetsApiMock mock, String username,
+  static void stubGetCourses(MockSignetsApi mock, String username,
       {List<Course> coursesToReturn = const []}) {
     when(mock.getCourses(username: username, password: anyNamed("password")))
         .thenAnswer((_) async => coursesToReturn);
   }
 
   /// Throw [exceptionToThrow] when [getCourses] with the [username] is used.
-  static void stubGetCoursesException(SignetsApiMock mock, String username,
+  static void stubGetCoursesException(MockSignetsApi mock, String username,
       {ApiException exceptionToThrow =
           const ApiException(prefix: SignetsApi.tag, message: "")}) {
     when(mock.getCourses(username: username, password: anyNamed("password")))
@@ -182,7 +105,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Stub the answer of the [getCourseSummary] when the [username] and [course] is used.
   static void stubGetCourseSummary(
-      SignetsApiMock mock, String username, Course? course,
+      MockSignetsApi mock, String username, Course? course,
       {required CourseSummary summaryToReturn}) {
     when(mock.getCourseSummary(
             username: username, course: course, password: anyNamed("password")))
@@ -191,7 +114,7 @@ class SignetsApiMock extends Mock implements SignetsApi {
 
   /// Throw [exceptionToThrow] when [getCourseSummary] with the [username] and [course] is used.
   static void stubGetCourseSummaryException(
-      SignetsApiMock mock, String username, Course? course,
+      MockSignetsApi mock, String username, Course? course,
       {ApiException exceptionToThrow =
           const ApiException(prefix: SignetsApi.tag, message: "")}) {
     when(mock.getCourseSummary(

@@ -35,6 +35,10 @@ chmod +x ./scripts/decrypt.sh
 ./scripts/decrypt.sh
 ```
 
+- The tests won't be functionning properly without running a command, so make sure to run it if a test doesn't find a given mock:
+```sh
+flutter pub run build_runner build
+```
 ## Run the code
 
 - After cloning the repo, you will have to get the packages and generate the l10n classes. To do that run the following command:

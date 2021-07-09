@@ -8,47 +8,19 @@ import 'package:notredame/core/models/profile_student.dart';
 import 'package:notredame/core/models/program.dart';
 import 'package:notredame/core/utils/api_exception.dart';
 
-/// Mock for the [UserRepository]
-class UserRepositoryMock extends Mock implements UserRepository {
-  @override
-  Future<bool> authenticate(
-          {required String? username,
-          required String? password,
-          bool isSilent = false}) async =>
-      super.noSuchMethod(
-          Invocation.method(#authenticate, [], {
-            const Symbol('username'): username,
-            const Symbol('password'): password,
-            const Symbol('isSilent'): isSilent,
-          }),
-          returnValue: Future<bool>.value(false)) as Future<bool>;
+// MOCK
+import '../../mocks_generators.mocks.dart';
 
-  @override
-  Future<List<Program>?> getPrograms({bool? fromCacheOnly = false}) async =>
-      super.noSuchMethod(
-              Invocation.method(#getPrograms, [], {
-                const Symbol('fromCacheOnly'): fromCacheOnly,
-              }),
-              returnValue: Future<List<Program>?>.value())
-          as Future<List<Program>?>;
-
-  @override
-  Future<ProfileStudent?> getInfo({bool? fromCacheOnly = false}) async =>
-      super.noSuchMethod(
-              Invocation.method(#getPrograms, [], {
-                const Symbol('fromCacheOnly'): fromCacheOnly,
-              }),
-              returnValue: Future<ProfileStudent?>.value())
-          as Future<ProfileStudent?>;
-
+/// Stub functions for the [MockUserRepository]
+class UserRepositoryStub {
   /// When [monETSUser] is called will return [userToReturn]
-  static void stubMonETSUser(UserRepositoryMock mock, MonETSUser userToReturn) {
+  static void stubMonETSUser(MockUserRepository mock, MonETSUser userToReturn) {
     when(mock.monETSUser).thenAnswer((_) => userToReturn);
   }
 
   /// Stub the authentication, when [username] is used will return [toReturn].
   /// By default validate the authentication
-  static void stubAuthenticate(UserRepositoryMock mock, String username,
+  static void stubAuthenticate(MockUserRepository mock, String username,
       {bool toReturn = true}) {
     when(mock.authenticate(username: username, password: anyNamed('password')))
         .thenAnswer((_) async => toReturn);
@@ -56,32 +28,32 @@ class UserRepositoryMock extends Mock implements UserRepository {
 
   /// Stub the silent authentication, return [toReturn]
   /// By default validate the silent authentication
-  static void stubSilentAuthenticate(UserRepositoryMock mock,
+  static void stubSilentAuthenticate(MockUserRepository mock,
       {bool toReturn = true}) {
     when(mock.silentAuthenticate()).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the getPassword function, return [passwordToReturn]
   static void stubGetPassword(
-      UserRepositoryMock mock, String passwordToReturn) {
+      MockUserRepository mock, String passwordToReturn) {
     when(mock.getPassword()).thenAnswer((_) async => passwordToReturn);
   }
 
   /// Stub the getPassword function to throw [exceptionToReturn]
-  static void stubGetPasswordException(UserRepositoryMock mock,
+  static void stubGetPasswordException(MockUserRepository mock,
       {ApiException exceptionToReturn =
           const ApiException(prefix: UserRepository.tag, message: "")}) {
     when(mock.getPassword()).thenThrow(exceptionToReturn);
   }
 
   /// Stub the getter [ProfileStudent] of [mock] when called will return [toReturn].
-  static void stubProfileStudent(UserRepositoryMock mock,
+  static void stubProfileStudent(MockUserRepository mock,
       {ProfileStudent? toReturn}) {
     when(mock.info).thenReturn(toReturn);
   }
 
   /// Stub the function [getInfo] of [mock] when called will return [toReturn].
-  static void stubGetInfo(UserRepositoryMock mock,
+  static void stubGetInfo(MockUserRepository mock,
       {ProfileStudent? toReturn, bool? fromCacheOnly}) {
     when(mock.getInfo(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
@@ -89,7 +61,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
   }
 
   /// Stub the function [getInfo] of [mock] when called will throw [toThrow].
-  static void stubGetInfoException(UserRepositoryMock mock,
+  static void stubGetInfoException(MockUserRepository mock,
       {Exception toThrow =
           const ApiException(prefix: 'ApiException', message: ''),
       bool? fromCacheOnly}) {
@@ -100,13 +72,13 @@ class UserRepositoryMock extends Mock implements UserRepository {
   }
 
   /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].
-  static void stubPrograms(UserRepositoryMock mock,
+  static void stubPrograms(MockUserRepository mock,
       {List<Program> toReturn = const []}) {
     when(mock.programs).thenReturn(toReturn);
   }
 
   /// Stub the function [getPrograms] of [mock] when called will return [toReturn].
-  static void stubGetPrograms(UserRepositoryMock mock,
+  static void stubGetPrograms(MockUserRepository mock,
       {List<Program> toReturn = const [], bool? fromCacheOnly}) {
     when(mock.getPrograms(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
@@ -114,7 +86,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
   }
 
   /// Stub the function [getPrograms] of [mock] when called will throw [toThrow].
-  static void stubGetProgramsException(UserRepositoryMock mock,
+  static void stubGetProgramsException(MockUserRepository mock,
       {Exception toThrow =
           const ApiException(prefix: 'ApiException', message: ''),
       bool? fromCacheOnly}) {
@@ -125,11 +97,11 @@ class UserRepositoryMock extends Mock implements UserRepository {
   }
 
   /// Stub the function [logOut] of [mock] when called will return [toReturn].
-  static void stubLogOut(UserRepositoryMock mock, {bool toReturn = true}) {
+  static void stubLogOut(MockUserRepository mock, {bool toReturn = true}) {
     when(mock.logOut()).thenAnswer((_) async => toReturn);
   }
 
-  static void stubWasPreviouslyLoggedIn(UserRepositoryMock mock,
+  static void stubWasPreviouslyLoggedIn(MockUserRepository mock,
       {bool toReturn = true}) {
     when(mock.wasPreviouslyLoggedIn()).thenAnswer((_) async => toReturn);
   }

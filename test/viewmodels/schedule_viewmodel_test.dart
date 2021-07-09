@@ -15,13 +15,13 @@ import 'package:notredame/core/models/course_activity.dart';
 import '../helpers.dart';
 
 // MOCKS
-import '../mock/managers/course_repository_mock.dart';
-import '../mock/managers/settings_manager_mock.dart';
-import '../mock/services/networking_service_mock.dart';
+import '../mock/managers/course_repository_stub.dart';
+import '../mock/managers/settings_manager_stub.dart';
+import '../mock/services/networking_service_stub.dart';
 
-late CourseRepositoryMock courseRepositoryMock;
-late SettingsManagerMock settingsManagerMock;
-late NetworkingServiceMock networkingService;
+late CourseRepositoryStub courseRepositoryMock;
+late SettingsManagerStub settingsManagerMock;
+late NetworkingServiceStub networkingService;
 late ScheduleViewModel viewModel;
 
 void main() {
@@ -58,14 +58,13 @@ void main() {
   group("ScheduleViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      courseRepositoryMock =
-          setupCourseRepositoryMock();
+      courseRepositoryMock = setupCourseRepositoryMock();
       settingsManagerMock = setupSettingsManagerMock();
       networkingService = setupNetworkingServiceMock();
       setupFlutterToastMock();
 
       // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
+      NetworkingServiceStub.stubHasConnectivity(networkingService);
 
       viewModel = ScheduleViewModel(intl: await setupAppIntl());
     });
@@ -73,7 +72,7 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<SettingsManager>();
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingServiceStub>();
       tearDownFlutterToastMock();
     });
 
@@ -81,8 +80,8 @@ void main() {
       test(
           "first load from cache than call SignetsAPI to get the latest events",
           () async {
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryStub.stubGetCoursesActivities(courseRepositoryMock);
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock);
 
         expect(await viewModel.futureToRun(), []);
 
@@ -96,12 +95,12 @@ void main() {
       });
 
       test("Signets throw an error while trying to get new events", () async {
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesActivities(courseRepositoryMock,
             fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesActivitiesException(
+        CourseRepositoryStub.stubGetCoursesActivitiesException(
             courseRepositoryMock,
             fromCacheOnly: false);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock);
 
         expect(await viewModel.futureToRun(), [],
             reason: "Even if SignetsAPI fails we should receives a list.");
@@ -121,7 +120,7 @@ void main() {
 
     group("coursesActivities - ", () {
       test("build the list of activities sort by date", () async {
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = {
@@ -140,7 +139,7 @@ void main() {
 
     group("coursesActivitiesFor - ", () {
       test("Get the correct list of activities for the specified day", () {
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = [gen102, gen103];
@@ -154,7 +153,7 @@ void main() {
       });
 
       test("If the day doesn't have any events, return an empty list.", () {
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         expect(viewModel.coursesActivitiesFor(DateTime(2020, 1, 3)), isEmpty,
@@ -169,7 +168,7 @@ void main() {
 
     group("selectedDateEvents", () {
       test("The events of the date currently selected are return", () {
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = [gen102, gen103];
@@ -186,7 +185,7 @@ void main() {
       });
 
       test("The events of the date currently selected are return", () {
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         final expected = [];
@@ -206,7 +205,7 @@ void main() {
       test(
           'Call SignetsAPI to get the coursesActivities than reload the coursesActivities',
           () async {
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+        CourseRepositoryStub.stubCoursesActivities(courseRepositoryMock,
             toReturn: activities);
 
         await viewModel.refresh();

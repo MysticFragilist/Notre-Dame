@@ -11,9 +11,9 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHER
 import '../helpers.dart';
-import '../mock/managers/settings_manager_mock.dart';
+import '../mock/managers/settings_manager_stub.dart';
 
-late SettingsManagerMock settingsManagerMock;
+late SettingsManagerStub settingsManagerMock;
 late ScheduleSettingsViewModel viewModel;
 
 void main() {
@@ -28,14 +28,14 @@ void main() {
 
   group("ScheduleSettingsViewModel - ", () {
     setUp(() {
-      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
+      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerStub;
       setupFlutterToastMock();
       viewModel = ScheduleSettingsViewModel();
     });
 
     group("futureToRun - ", () {
       test("The settings are correctly loaded and sets", () async {
-        SettingsManagerMock.stubGetScheduleSettings(settingsManagerMock,
+        SettingsManagerStub.stubGetScheduleSettings(settingsManagerMock,
             toReturn: settings);
 
         expect(await viewModel.futureToRun(), settings);
@@ -53,7 +53,7 @@ void main() {
 
     group("setter calendarFormat - ", () {
       test("calendarFormat is updated on the settings", () async {
-        SettingsManagerMock.stubSetString(settingsManagerMock,
+        SettingsManagerStub.stubSetString(settingsManagerMock,
             PreferencesFlag.scheduleSettingsCalendarFormat);
 
         // Call the setter.
@@ -74,7 +74,7 @@ void main() {
 
     group("setter startingDayOfWeek - ", () {
       test("startingDayOfWeek is updated on the settings", () async {
-        SettingsManagerMock.stubSetString(
+        SettingsManagerStub.stubSetString(
             settingsManagerMock, PreferencesFlag.scheduleSettingsStartWeekday);
 
         // Call the setter.
@@ -95,7 +95,7 @@ void main() {
 
     group("setter showTodayBtn - ", () {
       test("showTodayBtn is updated on the settings", () async {
-        SettingsManagerMock.stubSetString(
+        SettingsManagerStub.stubSetString(
             settingsManagerMock, PreferencesFlag.scheduleSettingsStartWeekday);
 
         const expected = false;

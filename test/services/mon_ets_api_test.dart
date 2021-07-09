@@ -19,12 +19,12 @@ import '../helpers.dart';
 import '../mock/services/http_client_mock.dart';
 
 void main() {
-  late HttpClientMock clientMock;
+  late HttpClientStub clientMock;
   late MonETSApi service;
 
   group('MonETSApi - ', () {
     setUp(() {
-      clientMock = HttpClientMock();
+      clientMock = HttpClientStub();
       setupLogger();
 
       service = MonETSApi(clientMock);
@@ -42,7 +42,7 @@ void main() {
         const String username = "username";
         const String password = "password";
 
-        HttpClientMock.stubJsonPost(
+        HttpClientStub.stubJsonPost(
             clientMock,
             Urls.authenticationMonETS,
             {"Domaine": "domaine", "TypeUsagerId": 1, "Username": username},
@@ -59,7 +59,7 @@ void main() {
         const int statusCode = 500;
         const String message = "An error has occurred.";
 
-        HttpClientMock.stubJsonPost(clientMock, Urls.authenticationMonETS,
+        HttpClientStub.stubJsonPost(clientMock, Urls.authenticationMonETS,
             {"Message": message}, statusCode);
 
         expect(service.authenticate(username: "", password: ""),

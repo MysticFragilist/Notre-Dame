@@ -15,17 +15,17 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 // OTHERS
 import '../helpers.dart';
-import '../mock/managers/settings_manager_mock.dart';
+import '../mock/managers/settings_manager_stub.dart';
 
 late SettingsViewModel viewModel;
 
 void main() {
-  late SettingsManagerMock settingsManagerMock;
+  late SettingsManagerStub settingsManagerMock;
 
   group("SettingsViewModel - ", () {
     setUp(() async {
       // Setting up mocks
-      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerMock;
+      settingsManagerMock = setupSettingsManagerMock() as SettingsManagerStub;
       final AppIntl intl = await setupAppIntl();
 
       viewModel = SettingsViewModel(intl: intl);
@@ -37,11 +37,11 @@ void main() {
 
     group("futureToRun - ", () {
       test("The settings are correctly loaded and sets", () async {
-        SettingsManagerMock.stubGetString(
+        SettingsManagerStub.stubGetString(
             settingsManagerMock, PreferencesFlag.locale,
             toReturn: 'en');
 
-        SettingsManagerMock.stubGetString(
+        SettingsManagerStub.stubGetString(
             settingsManagerMock, PreferencesFlag.theme,
             toReturn: ThemeMode.system.toString());
 
@@ -56,7 +56,7 @@ void main() {
 
     group("setter theme - ", () {
       test("can set system theme option", () async {
-        SettingsManagerMock.stubSetString(
+        SettingsManagerStub.stubSetString(
             settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
@@ -72,7 +72,7 @@ void main() {
       });
 
       test("can set dark theme option", () async {
-        SettingsManagerMock.stubSetString(
+        SettingsManagerStub.stubSetString(
             settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
@@ -88,7 +88,7 @@ void main() {
       });
 
       test("can set light theme option", () async {
-        SettingsManagerMock.stubSetString(
+        SettingsManagerStub.stubSetString(
             settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.

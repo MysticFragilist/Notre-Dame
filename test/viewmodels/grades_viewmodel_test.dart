@@ -17,13 +17,13 @@ import 'package:notredame/core/viewmodels/grades_viewmodel.dart';
 import '../helpers.dart';
 
 // MOCKS
-import '../mock/managers/course_repository_mock.dart';
-import '../mock/services/networking_service_mock.dart';
+import '../mock/managers/course_repository_stub.dart';
+import '../mock/services/networking_service_stub.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  late CourseRepositoryMock courseRepositoryMock;
-  NetworkingServiceMock networkingService;
+  late CourseRepositoryStub courseRepositoryMock;
+  NetworkingServiceStub networkingService;
   AppIntl intl;
   late GradesViewModel viewModel;
 
@@ -92,14 +92,14 @@ void main() {
   group('GradesViewModel -', () {
     setUp(() async {
       courseRepositoryMock =
-          setupCourseRepositoryMock() as CourseRepositoryMock;
-      networkingService = setupNetworkingServiceMock() as NetworkingServiceMock;
+          setupCourseRepositoryMock() as CourseRepositoryStub;
+      networkingService = setupNetworkingServiceMock() as NetworkingServiceStub;
       intl = await setupAppIntl();
       setupNavigationServiceMock();
       setupFlutterToastMock();
 
       // Stub to simulate that the user has an active internet connection
-      NetworkingServiceMock.stubHasConnectivity(networkingService);
+      NetworkingServiceStub.stubHasConnectivity(networkingService);
 
       viewModel = GradesViewModel(intl: intl);
     });
@@ -107,18 +107,18 @@ void main() {
     tearDown(() {
       unregister<CourseRepository>();
       unregister<NavigationService>();
-      unregister<NetworkingServiceMock>();
+      unregister<NetworkingServiceStub>();
       tearDownFlutterToastMock();
     });
 
     group('futureToRun -', () {
       test('first load from cache than call SignetsAPI to get the courses',
           () async {
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(courseRepositoryMock,
             toReturn: courses, fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
-        CourseRepositoryMock.stubCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubCourses(courseRepositoryMock,
             toReturn: courses);
 
         expect(await viewModel.futureToRun(), coursesBySession);
@@ -138,11 +138,11 @@ void main() {
       });
 
       test('Signets throw an error while trying to get courses', () async {
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(courseRepositoryMock,
             toReturn: courses, fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCoursesException(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesException(courseRepositoryMock,
             fromCacheOnly: false);
-        CourseRepositoryMock.stubCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubCourses(courseRepositoryMock,
             toReturn: courses);
 
         expect(await viewModel.futureToRun(), coursesBySession,
@@ -167,9 +167,9 @@ void main() {
       test(
           'Call SignetsAPI to get the courses than reload the coursesBySession',
           () async {
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(courseRepositoryMock,
             toReturn: courses);
-        CourseRepositoryMock.stubCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubCourses(courseRepositoryMock,
             toReturn: courses);
 
         await viewModel.refresh();
@@ -184,11 +184,11 @@ void main() {
       });
 
       test('Signets throw an error', () async {
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(courseRepositoryMock,
             toReturn: courses, fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCourses(courseRepositoryMock,
             fromCacheOnly: false);
-        CourseRepositoryMock.stubCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubCourses(courseRepositoryMock,
             toReturn: courses);
 
         // Populate the list of courses
@@ -197,9 +197,9 @@ void main() {
         expect(viewModel.sessionOrder, sessionOrder);
 
         reset(courseRepositoryMock);
-        CourseRepositoryMock.stubCourses(courseRepositoryMock,
+        CourseRepositoryStub.stubCourses(courseRepositoryMock,
             toReturn: courses);
-        CourseRepositoryMock.stubGetCoursesException(courseRepositoryMock,
+        CourseRepositoryStub.stubGetCoursesException(courseRepositoryMock,
             fromCacheOnly: false);
 
         await viewModel.refresh();
