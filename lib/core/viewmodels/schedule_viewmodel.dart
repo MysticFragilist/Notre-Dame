@@ -129,21 +129,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   /// Get the activities for a specific [date], return empty if there is no activity for this [date]
-  List<CourseActivity>? coursesActivitiesFor(DateTime date) {
+  List<CourseActivity?> coursesActivitiesFor(DateTime date) {
     // Populate the _coursesActivities
     if (_coursesActivities.isEmpty) {
       coursesActivities;
     }
 
-    // Access the array using the same instance inside the map. This is only required
-    // since the version 3.0.0 of table_calendar with the eventLoaders argument.
-    DateTime? dateInArray;
-    return _coursesActivities.keys.any((element) {
-      dateInArray = element;
-      return isSameDay(element, date);
-    })
-        ? _coursesActivities[dateInArray!]
-        : [];
+    return _coursesActivities[date] ?? [];
   }
 
   Future setCalendarFormat(CalendarFormat format) async {

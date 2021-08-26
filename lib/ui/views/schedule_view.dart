@@ -152,8 +152,7 @@ class _ScheduleViewState extends State<ScheduleView>
             weekendDays: const [],
             headerStyle: const HeaderStyle(
                 titleCentered: true, formatButtonVisible: false),
-            eventLoader: model.coursesActivitiesFor as List<CourseActivity>
-                Function(DateTime)?,
+            eventLoader: model.coursesActivitiesFor,
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 model.selectedDate = selectedDay;
