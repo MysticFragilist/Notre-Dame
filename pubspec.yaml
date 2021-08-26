@@ -28,7 +28,7 @@ dependencies:
   intl: ^0.17.0
 
   # Architecture
-  get_it: ^6.1.1
+  get_it: ^7.2.0
   provider: ^5.0.0
   stacked: ^2.1.6
 
@@ -46,7 +46,7 @@ dependencies:
   # Widgets
   table_calendar: ^3.0.0
   percent_indicator: ^3.0.1
-  feedback: ^1.2.2
+  feedback: ^2.0.0
 
   # Other
   http: ^0.13.3

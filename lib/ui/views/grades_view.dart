@@ -41,7 +41,7 @@ class _GradesViewState extends State<GradesView> {
                           style: Theme.of(context).textTheme.headline6))
                 else
                   ListView.builder(
-                      padding: const EdgeInsets.all(0.0),
+                      padding: EdgeInsets.zero,
                       itemCount: model.coursesBySession.length,
                       itemBuilder: (BuildContext context, int index) =>
                           _buildSessionCourses(
