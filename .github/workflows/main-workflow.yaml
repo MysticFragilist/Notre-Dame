@@ -10,6 +10,7 @@ on:
       - 'README.md'
       - 'README.fr.md'
   pull_request:
+  
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
