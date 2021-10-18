@@ -1,5 +1,6 @@
 name: Main workflow
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -10,6 +11,13 @@ on:
       - 'README.md'
       - 'README.fr.md'
   pull_request:
+    paths-ignore:
+      - '.gitignore'
+      - '.metadata'
+      - '.github/**'
+      - 'README.md'
+      - 'README.fr.md'
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
@@ -157,20 +165,6 @@ jobs:
           namedLogo: flutter
           color: green
 
-  create-labels:
-    name: Create labels on PR
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run the Github actions
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: alexromer0/pull-request-labeler@2.1.1
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          xs_limit: '50'
-          sm_limit: '100'
-          md_limit: '300'
-          lg_limit: '600'
-
 #      Disable these steps for now. Will enable them when we will think of a way to upload lcov.base.info somewhere
 #      - name: Commit coverage file
 #        id: commit
@@ -276,7 +270,7 @@ jobs:
 
   create-draft-release:
     name: Draft Github release
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow-dispatch' && github.head_ref == 'master') }}
     needs: [ tagValidation, create-build ]
     runs-on: ubuntu-latest
     outputs:
